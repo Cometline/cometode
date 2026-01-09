@@ -133,11 +133,7 @@ function updateTrayMenu(): void {
           popupWindow.destroy()
           popupWindow = null
         }
-        autoUpdater.quitAndInstall(false, true)
-        // Fallback: if quitAndInstall doesn't exit the app within 1 second, force quit
-        setTimeout(() => {
-          app.quit()
-        }, 1000)
+        autoUpdater.quitAndInstall(true, true)
       }
     })
     menuItems.push({ type: 'separator' })
@@ -153,11 +149,7 @@ function updateTrayMenu(): void {
         popupWindow = null
       }
       if (updateReady) {
-        autoUpdater.quitAndInstall(false, true)
-        // Fallback: if quitAndInstall doesn't exit the app within 1 second, force quit
-        setTimeout(() => {
-          app.quit()
-        }, 1000)
+        autoUpdater.quitAndInstall(true, true)
       } else {
         app.quit()
       }
@@ -310,12 +302,7 @@ function setupPopupIPC(): void {
           popupWindow = null
         }
         // quitAndInstall with isSilent=false, isForceRunAfter=true
-        autoUpdater.quitAndInstall(false, true)
-        // Fallback: if quitAndInstall doesn't exit the app within 1 second, force quit
-        // Use app.quit() instead of app.exit() to ensure will-quit event fires for updater
-        setTimeout(() => {
-          app.quit()
-        }, 1000)
+        autoUpdater.quitAndInstall(true, true)
       }, 100)
       return { success: true }
     }
@@ -410,11 +397,7 @@ function setupAutoUpdater(): void {
         popupWindow.destroy()
         popupWindow = null
       }
-      autoUpdater.quitAndInstall(false, true)
-      // Fallback: if quitAndInstall doesn't exit the app within 1 second, force quit
-      setTimeout(() => {
-        app.quit()
-      }, 1000)
+      autoUpdater.quitAndInstall(true, true)
     })
     notification.show()
   })
