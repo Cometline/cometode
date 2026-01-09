@@ -314,8 +314,8 @@ export function setupIPC(db: Database.Database): void {
       ORDER BY category
     `
       )
-      .all()
-    return categories.map((c: { category: string }) => c.category)
+      .all() as { category: string }[]
+    return categories.map((c) => c.category)
   })
 
   // Save preference

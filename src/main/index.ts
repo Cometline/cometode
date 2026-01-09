@@ -237,7 +237,7 @@ app.whenReady().then(() => {
 
   // Hide dock icon - this is a menu bar only app
   if (process.platform === 'darwin') {
-    app.dock.hide()
+    app.dock?.hide()
   }
 
   // Initialize database
