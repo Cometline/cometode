@@ -130,7 +130,7 @@
   <!-- Header -->
   <header class="h-10 flex items-center justify-between px-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur flex-shrink-0">
     <div class="flex items-center gap-2">
-      <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">NeetCode 150</span>
+      <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">Comet NeetCode</span>
       {#if $todayReviews.length > 0 && currentView === 'home'}
         <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
       {/if}
