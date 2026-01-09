@@ -22,6 +22,7 @@ let lastNotificationDate: string | null = null
 let currentShortcut: string = 'CommandOrControl+Shift+N'
 let updateReady: boolean = false
 let isQuitting: boolean = false
+let updateInfo: { version: string; progress: number } | null = null
 
 const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 520
@@ -126,6 +127,7 @@ function updateTrayMenu(): void {
     menuItems.push({
       label: '🔄 Restart to Update',
       click: () => {
+        isQuitting = true
         autoUpdater.quitAndInstall(false, true)
       }
     })
@@ -135,6 +137,7 @@ function updateTrayMenu(): void {
   menuItems.push({
     label: 'Quit',
     click: () => {
+      isQuitting = true
       if (updateReady) {
         autoUpdater.quitAndInstall(false, true)
       } else {
@@ -271,12 +274,19 @@ function setupPopupIPC(): void {
   })
 
   ipcMain.handle('get-update-status', () => {
-    return { updateReady }
+    return {
+      updateReady,
+      updateInfo,
+      currentVersion: app.getVersion()
+    }
   })
 
   ipcMain.handle('install-update', () => {
     if (updateReady) {
-      autoUpdater.quitAndInstall(false, true)
+      isQuitting = true
+      setImmediate(() => {
+        autoUpdater.quitAndInstall(false, true)
+      })
       return { success: true }
     }
     return { success: false }
@@ -336,6 +346,7 @@ function setupAutoUpdater(): void {
   autoUpdater.autoInstallOnAppQuit = true
 
   autoUpdater.on('update-available', (info) => {
+    updateInfo = { version: info.version, progress: 0 }
     const notification = new Notification({
       title: 'Update Available',
       body: `Cometode v${info.version} is available. Downloading...`,
@@ -344,8 +355,17 @@ function setupAutoUpdater(): void {
     notification.show()
   })
 
+  autoUpdater.on('download-progress', (progress) => {
+    if (updateInfo) {
+      updateInfo.progress = Math.round(progress.percent)
+    }
+  })
+
   autoUpdater.on('update-downloaded', (info) => {
     updateReady = true
+    if (updateInfo) {
+      updateInfo.progress = 100
+    }
     updateTrayMenu()
 
     const notification = new Notification({
@@ -359,8 +379,13 @@ function setupAutoUpdater(): void {
     notification.show()
   })
 
+  autoUpdater.on('update-not-available', () => {
+    updateInfo = null
+  })
+
   autoUpdater.on('error', (error) => {
     console.error('Auto-updater error:', error)
+    updateInfo = null
   })
 
   // Check for updates on startup

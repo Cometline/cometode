@@ -20,16 +20,36 @@
   let recordedKeys = $state<string[]>([])
   let updateReady = $state(false)
   let isCheckingUpdate = $state(false)
+  let currentVersion = $state('')
+  let updateInfo = $state<{ version: string; progress: number } | null>(null)
+  let updateCheckInterval: ReturnType<typeof setInterval> | null = null
 
   onMount(async () => {
     await theme.init()
     await loadTodayReviews()
     // Load current shortcut
     currentShortcut = await window.api.getShortcut()
-    // Check if update is ready
+    // Check update status
+    await refreshUpdateStatus()
+
+    // Poll for update progress while downloading
+    updateCheckInterval = setInterval(async () => {
+      if (updateInfo && updateInfo.progress < 100) {
+        await refreshUpdateStatus()
+      }
+    }, 1000)
+
+    return () => {
+      if (updateCheckInterval) clearInterval(updateCheckInterval)
+    }
+  })
+
+  async function refreshUpdateStatus(): Promise<void> {
     const status = await window.api.getUpdateStatus()
     updateReady = status.updateReady
-  })
+    currentVersion = status.currentVersion
+    updateInfo = status.updateInfo
+  }
 
   function selectProblem(problem: Problem): void {
     selectedProblem = problem
@@ -215,9 +235,19 @@
         </p>
       </div>
 
-      <!-- Check for Updates -->
+      <!-- Updates -->
       <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Version</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400">v{currentVersion}</span>
+        </div>
+
         {#if updateReady}
+          <div class="mb-2 p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-md">
+            <div class="text-sm text-emerald-700 dark:text-emerald-400">
+              ✓ v{updateInfo?.version} ready to install
+            </div>
+          </div>
           <button
             onclick={async () => {
               await window.api.installUpdate()
@@ -226,16 +256,26 @@
           >
             🔄 Restart to Update
           </button>
+        {:else if updateInfo && updateInfo.progress < 100}
+          <div class="mb-2">
+            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+              <span>Downloading v{updateInfo.version}</span>
+              <span>{updateInfo.progress}%</span>
+            </div>
+            <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                class="h-full bg-indigo-400/90 transition-all duration-300"
+                style="width: {updateInfo.progress}%"
+              ></div>
+            </div>
+          </div>
         {:else}
           <button
             onclick={async () => {
               isCheckingUpdate = true
-              const result = await window.api.checkForUpdates()
-              updateReady = result.updateReady
+              await window.api.checkForUpdates()
+              await refreshUpdateStatus()
               isCheckingUpdate = false
-              if (!result.checking && !result.updateReady) {
-                alert(result.message)
-              }
             }}
             disabled={isCheckingUpdate}
             class="w-full px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"

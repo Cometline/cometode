@@ -69,7 +69,11 @@ export interface API {
   getShortcut: () => Promise<string>
   setShortcut: (shortcut: string) => Promise<{ success: boolean; shortcut: string }>
   checkForUpdates: () => Promise<{ checking: boolean; updateReady: boolean; message: string }>
-  getUpdateStatus: () => Promise<{ updateReady: boolean }>
+  getUpdateStatus: () => Promise<{
+    updateReady: boolean
+    updateInfo: { version: string; progress: number } | null
+    currentVersion: string
+  }>
   installUpdate: () => Promise<{ success: boolean }>
 }
 
