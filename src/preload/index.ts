@@ -42,7 +42,12 @@ const api = {
 
   // Shortcut
   getShortcut: () => ipcRenderer.invoke('get-shortcut'),
-  setShortcut: (shortcut: string) => ipcRenderer.invoke('set-shortcut', shortcut)
+  setShortcut: (shortcut: string) => ipcRenderer.invoke('set-shortcut', shortcut),
+
+  // Updates
+  checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+  getUpdateStatus: () => ipcRenderer.invoke('get-update-status'),
+  installUpdate: () => ipcRenderer.invoke('install-update')
 }
 
 // Expose APIs

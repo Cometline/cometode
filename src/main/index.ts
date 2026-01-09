@@ -20,6 +20,7 @@ let popupWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 let lastNotificationDate: string | null = null
 let currentShortcut: string = 'CommandOrControl+Shift+N'
+let updateReady: boolean = false
 
 const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 520
@@ -97,25 +98,44 @@ function createTray(): void {
   resizedIcon.setTemplateImage(true)
 
   tray = new Tray(resizedIcon)
-  tray.setToolTip('NeetCode Tracker')
-
-  // Right-click context menu
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Quit',
-      click: () => {
-        app.quit()
-      }
-    }
-  ])
+  tray.setToolTip('Cometode')
 
   tray.on('click', () => {
     togglePopup()
   })
 
   tray.on('right-click', () => {
-    tray?.popUpContextMenu(contextMenu)
+    updateTrayMenu()
+    tray?.popUpContextMenu()
   })
+}
+
+function updateTrayMenu(): void {
+  const menuItems: Electron.MenuItemConstructorOptions[] = []
+
+  if (updateReady) {
+    menuItems.push({
+      label: '🔄 Restart to Update',
+      click: () => {
+        autoUpdater.quitAndInstall(false, true)
+      }
+    })
+    menuItems.push({ type: 'separator' })
+  }
+
+  menuItems.push({
+    label: 'Quit',
+    click: () => {
+      if (updateReady) {
+        autoUpdater.quitAndInstall(false, true)
+      } else {
+        app.quit()
+      }
+    }
+  })
+
+  const contextMenu = Menu.buildFromTemplate(menuItems)
+  tray?.setContextMenu(contextMenu)
 }
 
 function registerShortcut(shortcut: string): boolean {
@@ -227,6 +247,31 @@ function setupPopupIPC(): void {
     }
     return { success, shortcut: currentShortcut }
   })
+
+  ipcMain.handle('check-for-updates', async () => {
+    if (is.dev) {
+      return { checking: false, updateReady: false, message: 'Updates are disabled in development mode' }
+    }
+    try {
+      await autoUpdater.checkForUpdatesAndNotify()
+      return { checking: true, updateReady, message: updateReady ? 'Update ready to install' : 'Checking for updates...' }
+    } catch (error) {
+      console.error('Failed to check for updates:', error)
+      return { checking: false, updateReady: false, message: 'Failed to check for updates' }
+    }
+  })
+
+  ipcMain.handle('get-update-status', () => {
+    return { updateReady }
+  })
+
+  ipcMain.handle('install-update', () => {
+    if (updateReady) {
+      autoUpdater.quitAndInstall(false, true)
+      return { success: true }
+    }
+    return { success: false }
+  })
 }
 
 app.whenReady().then(() => {
@@ -291,13 +336,16 @@ function setupAutoUpdater(): void {
   })
 
   autoUpdater.on('update-downloaded', (info) => {
+    updateReady = true
+    updateTrayMenu()
+
     const notification = new Notification({
       title: 'Update Ready',
-      body: `Cometode v${info.version} has been downloaded. It will be installed on restart.`,
+      body: `Cometode v${info.version} is ready. Right-click tray icon to install.`,
       icon: icon
     })
     notification.on('click', () => {
-      autoUpdater.quitAndInstall()
+      autoUpdater.quitAndInstall(false, true)
     })
     notification.show()
   })

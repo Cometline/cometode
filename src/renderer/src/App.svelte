@@ -18,12 +18,17 @@
   let currentShortcut = $state('')
   let isRecordingShortcut = $state(false)
   let recordedKeys = $state<string[]>([])
+  let updateReady = $state(false)
+  let isCheckingUpdate = $state(false)
 
   onMount(async () => {
     await theme.init()
     await loadTodayReviews()
     // Load current shortcut
     currentShortcut = await window.api.getShortcut()
+    // Check if update is ready
+    const status = await window.api.getUpdateStatus()
+    updateReady = status.updateReady
   })
 
   function selectProblem(problem: Problem): void {
@@ -208,6 +213,36 @@
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
           Press a key combination with Cmd/Ctrl
         </p>
+      </div>
+
+      <!-- Check for Updates -->
+      <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        {#if updateReady}
+          <button
+            onclick={async () => {
+              await window.api.installUpdate()
+            }}
+            class="w-full px-3 py-2 text-sm font-medium text-white bg-emerald-500/90 hover:bg-emerald-600/95 rounded-md transition-colors shadow-sm"
+          >
+            🔄 Restart to Update
+          </button>
+        {:else}
+          <button
+            onclick={async () => {
+              isCheckingUpdate = true
+              const result = await window.api.checkForUpdates()
+              updateReady = result.updateReady
+              isCheckingUpdate = false
+              if (!result.checking && !result.updateReady) {
+                alert(result.message)
+              }
+            }}
+            disabled={isCheckingUpdate}
+            class="w-full px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+          >
+            {isCheckingUpdate ? 'Checking...' : 'Check for Updates'}
+          </button>
+        {/if}
       </div>
 
       <!-- Reset Progress -->

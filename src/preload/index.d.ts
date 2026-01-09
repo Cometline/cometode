@@ -68,6 +68,9 @@ export interface API {
   hidePopup: () => Promise<{ success: boolean }>
   getShortcut: () => Promise<string>
   setShortcut: (shortcut: string) => Promise<{ success: boolean; shortcut: string }>
+  checkForUpdates: () => Promise<{ checking: boolean; updateReady: boolean; message: string }>
+  getUpdateStatus: () => Promise<{ updateReady: boolean }>
+  installUpdate: () => Promise<{ success: boolean }>
 }
 
 declare global {
