@@ -1,5 +1,5 @@
-appId: com.tomlord.comet-neetcode
-productName: Comet NeetCode
+appId: com.tomlord.cometode
+productName: Cometode
 directories:
   buildResources: build
 files:
@@ -13,7 +13,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: neetcode-tracker
+  executableName: cometode
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -52,4 +52,4 @@ npmRebuild: false
 publish:
   provider: github
   owner: Tomlord1122
-  repo: comet-neetcode
+  repo: cometode

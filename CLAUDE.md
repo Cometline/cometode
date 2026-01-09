@@ -1,4 +1,4 @@
-# NeetCode Tracker - Menu Bar App
+# Cometode - Menu Bar App
 
 ## Overview
 A macOS menu bar app for tracking NeetCode 150 problem practice using Anki-style SM-2 spaced repetition.
@@ -28,7 +28,7 @@ A macOS menu bar app for tracking NeetCode 150 problem practice using Anki-style
 ## Project Structure
 
 ```
-neetcode-tracker/
+cometode/
 ├── src/
 │   ├── main/
 │   │   ├── index.ts          # Tray popup window + notifications
@@ -68,7 +68,7 @@ neetcode-tracker/
 -- preferences: User settings (theme)
 ```
 
-Database location: `~/Library/Application Support/neetcode-tracker/neetcode-tracker.db`
+Database location: `~/Library/Application Support/cometode/cometode.db`
 
 ## Development
 

@@ -1,4 +1,4 @@
-# Comet NeetCode
+# Cometode
 
 A lightweight macOS menu bar app for mastering the **NeetCode 150** problem set using spaced repetition.
 
@@ -8,7 +8,7 @@ A lightweight macOS menu bar app for mastering the **NeetCode 150** problem set 
 
 ## What is this?
 
-Comet NeetCode helps you systematically practice LeetCode problems using the **SM-2 spaced repetition algorithm** (the same algorithm used by Anki). Instead of randomly grinding problems, the app schedules reviews based on how well you remember each solution:
+Cometode helps you systematically practice LeetCode problems using the **SM-2 spaced repetition algorithm** (the same algorithm used by Anki). Instead of randomly grinding problems, the app schedules reviews based on how well you remember each solution:
 
 - **Forgot it?** Review again tomorrow
 - **Got it easily?** See it again in a week (or longer)
@@ -30,15 +30,15 @@ The app lives in your menu bar for quick access - click the icon, review a probl
 
 ### Download
 
-Download the latest release from the [Releases page](https://github.com/Tomlord1122/comet-neetcode/releases):
+Download the latest release from the [Releases page](https://github.com/Tomlord1122/cometode/releases):
 
-- **Apple Silicon (M1/M2/M3)**: `comet-neetcode-x.x.x-arm64.dmg`
-- **Intel Mac**: `comet-neetcode-x.x.x-x64.dmg`
+- **Apple Silicon (M1/M2/M3)**: `cometode-x.x.x-arm64.dmg`
+- **Intel Mac**: `cometode-x.x.x-x64.dmg`
 
 ### Install
 
 1. Open the `.dmg` file
-2. Drag **Comet NeetCode** to your Applications folder
+2. Drag **Cometode** to your Applications folder
 3. Launch from Applications (you may need to right-click → Open the first time)
 
 The app will appear in your menu bar.
@@ -79,8 +79,8 @@ Click the gear icon to:
 
 ```bash
 # Clone the repo
-git clone https://github.com/Tomlord1122/comet-neetcode.git
-cd comet-neetcode
+git clone https://github.com/Tomlord1122/cometode.git
+cd cometode
 
 # Install dependencies
 pnpm install

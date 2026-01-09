@@ -1,13 +1,13 @@
 {
-  "name": "comet-neetcode",
+  "name": "cometode",
   "version": "1.0.0",
   "description": "A macOS menu bar app for tracking NeetCode 150 with spaced repetition",
   "main": "./out/main/index.js",
   "author": "Tomlord1122",
-  "homepage": "https://github.com/Tomlord1122/comet-neetcode",
+  "homepage": "https://github.com/Tomlord1122/cometode",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tomlord1122/comet-neetcode.git"
+    "url": "https://github.com/Tomlord1122/cometode.git"
   },
   "scripts": {
     "format": "prettier --plugin prettier-plugin-svelte --write .",

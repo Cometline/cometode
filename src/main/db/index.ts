@@ -73,7 +73,7 @@ export function initDatabase(): Database.Database {
     return db
   }
 
-  const dbPath = path.join(app.getPath('userData'), 'neetcode-tracker.db')
+  const dbPath = path.join(app.getPath('userData'), 'cometode.db')
   console.log('Database path:', dbPath)
 
   db = new Database(dbPath)
