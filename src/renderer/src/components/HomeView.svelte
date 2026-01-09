@@ -129,7 +129,10 @@
               <div class="flex gap-1">
                 {#each ['Easy', 'Medium', 'Hard'] as diff}
                   <button
-                    onclick={() => selectedDifficulty = selectedDifficulty === diff ? null : diff}
+                    onclick={() => {
+                      selectedDifficulty = selectedDifficulty === diff ? null : diff
+                      showFilterMenu = false
+                    }}
                     class="flex-1 px-2 py-1 text-xs rounded transition-colors {selectedDifficulty === diff ? 'bg-indigo-400/90 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'}"
                   >
                     {diff}
@@ -142,6 +145,7 @@
                 <input
                   type="checkbox"
                   bind:checked={showDueOnly}
+                  onchange={() => showFilterMenu = false}
                   class="rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                 />
                 <span class="text-sm">Due only</span>
@@ -150,7 +154,10 @@
             {#if hasActiveFilters}
               <div class="p-2 border-t border-gray-200 dark:border-gray-700">
                 <button
-                  onclick={clearFilters}
+                  onclick={() => {
+                    clearFilters()
+                    showFilterMenu = false
+                  }}
                   class="w-full text-xs text-red-500 hover:text-red-600"
                 >
                   Clear filters
@@ -158,6 +165,11 @@
               </div>
             {/if}
           </div>
+          <!-- Overlay to close menu on outside click -->
+          <div
+            class="fixed inset-0 z-0"
+            onclick={() => showFilterMenu = false}
+          ></div>
         {/if}
       </div>
     </div>
