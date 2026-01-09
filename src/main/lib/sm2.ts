@@ -43,16 +43,16 @@ export function calculateNextReview(currentState: SM2State, quality: number): SM
 
   // If quality is below threshold, reset repetitions (failed)
   if (q < QUALITY_THRESHOLD) {
-    // Reset to learning phase
+    // Reset to learning phase - review again tomorrow
     const newEaseFactor = Math.max(MIN_EASE_FACTOR, easeFactor - 0.2)
 
     return {
       newState: {
         repetitions: 0,
-        interval: 0, // Will review again today/soon
+        interval: 1, // Review again tomorrow (minimum 1 day)
         easeFactor: newEaseFactor
       },
-      nextReviewDate: getNextReviewDate(0)
+      nextReviewDate: getNextReviewDate(1)
     }
   }
 
@@ -83,6 +83,9 @@ export function calculateNextReview(currentState: SM2State, quality: number): SM
   if (q === 3) {
     newInterval = Math.round(newInterval * 1.3)
   }
+
+  // Ensure minimum interval of 1 day
+  newInterval = Math.max(1, newInterval)
 
   return {
     newState: {

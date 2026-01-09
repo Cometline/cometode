@@ -22,10 +22,6 @@ const api = {
   submitReview: (data: { problemId: number; quality: number }) =>
     ipcRenderer.invoke('submit-review', data),
 
-  // Notes
-  updateNote: (data: { problemId: number; content: string }) =>
-    ipcRenderer.invoke('update-note', data),
-
   // Stats
   getStats: () => ipcRenderer.invoke('get-stats'),
 
@@ -39,7 +35,14 @@ const api = {
   getPreference: (key: string) => ipcRenderer.invoke('get-preference', key),
 
   // Reset
-  resetAllProgress: () => ipcRenderer.invoke('reset-all-progress')
+  resetAllProgress: () => ipcRenderer.invoke('reset-all-progress'),
+
+  // Popup control
+  hidePopup: () => ipcRenderer.invoke('hide-popup'),
+
+  // Shortcut
+  getShortcut: () => ipcRenderer.invoke('get-shortcut'),
+  setShortcut: (shortcut: string) => ipcRenderer.invoke('set-shortcut', shortcut)
 }
 
 // Expose APIs

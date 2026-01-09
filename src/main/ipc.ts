@@ -16,11 +16,6 @@ interface ReviewSubmission {
   quality: number
 }
 
-interface NoteUpdate {
-  problemId: number
-  content: string
-}
-
 interface PreferenceData {
   key: string
   value: string
@@ -45,11 +40,9 @@ export function setupIPC(db: Database.Database): void {
         COALESCE(pp.ease_factor, ${INITIAL_EASE_FACTOR}) as ease_factor,
         pp.next_review_date,
         COALESCE(pp.total_reviews, 0) as total_reviews,
-        pp.last_reviewed_at,
-        n.content as notes
+        pp.last_reviewed_at
       FROM problems p
       LEFT JOIN problem_progress pp ON p.id = pp.problem_id
-      LEFT JOIN notes n ON p.id = n.problem_id
       WHERE 1=1
     `
 
@@ -107,11 +100,9 @@ export function setupIPC(db: Database.Database): void {
         COALESCE(pp.ease_factor, ${INITIAL_EASE_FACTOR}) as ease_factor,
         pp.next_review_date,
         COALESCE(pp.total_reviews, 0) as total_reviews,
-        pp.last_reviewed_at,
-        n.content as notes
+        pp.last_reviewed_at
       FROM problems p
       LEFT JOIN problem_progress pp ON p.id = pp.problem_id
-      LEFT JOIN notes n ON p.id = n.problem_id
       WHERE p.id = ?
     `
     return db.prepare(query).get(problemId)
@@ -132,7 +123,8 @@ export function setupIPC(db: Database.Database): void {
         pp.next_review_date
       FROM problems p
       JOIN problem_progress pp ON p.id = pp.problem_id
-      WHERE DATE(pp.next_review_date) <= DATE('now')
+      WHERE pp.next_review_date IS NOT NULL
+        AND DATE(pp.next_review_date) <= DATE('now')
         AND pp.status != 'new'
       ORDER BY pp.ease_factor ASC, p.neet_id ASC
     `
@@ -220,21 +212,6 @@ export function setupIPC(db: Database.Database): void {
       nextReviewDate: nextReviewStr,
       newInterval: newState.interval
     }
-  })
-
-  // Update note
-  ipcMain.handle('update-note', (_event, data: NoteUpdate) => {
-    db.prepare(
-      `
-      INSERT INTO notes (problem_id, content, updated_at)
-      VALUES (?, ?, datetime('now'))
-      ON CONFLICT(problem_id) DO UPDATE SET
-        content = excluded.content,
-        updated_at = excluded.updated_at
-    `
-    ).run(data.problemId, data.content)
-
-    return { success: true }
   })
 
   // Get statistics
@@ -371,15 +348,14 @@ export function setupIPC(db: Database.Database): void {
       .get(problemId)
 
     if (!existing) {
-      // Create initial progress with "learning" status and schedule for today
-      const today = new Date().toISOString().split('T')[0]
+      // Create initial progress - no next_review_date until first review is submitted
       db.prepare(
         `
         INSERT INTO problem_progress
         (problem_id, status, repetitions, interval, ease_factor, next_review_date, first_learned_at)
-        VALUES (?, 'learning', 0, 0, ${INITIAL_EASE_FACTOR}, ?, datetime('now'))
+        VALUES (?, 'learning', 0, 0, ${INITIAL_EASE_FACTOR}, NULL, datetime('now'))
       `
-      ).run(problemId, today)
+      ).run(problemId)
     }
 
     return { success: true }
@@ -388,11 +364,8 @@ export function setupIPC(db: Database.Database): void {
   // Reset all progress
   ipcMain.handle('reset-all-progress', () => {
     const transaction = db.transaction(() => {
-      // Delete all progress data
       db.prepare('DELETE FROM problem_progress').run()
-      // Delete all review history
       db.prepare('DELETE FROM review_history').run()
-      // Keep notes - user might want to preserve them
     })
 
     transaction()

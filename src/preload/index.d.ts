@@ -16,7 +16,6 @@ export interface Problem {
   next_review_date: string | null
   total_reviews: number
   last_reviewed_at: string | null
-  notes: string | null
 }
 
 export interface ProblemFilters {
@@ -61,12 +60,14 @@ export interface API {
   getTodayReviews: () => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
-  updateNote: (data: { problemId: number; content: string }) => Promise<{ success: boolean }>
   getStats: () => Promise<Stats>
   getCategories: () => Promise<string[]>
   savePreference: (data: { key: string; value: string }) => Promise<{ success: boolean }>
   getPreference: (key: string) => Promise<string | null>
   resetAllProgress: () => Promise<{ success: boolean }>
+  hidePopup: () => Promise<{ success: boolean }>
+  getShortcut: () => Promise<string>
+  setShortcut: (shortcut: string) => Promise<{ success: boolean; shortcut: string }>
 }
 
 declare global {

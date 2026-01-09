@@ -1,55 +1,92 @@
-import { app, shell, BrowserWindow, Tray, Menu, Notification, nativeImage } from 'electron'
+import {
+  app,
+  shell,
+  BrowserWindow,
+  Tray,
+  Menu,
+  Notification,
+  nativeImage,
+  ipcMain,
+  globalShortcut
+} from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase, getDatabase } from './db'
 import { setupIPC } from './ipc'
 
-let mainWindow: BrowserWindow | null = null
+let popupWindow: BrowserWindow | null = null
 let tray: Tray | null = null
-let isQuitting = false
 let lastNotificationDate: string | null = null
+let currentShortcut: string = 'CommandOrControl+Shift+N'
 
-function createWindow(): void {
-  mainWindow = new BrowserWindow({
-    width: 1400,
-    height: 900,
-    minWidth: 900,
-    minHeight: 600,
+const POPUP_WIDTH = 360
+const POPUP_HEIGHT = 520
+const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+N'
+
+function createPopupWindow(): void {
+  popupWindow = new BrowserWindow({
+    width: POPUP_WIDTH,
+    height: POPUP_HEIGHT,
     show: false,
-    autoHideMenuBar: true,
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 15, y: 15 },
-    ...(process.platform === 'linux' ? { icon } : {}),
+    frame: false,
+    resizable: false,
+    movable: false,
+    skipTaskbar: true,
+    alwaysOnTop: true,
+    transparent: true,
+    hasShadow: true,
+    backgroundColor: '#00000000',
+    vibrancy: 'menu',
+    visualEffectState: 'active',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
   })
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow?.show()
-  })
-
-  // Hide window instead of closing on macOS (Command+W)
-  mainWindow.on('close', (event) => {
-    if (process.platform === 'darwin' && !isQuitting) {
-      event.preventDefault()
-      mainWindow?.hide()
-    }
+  // Hide when clicking outside
+  popupWindow.on('blur', () => {
+    popupWindow?.hide()
   })
 
   // Open external links in browser
-  mainWindow.webContents.setWindowOpenHandler((details) => {
+  popupWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
 
   // Load the app
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    popupWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    popupWindow.loadFile(join(__dirname, '../renderer/index.html'))
+  }
+}
+
+function getPopupPosition(): { x: number; y: number } {
+  const trayBounds = tray?.getBounds()
+  if (!trayBounds) {
+    return { x: 0, y: 0 }
+  }
+
+  // Position below tray icon, centered
+  const x = Math.round(trayBounds.x + trayBounds.width / 2 - POPUP_WIDTH / 2)
+  const y = Math.round(trayBounds.y + trayBounds.height + 4)
+
+  return { x, y }
+}
+
+function togglePopup(): void {
+  if (!popupWindow) return
+
+  if (popupWindow.isVisible()) {
+    popupWindow.hide()
+  } else {
+    const { x, y } = getPopupPosition()
+    popupWindow.setPosition(x, y, false)
+    popupWindow.show()
+    popupWindow.focus()
   }
 }
 
@@ -61,61 +98,60 @@ function createTray(): void {
   tray = new Tray(resizedIcon)
   tray.setToolTip('NeetCode Tracker')
 
+  // Right-click context menu
   const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Show App',
-      click: () => {
-        mainWindow?.show()
-        if (process.platform === 'darwin') {
-          app.dock.show()
-        }
-      }
-    },
-    {
-      label: 'Hide from Dock',
-      type: 'checkbox',
-      checked: false,
-      click: async (menuItem) => {
-        if (process.platform === 'darwin') {
-          if (menuItem.checked) {
-            app.dock.hide()
-          } else {
-            app.dock.show()
-          }
-          // Save preference
-          const db = getDatabase()
-          db.prepare(`
-            INSERT INTO preferences (key, value, updated_at)
-            VALUES ('hideFromDock', ?, datetime('now'))
-            ON CONFLICT(key) DO UPDATE SET
-              value = excluded.value,
-              updated_at = excluded.updated_at
-          `).run(menuItem.checked ? 'true' : 'false')
-        }
-      }
-    },
-    { type: 'separator' },
     {
       label: 'Quit',
       click: () => {
-        isQuitting = true
         app.quit()
       }
     }
   ])
 
-  tray.setContextMenu(contextMenu)
-
   tray.on('click', () => {
-    if (mainWindow?.isVisible()) {
-      mainWindow.focus()
-    } else {
-      mainWindow?.show()
-      if (process.platform === 'darwin') {
-        app.dock.show()
-      }
-    }
+    togglePopup()
   })
+
+  tray.on('right-click', () => {
+    tray?.popUpContextMenu(contextMenu)
+  })
+}
+
+function registerShortcut(shortcut: string): boolean {
+  // Unregister current shortcut first
+  if (currentShortcut) {
+    globalShortcut.unregister(currentShortcut)
+  }
+
+  // Try to register new shortcut
+  try {
+    const success = globalShortcut.register(shortcut, () => {
+      togglePopup()
+    })
+
+    if (success) {
+      currentShortcut = shortcut
+      return true
+    }
+    return false
+  } catch {
+    return false
+  }
+}
+
+function loadShortcutPreference(): void {
+  try {
+    const db = getDatabase()
+    const result = db.prepare('SELECT value FROM preferences WHERE key = ?').get('shortcut') as
+      | { value: string }
+      | undefined
+
+    const shortcut = result?.value || DEFAULT_SHORTCUT
+    registerShortcut(shortcut)
+  } catch (error) {
+    console.error('Failed to load shortcut preference:', error)
+    registerShortcut(DEFAULT_SHORTCUT)
+  }
 }
 
 function checkAndShowNotification(): void {
@@ -128,12 +164,16 @@ function checkAndShowNotification(): void {
 
   try {
     const db = getDatabase()
-    const result = db.prepare(`
+    const result = db
+      .prepare(
+        `
       SELECT COUNT(*) as count
       FROM problem_progress
       WHERE DATE(next_review_date) <= DATE('now')
         AND status != 'new'
-    `).get() as { count: number }
+    `
+      )
+      .get() as { count: number }
 
     if (result.count > 0) {
       const notification = new Notification({
@@ -143,11 +183,7 @@ function checkAndShowNotification(): void {
       })
 
       notification.on('click', () => {
-        mainWindow?.show()
-        mainWindow?.focus()
-        if (process.platform === 'darwin') {
-          app.dock.show()
-        }
+        togglePopup()
       })
 
       notification.show()
@@ -158,64 +194,38 @@ function checkAndShowNotification(): void {
   }
 }
 
-function loadDockPreference(): void {
-  if (process.platform !== 'darwin') return
+// IPC handlers for popup and shortcut
+function setupPopupIPC(): void {
+  ipcMain.handle('hide-popup', () => {
+    popupWindow?.hide()
+    return { success: true }
+  })
 
-  try {
-    const db = getDatabase()
-    const result = db.prepare('SELECT value FROM preferences WHERE key = ?').get('hideFromDock') as { value: string } | undefined
+  ipcMain.handle('get-shortcut', () => {
+    return currentShortcut
+  })
 
-    if (result?.value === 'true') {
-      app.dock.hide()
-      // Update tray menu
-      if (tray) {
-        const contextMenu = Menu.buildFromTemplate([
-          {
-            label: 'Show App',
-            click: () => {
-              mainWindow?.show()
-              if (process.platform === 'darwin') {
-                app.dock.show()
-              }
-            }
-          },
-          {
-            label: 'Hide from Dock',
-            type: 'checkbox',
-            checked: true,
-            click: async (menuItem) => {
-              if (process.platform === 'darwin') {
-                if (menuItem.checked) {
-                  app.dock.hide()
-                } else {
-                  app.dock.show()
-                }
-                const db = getDatabase()
-                db.prepare(`
-                  INSERT INTO preferences (key, value, updated_at)
-                  VALUES ('hideFromDock', ?, datetime('now'))
-                  ON CONFLICT(key) DO UPDATE SET
-                    value = excluded.value,
-                    updated_at = excluded.updated_at
-                `).run(menuItem.checked ? 'true' : 'false')
-              }
-            }
-          },
-          { type: 'separator' },
-          {
-            label: 'Quit',
-            click: () => {
-              isQuitting = true
-              app.quit()
-            }
-          }
-        ])
-        tray.setContextMenu(contextMenu)
+  ipcMain.handle('set-shortcut', (_event, shortcut: string) => {
+    const success = registerShortcut(shortcut)
+    if (success) {
+      // Save to database
+      try {
+        const db = getDatabase()
+        db.prepare(
+          `
+          INSERT INTO preferences (key, value, updated_at)
+          VALUES ('shortcut', ?, datetime('now'))
+          ON CONFLICT(key) DO UPDATE SET
+            value = excluded.value,
+            updated_at = excluded.updated_at
+        `
+        ).run(shortcut)
+      } catch (error) {
+        console.error('Failed to save shortcut preference:', error)
       }
     }
-  } catch (error) {
-    console.error('Failed to load dock preference:', error)
-  }
+    return { success, shortcut: currentShortcut }
+  })
 }
 
 app.whenReady().then(() => {
@@ -225,49 +235,47 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  // Hide dock icon - this is a menu bar only app
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
+
   // Initialize database
   const db = initDatabase()
 
   // Setup IPC handlers
   setupIPC(db)
+  setupPopupIPC()
 
-  // Create window and tray
-  createWindow()
+  // Create popup window and tray
+  createPopupWindow()
   createTray()
 
-  // Load dock preference
-  loadDockPreference()
+  // Load and register keyboard shortcut
+  loadShortcutPreference()
 
   // Check for due reviews and show notification
   setTimeout(() => {
     checkAndShowNotification()
-  }, 3000) // Wait 3 seconds after app start
+  }, 3000)
 
   // Check every hour for due reviews
   setInterval(() => {
     checkAndShowNotification()
   }, 60 * 60 * 1000)
 
-  app.on('activate', function () {
-    if (mainWindow) {
-      mainWindow.show()
-    } else {
-      createWindow()
-    }
+  app.on('activate', () => {
+    togglePopup()
   })
 })
 
-// macOS: Keep app running when all windows are closed
+// Don't quit when all windows are closed - this is a menu bar app
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('before-quit', () => {
-  isQuitting = true
+  // Do nothing - keep running
 })
 
 app.on('will-quit', () => {
+  // Unregister all shortcuts
+  globalShortcut.unregisterAll()
   closeDatabase()
 })

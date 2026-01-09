@@ -77,30 +77,13 @@ export async function selectProblem(problem: Problem): Promise<void> {
 export async function submitReview(
   problemId: number,
   quality: number
-): Promise<{ success: boolean; nextReviewDate?: string }> {
+): Promise<{ success: boolean; nextReviewDate: string; newInterval: number }> {
   try {
     const result = await window.api.submitReview({ problemId, quality })
-    // Reload data after review
-    await loadProblems()
-    await loadTodayReviews()
     return result
   } catch (error) {
     console.error('Failed to submit review:', error)
-    return { success: false }
-  }
-}
-
-export async function updateNote(problemId: number, content: string): Promise<boolean> {
-  try {
-    const result = await window.api.updateNote({ problemId, content })
-    // Update local state
-    problems.update((list) =>
-      list.map((p) => (p.id === problemId ? { ...p, notes: content } : p))
-    )
-    return result.success
-  } catch (error) {
-    console.error('Failed to update note:', error)
-    return false
+    return { success: false, nextReviewDate: '', newInterval: 0 }
   }
 }
 

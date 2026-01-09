@@ -47,15 +47,6 @@ CREATE TABLE IF NOT EXISTS review_history (
   FOREIGN KEY (problem_id) REFERENCES problems(id) ON DELETE CASCADE
 );
 
--- Notes table
-CREATE TABLE IF NOT EXISTS notes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  problem_id INTEGER UNIQUE NOT NULL,
-  content TEXT,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (problem_id) REFERENCES problems(id) ON DELETE CASCADE
-);
-
 -- User preferences table
 CREATE TABLE IF NOT EXISTS preferences (
   key TEXT PRIMARY KEY,
