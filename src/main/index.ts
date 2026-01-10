@@ -28,6 +28,44 @@ const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 520
 const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+N'
 
+/**
+ * Centralized function for performing quit-and-install with proper error handling,
+ * fallback mechanism, and timing to prevent race conditions.
+ */
+function performQuitAndInstall(): void {
+  isQuitting = true
+
+  // Destroy the popup window first to ensure clean shutdown
+  if (popupWindow) {
+    popupWindow.destroy()
+    popupWindow = null
+  }
+
+  try {
+    // Use isSilent=false so users can see installer dialogs/errors
+    // Use isForceRunAfter=true to restart app after update
+    autoUpdater.quitAndInstall(false, true)
+  } catch (error) {
+    console.error('quitAndInstall failed:', error)
+    // Show error notification to user
+    const notification = new Notification({
+      title: 'Update Failed',
+      body: 'Failed to install update. Please try again or download manually.',
+      icon: icon
+    })
+    notification.show()
+    isQuitting = false
+    return
+  }
+
+  // Fallback: if quitAndInstall doesn't exit the app within 2 seconds, force quit
+  // This handles edge cases where the updater hangs or fails silently
+  setTimeout(() => {
+    console.warn('quitAndInstall did not exit app, forcing quit...')
+    app.quit()
+  }, 2000)
+}
+
 function createPopupWindow(): void {
   popupWindow = new BrowserWindow({
     width: POPUP_WIDTH,
@@ -127,13 +165,7 @@ function updateTrayMenu(): void {
     menuItems.push({
       label: '🔄 Restart to Update',
       click: () => {
-        isQuitting = true
-        // Destroy the popup window first to ensure clean shutdown
-        if (popupWindow) {
-          popupWindow.destroy()
-          popupWindow = null
-        }
-        autoUpdater.quitAndInstall(true, true)
+        performQuitAndInstall()
       }
     })
     menuItems.push({ type: 'separator' })
@@ -142,15 +174,14 @@ function updateTrayMenu(): void {
   menuItems.push({
     label: 'Quit',
     click: () => {
-      isQuitting = true
-      // Destroy the popup window first to ensure clean shutdown
-      if (popupWindow) {
-        popupWindow.destroy()
-        popupWindow = null
-      }
       if (updateReady) {
-        autoUpdater.quitAndInstall(true, true)
+        performQuitAndInstall()
       } else {
+        isQuitting = true
+        if (popupWindow) {
+          popupWindow.destroy()
+          popupWindow = null
+        }
         app.quit()
       }
     }
@@ -293,17 +324,11 @@ function setupPopupIPC(): void {
 
   ipcMain.handle('install-update', () => {
     if (updateReady) {
-      isQuitting = true
       // Use setTimeout to ensure IPC response is sent before quitting
+      // 300ms gives enough time for the response to reach the renderer
       setTimeout(() => {
-        // Destroy the popup window first to ensure clean shutdown
-        if (popupWindow) {
-          popupWindow.destroy()
-          popupWindow = null
-        }
-        // quitAndInstall with isSilent=false, isForceRunAfter=true
-        autoUpdater.quitAndInstall(true, true)
-      }, 100)
+        performQuitAndInstall()
+      }, 300)
       return { success: true }
     }
     return { success: false }
@@ -391,13 +416,7 @@ function setupAutoUpdater(): void {
       icon: icon
     })
     notification.on('click', () => {
-      isQuitting = true
-      // Destroy the popup window first to ensure clean shutdown
-      if (popupWindow) {
-        popupWindow.destroy()
-        popupWindow = null
-      }
-      autoUpdater.quitAndInstall(true, true)
+      performQuitAndInstall()
     })
     notification.show()
   })

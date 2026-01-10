@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { problems, filters, todayReviews, loadProblems, loadTodayReviews, loadCategories } from '../stores/problems'
+  import { problems, filters, todayReviews, loadProblems, loadTodayReviews, loadCategories, filterUIState } from '../stores/problems'
   import { stats, loadStats } from '../stores/stats'
   import type { Problem } from '../../../preload/index.d'
 
@@ -10,14 +10,24 @@
 
   let { onSelectProblem, onStartReview }: Props = $props()
 
-  let searchText = $state('')
-  let selectedDifficulty = $state<string | null>(null)
-  let showDueOnly = $state(false)
-  let showFilterMenu = $state(false)
+  // Use store values for filter state persistence
+  let searchText = $state($filterUIState.searchText)
+  let selectedDifficulty = $state<string | null>($filterUIState.selectedDifficulty)
+  let showDueOnly = $state($filterUIState.showDueOnly)
+  let showFilterMenu = $state($filterUIState.showFilterMenu)
 
-  // Load data on mount
+  // Sync local state back to store when changed
   $effect(() => {
-    loadProblems()
+    filterUIState.set({
+      searchText,
+      selectedDifficulty,
+      showDueOnly,
+      showFilterMenu
+    })
+  })
+
+  // Load data on mount (only once, not reactive)
+  $effect(() => {
     loadTodayReviews()
     loadStats()
     loadCategories()

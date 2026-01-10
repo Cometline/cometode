@@ -10,6 +10,19 @@ export const filters = writable<ProblemFilters>({
   dueOnly: false
 })
 
+// UI filter state (persists across view changes)
+export const filterUIState = writable<{
+  searchText: string
+  selectedDifficulty: string | null
+  showDueOnly: boolean
+  showFilterMenu: boolean
+}>({
+  searchText: '',
+  selectedDifficulty: null,
+  showDueOnly: false,
+  showFilterMenu: false
+})
+
 // All problems
 export const problems = writable<Problem[]>([])
 
