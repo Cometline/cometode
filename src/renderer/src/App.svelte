@@ -24,6 +24,9 @@
   let currentVersion = $state('')
   let updateInfo = $state<{ version: string; progress: number } | null>(null)
   let updateCheckInterval: ReturnType<typeof setInterval> | null = null
+  let isExporting = $state(false)
+  let isImporting = $state(false)
+  let importExportMessage = $state<{ type: 'success' | 'error'; text: string } | null>(null)
 
   onMount(() => {
     // Initialize async operations
@@ -153,6 +156,62 @@
       .replace('Alt', '⌥')
       .replace('Shift', '⇧')
       .replace(/\+/g, ' ')
+  }
+
+  async function handleExport(): Promise<void> {
+    isExporting = true
+    importExportMessage = null
+
+    try {
+      const data = await window.api.exportProgress()
+      const defaultFileName = `cometode-progress-${new Date().toISOString().split('T')[0]}.json`
+      const filePath = await window.api.showSaveDialog(defaultFileName)
+
+      if (filePath) {
+        const result = await window.api.writeFile(filePath, JSON.stringify(data, null, 2))
+        if (result.success) {
+          importExportMessage = { type: 'success', text: `Exported ${data.progress.length} problems` }
+        } else {
+          importExportMessage = { type: 'error', text: 'Failed to save file' }
+        }
+      }
+    } catch (error) {
+      importExportMessage = { type: 'error', text: 'Export failed' }
+    } finally {
+      isExporting = false
+    }
+  }
+
+  async function handleImport(): Promise<void> {
+    isImporting = true
+    importExportMessage = null
+
+    try {
+      const filePath = await window.api.showOpenDialog()
+
+      if (filePath) {
+        const fileResult = await window.api.readFile(filePath)
+        if (!fileResult.success || !fileResult.content) {
+          importExportMessage = { type: 'error', text: 'Failed to read file' }
+          return
+        }
+
+        const data = JSON.parse(fileResult.content)
+        const result = await window.api.importProgress(data)
+
+        if (result.success) {
+          importExportMessage = { type: 'success', text: `Imported ${result.imported} problems` }
+          // Refresh data
+          await Promise.all([loadProblems(), loadTodayReviews(), loadStats()])
+        } else {
+          importExportMessage = { type: 'error', text: result.error || 'Import failed' }
+        }
+      }
+    } catch (error) {
+      importExportMessage = { type: 'error', text: 'Invalid file format' }
+    } finally {
+      isImporting = false
+    }
   }
 </script>
 
@@ -290,6 +349,37 @@
             {isCheckingUpdate ? 'Checking...' : 'Check for Updates'}
           </button>
         {/if}
+      </div>
+
+      <!-- Import/Export -->
+      <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Progress Data
+        </span>
+        <div class="flex gap-2">
+          <button
+            onclick={handleExport}
+            disabled={isExporting}
+            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+          >
+            {isExporting ? 'Exporting...' : 'Export'}
+          </button>
+          <button
+            onclick={handleImport}
+            disabled={isImporting}
+            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+          >
+            {isImporting ? 'Importing...' : 'Import'}
+          </button>
+        </div>
+        {#if importExportMessage}
+          <p class="mt-2 text-xs {importExportMessage.type === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
+            {importExportMessage.text}
+          </p>
+        {/if}
+        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          Transfer progress between devices
+        </p>
       </div>
 
       <!-- Reset Progress -->

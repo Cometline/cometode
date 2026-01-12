@@ -47,7 +47,15 @@ const api = {
   // Updates
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   getUpdateStatus: () => ipcRenderer.invoke('get-update-status'),
-  installUpdate: () => ipcRenderer.invoke('install-update')
+  installUpdate: () => ipcRenderer.invoke('install-update'),
+
+  // Import/Export
+  exportProgress: () => ipcRenderer.invoke('export-progress'),
+  importProgress: (data: unknown) => ipcRenderer.invoke('import-progress', data),
+  showSaveDialog: (defaultFileName: string) => ipcRenderer.invoke('show-save-dialog', defaultFileName),
+  showOpenDialog: () => ipcRenderer.invoke('show-open-dialog'),
+  writeFile: (filePath: string, content: string) => ipcRenderer.invoke('write-file', filePath, content),
+  readFile: (filePath: string) => ipcRenderer.invoke('read-file', filePath)
 }
 
 // Expose APIs

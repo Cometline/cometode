@@ -54,6 +54,36 @@ export interface ReviewResult {
   newInterval: number
 }
 
+export interface ExportProgressEntry {
+  neet_id: number
+  status: string
+  repetitions: number
+  interval: number
+  ease_factor: number
+  next_review_date: string | null
+  first_learned_at: string | null
+  last_reviewed_at: string | null
+  total_reviews: number
+}
+
+export interface ExportHistoryEntry {
+  neet_id: number
+  review_date: string
+  quality: number
+  interval_before: number
+  interval_after: number
+  ease_factor_before: number
+  ease_factor_after: number
+}
+
+export interface ExportData {
+  version: string
+  exportDate: string
+  appVersion: string
+  progress: ExportProgressEntry[]
+  history: ExportHistoryEntry[]
+}
+
 export interface API {
   getProblems: (filters?: ProblemFilters) => Promise<Problem[]>
   getProblem: (problemId: number) => Promise<Problem | null>
@@ -75,6 +105,14 @@ export interface API {
     currentVersion: string
   }>
   installUpdate: () => Promise<{ success: boolean }>
+
+  // Import/Export
+  exportProgress: () => Promise<ExportData>
+  importProgress: (data: ExportData) => Promise<{ success: boolean; imported: number; error?: string }>
+  showSaveDialog: (defaultFileName: string) => Promise<string | null>
+  showOpenDialog: () => Promise<string | null>
+  writeFile: (filePath: string, content: string) => Promise<{ success: boolean; error?: string }>
+  readFile: (filePath: string) => Promise<{ success: boolean; content?: string; error?: string }>
 }
 
 declare global {
