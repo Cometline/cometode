@@ -369,7 +369,7 @@
 <!-- Settings Modal -->
 {#if showSettings}
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 mx-4 max-w-xs w-full">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 mx-4 max-w-xs w-full max-h-[calc(100vh-32px)] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Settings</h3>
         <button
