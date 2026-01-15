@@ -1,5 +1,7 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
+export type ProblemSet = 'neetcode150' | 'google' | 'all'
+
 export interface Problem {
   id: number
   neet_id: number
@@ -9,6 +11,8 @@ export interface Problem {
   tags: string
   leetcode_url: string
   neetcode_url: string
+  in_neetcode_150: number
+  in_google: number
   status: 'new' | 'learning' | 'reviewing'
   repetitions: number
   interval: number
@@ -24,6 +28,7 @@ export interface ProblemFilters {
   status?: string
   searchText?: string
   dueOnly?: boolean
+  problemSet?: ProblemSet
 }
 
 export interface Stats {
@@ -90,7 +95,7 @@ export interface API {
   getTodayReviews: () => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
-  getStats: () => Promise<Stats>
+  getStats: (problemSet?: ProblemSet) => Promise<Stats>
   getCategories: () => Promise<string[]>
   savePreference: (data: { key: string; value: string }) => Promise<{ success: boolean }>
   getPreference: (key: string) => Promise<string | null>

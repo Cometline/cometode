@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
+// Problem set type
+type ProblemSet = 'neetcode150' | 'google' | 'all'
+
 // Custom APIs for renderer
 const api = {
   // Problems
@@ -10,6 +13,7 @@ const api = {
     status?: string
     searchText?: string
     dueOnly?: boolean
+    problemSet?: ProblemSet
   }) => ipcRenderer.invoke('get-problems', filters),
 
   getProblem: (problemId: number) => ipcRenderer.invoke('get-problem', problemId),
@@ -23,7 +27,7 @@ const api = {
     ipcRenderer.invoke('submit-review', data),
 
   // Stats
-  getStats: () => ipcRenderer.invoke('get-stats'),
+  getStats: (problemSet?: ProblemSet) => ipcRenderer.invoke('get-stats', problemSet),
 
   // Categories
   getCategories: () => ipcRenderer.invoke('get-categories'),

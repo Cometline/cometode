@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS problems (
   tags TEXT NOT NULL DEFAULT '[]',
   leetcode_url TEXT NOT NULL,
   neetcode_url TEXT NOT NULL,
+  in_neetcode_150 INTEGER NOT NULL DEFAULT 0,
+  in_google INTEGER NOT NULL DEFAULT 0,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -68,6 +70,31 @@ export function getDatabase(): Database.Database {
   return db
 }
 
+function runMigrations(database: Database.Database): void {
+  // Check if in_neetcode_150 column exists
+  const columns = database
+    .prepare("PRAGMA table_info(problems)")
+    .all() as { name: string }[]
+  const columnNames = columns.map((c) => c.name)
+
+  if (!columnNames.includes('in_neetcode_150')) {
+    console.log('Running migration: adding problem set columns...')
+
+    // Add new columns
+    database.exec(`
+      ALTER TABLE problems ADD COLUMN in_neetcode_150 INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE problems ADD COLUMN in_google INTEGER NOT NULL DEFAULT 0;
+    `)
+
+    // Mark existing problems as NeetCode 150
+    database.exec(`UPDATE problems SET in_neetcode_150 = 1 WHERE neet_id <= 150`)
+
+    // Reseed to add new problems
+    seedProblems(database, true)
+    console.log('Migration completed')
+  }
+}
+
 export function initDatabase(): Database.Database {
   if (db) {
     return db
@@ -81,14 +108,25 @@ export function initDatabase(): Database.Database {
   // Enable foreign keys
   db.pragma('foreign_keys = ON')
 
-  // Run schema
+  // Run schema (creates tables if not exist)
   db.exec(SCHEMA)
 
-  // Seed problems if empty
+  // Check if problems table exists and has data
   const count = db.prepare('SELECT COUNT(*) as count FROM problems').get() as { count: number }
+
   if (count.count === 0) {
+    // Fresh install - seed all problems
     seedProblems(db)
+  } else {
+    // Existing database - run migrations first
+    runMigrations(db)
   }
+
+  // Always ensure indexes exist (safe to run multiple times)
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_problems_neetcode_150 ON problems(in_neetcode_150);
+    CREATE INDEX IF NOT EXISTS idx_problems_google ON problems(in_google);
+  `)
 
   console.log('Database initialized successfully')
   return db

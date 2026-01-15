@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { problems, filters, todayReviews, loadProblems, loadTodayReviews, loadCategories, filterUIState } from '../stores/problems'
+  import { problems, filters, todayReviews, loadProblems, loadTodayReviews, loadCategories, filterUIState, currentProblemSet, setProblemSet, initProblemSet } from '../stores/problems'
   import { stats, loadStats } from '../stores/stats'
-  import type { Problem } from '../../../preload/index.d'
+  import type { Problem, ProblemSet } from '../../../preload/index.d'
 
   interface Props {
     onSelectProblem: (problem: Problem) => void
@@ -28,14 +28,31 @@
 
   // Load data on mount (only once, not reactive)
   $effect(() => {
-    loadTodayReviews()
-    loadStats()
-    loadCategories()
+    initProblemSet().then(() => {
+      loadTodayReviews()
+      loadStats()
+      loadCategories()
+    })
   })
+
+  // Handle problem set change
+  async function handleProblemSetChange(set: ProblemSet): Promise<void> {
+    await setProblemSet(set)
+    const newFilters: typeof $filters = { problemSet: set }
+    if (searchText) newFilters.searchText = searchText
+    if (selectedDifficulty) newFilters.difficulty = selectedDifficulty
+    if (showDueOnly) newFilters.dueOnly = true
+    filters.set(newFilters)
+    await Promise.all([
+      loadProblems(newFilters),
+      loadStats(set),
+      loadTodayReviews()
+    ])
+  }
 
   // Apply filters when search/filter changes
   $effect(() => {
-    const newFilters: typeof $filters = {}
+    const newFilters: typeof $filters = { problemSet: $currentProblemSet }
     if (searchText) newFilters.searchText = searchText
     if (selectedDifficulty) newFilters.difficulty = selectedDifficulty
     if (showDueOnly) newFilters.dueOnly = true
@@ -83,6 +100,24 @@
 </script>
 
 <div class="flex flex-col h-full">
+  <!-- Problem Set Toggle -->
+  <div class="mx-3 mt-3">
+    <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+      <button
+        onclick={() => handleProblemSetChange('neetcode150')}
+        class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all {$currentProblemSet === 'neetcode150' ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
+      >
+        NeetCode 150
+      </button>
+      <button
+        onclick={() => handleProblemSetChange('google')}
+        class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all {$currentProblemSet === 'google' ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
+      >
+        Google
+      </button>
+    </div>
+  </div>
+
   <!-- Due Today Card -->
   {#if $todayReviews.length > 0}
     <div class="mx-3 mt-3 p-3 bg-linear-to-r from-orange-500 to-amber-500 rounded-lg text-white">
@@ -251,6 +286,6 @@
 
   <!-- Footer -->
   <div class="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 text-center border-t border-gray-200 dark:border-gray-700">
-    {$problems.length} problem{$problems.length !== 1 ? 's' : ''}
+    {$problems.length} problem{$problems.length !== 1 ? 's' : ''} ({$currentProblemSet === 'neetcode150' ? 'NeetCode 150' : 'Google'})
   </div>
 </div>

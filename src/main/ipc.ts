@@ -5,12 +5,15 @@ import { calculateNextReview, formatReviewDate, INITIAL_EASE_FACTOR } from './li
 import { app } from 'electron'
 
 // Types
+type ProblemSet = 'neetcode150' | 'google' | 'all'
+
 interface ProblemFilters {
   difficulty?: string
   category?: string
   status?: string
   searchText?: string
   dueOnly?: boolean
+  problemSet?: ProblemSet
 }
 
 interface ReviewSubmission {
@@ -66,6 +69,8 @@ export function setupIPC(db: Database.Database): void {
         p.tags,
         p.leetcode_url,
         p.neetcode_url,
+        p.in_neetcode_150,
+        p.in_google,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -79,6 +84,14 @@ export function setupIPC(db: Database.Database): void {
     `
 
     const params: (string | number)[] = []
+
+    // Filter by problem set
+    if (filters?.problemSet === 'neetcode150') {
+      query += ' AND p.in_neetcode_150 = 1'
+    } else if (filters?.problemSet === 'google') {
+      query += ' AND p.in_google = 1'
+    }
+    // 'all' or undefined means no filter
 
     if (filters?.difficulty) {
       query += ' AND p.difficulty = ?'
@@ -257,8 +270,18 @@ export function setupIPC(db: Database.Database): void {
   })
 
   // Get statistics
-  ipcMain.handle('get-stats', () => {
-    const total = db.prepare('SELECT COUNT(*) as count FROM problems').get() as { count: number }
+  ipcMain.handle('get-stats', (_event, problemSet?: ProblemSet) => {
+    // Build WHERE clause based on problem set
+    let problemSetFilter = ''
+    if (problemSet === 'neetcode150') {
+      problemSetFilter = ' WHERE p.in_neetcode_150 = 1'
+    } else if (problemSet === 'google') {
+      problemSetFilter = ' WHERE p.in_google = 1'
+    }
+
+    const total = db
+      .prepare(`SELECT COUNT(*) as count FROM problems p${problemSetFilter}`)
+      .get() as { count: number }
 
     const byDifficulty = db
       .prepare(
@@ -270,6 +293,7 @@ export function setupIPC(db: Database.Database): void {
         SUM(CASE WHEN pp.repetitions >= 3 THEN 1 ELSE 0 END) as mastered
       FROM problems p
       LEFT JOIN problem_progress pp ON p.id = pp.problem_id
+      ${problemSetFilter}
       GROUP BY p.difficulty
       ORDER BY
         CASE p.difficulty
@@ -290,22 +314,27 @@ export function setupIPC(db: Database.Database): void {
         SUM(CASE WHEN pp.total_reviews > 0 THEN 1 ELSE 0 END) as practiced
       FROM problems p, json_each(p.categories)
       LEFT JOIN problem_progress pp ON p.id = pp.problem_id
+      ${problemSetFilter ? problemSetFilter.replace('WHERE', 'WHERE 1=1 AND') : ''}
       GROUP BY json_each.value
       ORDER BY total DESC
     `
       )
       .all()
 
-    const todayDue = db
-      .prepare(
-        `
+    // For todayDue, we need to join with problems to filter by set
+    let todayDueQuery = `
       SELECT COUNT(*) as count
-      FROM problem_progress
-      WHERE DATE(next_review_date) <= DATE('now')
-        AND status != 'new'
+      FROM problem_progress pp
+      JOIN problems p ON pp.problem_id = p.id
+      WHERE DATE(pp.next_review_date) <= DATE('now')
+        AND pp.status != 'new'
     `
-      )
-      .get() as { count: number }
+    if (problemSet === 'neetcode150') {
+      todayDueQuery += ' AND p.in_neetcode_150 = 1'
+    } else if (problemSet === 'google') {
+      todayDueQuery += ' AND p.in_google = 1'
+    }
+    const todayDue = db.prepare(todayDueQuery).get() as { count: number }
 
     const reviewHistory = db
       .prepare(
@@ -325,15 +354,19 @@ export function setupIPC(db: Database.Database): void {
       count: number
     }
 
-    const practiced = db
-      .prepare(
-        `
+    // For practiced, join with problems to filter by set
+    let practicedQuery = `
       SELECT COUNT(*) as count
-      FROM problem_progress
-      WHERE total_reviews > 0
+      FROM problem_progress pp
+      JOIN problems p ON pp.problem_id = p.id
+      WHERE pp.total_reviews > 0
     `
-      )
-      .get() as { count: number }
+    if (problemSet === 'neetcode150') {
+      practicedQuery += ' AND p.in_neetcode_150 = 1'
+    } else if (problemSet === 'google') {
+      practicedQuery += ' AND p.in_google = 1'
+    }
+    const practiced = db.prepare(practicedQuery).get() as { count: number }
 
     return {
       total: total.count,

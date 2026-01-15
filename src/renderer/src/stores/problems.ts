@@ -1,5 +1,26 @@
 import { writable, derived } from 'svelte/store'
-import type { Problem, ProblemFilters } from '../../../preload/index.d'
+import type { Problem, ProblemFilters, ProblemSet } from '../../../preload/index.d'
+
+// Problem set preference
+export const currentProblemSet = writable<ProblemSet>('neetcode150')
+
+// Initialize problem set from preferences
+export async function initProblemSet(): Promise<void> {
+  try {
+    const saved = await window.api.getPreference('problemSet')
+    if (saved === 'neetcode150' || saved === 'google' || saved === 'all') {
+      currentProblemSet.set(saved)
+    }
+  } catch (error) {
+    console.error('Failed to load problem set preference:', error)
+  }
+}
+
+// Save problem set preference
+export async function setProblemSet(set: ProblemSet): Promise<void> {
+  currentProblemSet.set(set)
+  await window.api.savePreference({ key: 'problemSet', value: set })
+}
 
 // Current filters
 export const filters = writable<ProblemFilters>({
@@ -7,7 +28,8 @@ export const filters = writable<ProblemFilters>({
   category: '',
   status: '',
   searchText: '',
-  dueOnly: false
+  dueOnly: false,
+  problemSet: 'neetcode150'
 })
 
 // UI filter state (persists across view changes)
