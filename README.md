@@ -1,6 +1,6 @@
 # Cometode
 
-A lightweight macOS menu bar app for mastering the **NeetCode 150** problem set using spaced repetition.
+A lightweight macOS menu bar app for mastering **NeetCode 150** and **Google interview problems** using spaced repetition.
 
 ![macOS](https://img.shields.io/badge/macOS-000000?style=flat&logo=apple&logoColor=white)
 ![Electron](https://img.shields.io/badge/Electron-47848F?style=flat&logo=electron&logoColor=white)
@@ -19,7 +19,8 @@ The app lives in your menu bar for quick access - click the icon, review a probl
 
 - **Menu Bar App** - Click the tray icon to open a compact popup. No dock icon, no clutter.
 - **Spaced Repetition** - SM-2 algorithm schedules reviews at optimal intervals
-- **150 NeetCode Problems** - All problems pre-loaded with categories and difficulty
+- **Multiple Problem Sets** - Switch between NeetCode 150 and Google interview problems (440+ problems)
+- **Shared Progress** - Problems that appear in both sets share the same learning progress
 - **Quick Review Flow** - Rate your recall: Again / Hard / Good / Easy
 - **Progress Tracking** - See how many problems you've practiced and mastered
 - **Daily Notifications** - Get reminded when problems are due for review
@@ -48,10 +49,19 @@ The app will appear in your menu bar.
 ### Getting Started
 
 1. Click the comet icon in your menu bar
-2. Browse the problem list or use search to find a specific problem
-3. Click a problem to view details
-4. Click **Start Practice** to open the problem on NeetCode
+2. Use the toggle at the top to switch between **NeetCode 150** and **Google** problem sets
+3. Browse the problem list or use search to find a specific problem
+4. Click a problem to view details and open it on NeetCode
 5. After solving, rate your performance: Again / Hard / Good / Easy
+
+### Problem Sets
+
+| Set | Problems | Description |
+|-----|----------|-------------|
+| NeetCode 150 | 150 | Curated list of essential coding interview problems |
+| Google | 440 | Problems frequently asked in Google interviews |
+
+**Note:** 149 problems appear in both sets. Your learning progress is shared - if you practice a problem in one set, your progress carries over to the other.
 
 ### Review Flow
 
@@ -138,5 +148,5 @@ Each successful review increases the interval exponentially. Miss a review, and 
 
 ## Credits
 
-- Problem set from [NeetCode 150](https://neetcode.io/practice)
+- Problem sets from [NeetCode](https://neetcode.io/practice) (NeetCode 150 & Google company tag)
 - Spaced repetition algorithm based on [SM-2](https://www.supermemo.com/en/archives1990-2015/english/ol/sm2)
