@@ -26,6 +26,7 @@
   let updateCheckInterval: ReturnType<typeof setInterval> | null = null
   let isExporting = $state(false)
   let isImporting = $state(false)
+  let isCleaningDuplicates = $state(false)
   let importExportMessage = $state<{ type: 'success' | 'error'; text: string } | null>(null)
 
   // Auto-sync state
@@ -228,6 +229,25 @@
       importExportMessage = { type: 'error', text: 'Invalid file format' }
     } finally {
       isImporting = false
+    }
+  }
+
+  async function handleCleanupDuplicates(): Promise<void> {
+    isCleaningDuplicates = true
+    importExportMessage = null
+
+    try {
+      const result = await window.api.cleanupDuplicateHistory()
+      if (result.success) {
+        importExportMessage = {
+          type: 'success',
+          text: `Removed ${result.deletedCount} duplicate entries`
+        }
+      }
+    } catch (error) {
+      importExportMessage = { type: 'error', text: 'Cleanup failed' }
+    } finally {
+      isCleaningDuplicates = false
     }
   }
 
@@ -481,6 +501,13 @@
             {isImporting ? 'Importing...' : 'Import'}
           </button>
         </div>
+        <button
+          onclick={handleCleanupDuplicates}
+          disabled={isCleaningDuplicates}
+          class="w-full mt-2 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors disabled:opacity-50"
+        >
+          {isCleaningDuplicates ? 'Cleaning...' : 'Clean Duplicate History'}
+        </button>
         {#if importExportMessage}
           <p class="mt-2 text-xs {importExportMessage.type === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
             {importExportMessage.text}

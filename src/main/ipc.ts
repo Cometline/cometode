@@ -449,6 +449,25 @@ export function setupIPC(db: Database.Database): void {
     return { success: true }
   })
 
+  // Clean up duplicate history entries
+  ipcMain.handle('cleanup-duplicate-history', () => {
+    // Find and delete duplicate entries, keeping only the first one (lowest id)
+    const result = db
+      .prepare(
+        `
+      DELETE FROM review_history
+      WHERE id NOT IN (
+        SELECT MIN(id)
+        FROM review_history
+        GROUP BY problem_id, review_date, quality
+      )
+    `
+      )
+      .run()
+
+    return { success: true, deletedCount: result.changes }
+  })
+
   // Export progress data
   ipcMain.handle('export-progress', () => {
     const progress = db
@@ -550,7 +569,7 @@ export function setupIPC(db: Database.Database): void {
         importedCount++
       }
 
-      // Import history entries (append, don't replace)
+      // Import history entries (append, don't replace, with deduplication)
       if (data.history && Array.isArray(data.history)) {
         for (const entry of data.history) {
           const problem = db
@@ -559,21 +578,30 @@ export function setupIPC(db: Database.Database): void {
 
           if (!problem) continue
 
-          db.prepare(
+          // Check if this history entry already exists (avoid duplicates)
+          const existing = db
+            .prepare(
+              'SELECT id FROM review_history WHERE problem_id = ? AND review_date = ? AND quality = ?'
+            )
+            .get(problem.id, entry.review_date, entry.quality)
+
+          if (!existing) {
+            db.prepare(
+              `
+              INSERT INTO review_history
+              (problem_id, review_date, quality, interval_before, interval_after, ease_factor_before, ease_factor_after)
+              VALUES (?, ?, ?, ?, ?, ?, ?)
             `
-            INSERT INTO review_history
-            (problem_id, review_date, quality, interval_before, interval_after, ease_factor_before, ease_factor_after)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-          `
-          ).run(
-            problem.id,
-            entry.review_date,
-            entry.quality,
-            entry.interval_before,
-            entry.interval_after,
-            entry.ease_factor_before,
-            entry.ease_factor_after
-          )
+            ).run(
+              problem.id,
+              entry.review_date,
+              entry.quality,
+              entry.interval_before,
+              entry.interval_after,
+              entry.ease_factor_before,
+              entry.ease_factor_after
+            )
+          }
         }
       }
     })

@@ -100,6 +100,7 @@ export interface API {
   savePreference: (data: { key: string; value: string }) => Promise<{ success: boolean }>
   getPreference: (key: string) => Promise<string | null>
   resetAllProgress: () => Promise<{ success: boolean }>
+  cleanupDuplicateHistory: () => Promise<{ success: boolean; deletedCount: number }>
   hidePopup: () => Promise<{ success: boolean }>
   getShortcut: () => Promise<string>
   setShortcut: (shortcut: string) => Promise<{ success: boolean; shortcut: string }>

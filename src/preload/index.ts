@@ -40,6 +40,7 @@ const api = {
 
   // Reset
   resetAllProgress: () => ipcRenderer.invoke('reset-all-progress'),
+  cleanupDuplicateHistory: () => ipcRenderer.invoke('cleanup-duplicate-history'),
 
   // Popup control
   hidePopup: () => ipcRenderer.invoke('hide-popup'),
