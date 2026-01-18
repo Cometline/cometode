@@ -115,6 +115,20 @@ export async function submitReview(
 ): Promise<{ success: boolean; nextReviewDate: string; newInterval: number }> {
   try {
     const result = await window.api.submitReview({ problemId, quality })
+
+    // Trigger auto-export if enabled
+    if (result.success) {
+      try {
+        const syncPrefs = await window.api.getAutoSyncPreferences()
+        if (syncPrefs.enabled && syncPrefs.folderPath) {
+          await window.api.performAutoExport(syncPrefs.folderPath)
+        }
+      } catch (syncError) {
+        // Don't fail the review if sync fails
+        console.error('Auto-sync after review failed:', syncError)
+      }
+    }
+
     return result
   } catch (error) {
     console.error('Failed to submit review:', error)

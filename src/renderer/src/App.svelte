@@ -551,7 +551,7 @@
         {/if}
 
         <p class="text-xs text-gray-500 dark:text-gray-400">
-          Daily backup to Dropbox, iCloud, etc.
+          Export after each review, import on startup
         </p>
       </div>
 
