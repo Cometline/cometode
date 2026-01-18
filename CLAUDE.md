@@ -17,7 +17,7 @@ A macOS menu bar app for tracking coding problem practice using Anki-style SM-2 
 - Right-click tray for quit/update options
 - Auto-hides when clicking outside
 - No dock icon - runs exclusively in menu bar
-- Global keyboard shortcut (default: Cmd+Shift+N, customizable)
+- Global keyboard shortcut (default: Cmd+Shift+M, customizable)
 
 ### Core Features
 - 150+ coding problems with categories/tags
@@ -104,7 +104,7 @@ pnpm build:mac  # Build macOS app (.dmg + .zip)
 ## Keyboard Shortcuts
 
 - `1-4`: Quick rate (Again/Hard/Good/Easy) in problem view
-- `Cmd+Shift+N` (default): Toggle popup from anywhere (customizable)
+- `Cmd+Shift+M` (default): Toggle popup from anywhere (customizable)
 
 ## Key IPC Handlers (src/main/ipc.ts)
 

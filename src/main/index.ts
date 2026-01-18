@@ -21,7 +21,7 @@ import { setupIPC } from './ipc'
 let popupWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 let lastNotificationDate: string | null = null
-let currentShortcut: string = 'CommandOrControl+Shift+N'
+let currentShortcut: string = 'CommandOrControl+Shift+M'
 let updateReady: boolean = false
 let isQuitting: boolean = false
 let updateInfo: { version: string; progress: number } | null = null
@@ -29,7 +29,7 @@ let lastAutoExportDate: string | null = null
 
 const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 520
-const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+N'
+const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+M'
 
 /**
  * Centralized function for performing quit-and-install with proper error handling,

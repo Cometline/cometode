@@ -25,7 +25,8 @@ The app lives in your menu bar for quick access - click the icon, review a probl
 - **Progress Tracking** - See how many problems you've practiced and mastered
 - **Daily Notifications** - Get reminded when problems are due for review
 - **Dark Mode** - Automatic or manual theme switching
-- **Keyboard Shortcut** - Customizable hotkey to open the app (default: `Cmd+Shift+N`)
+- **Keyboard Shortcut** - Customizable hotkey to open the app (default: `Cmd+Shift+M`)
+- **Auto-Sync** - Export after each review, import on startup (syncs to Dropbox, iCloud, etc.)
 
 ## Installation
 
@@ -76,6 +77,8 @@ When problems are due for review, you'll see a notification. The "Due Today" car
 
 Click the gear icon to:
 - Change the keyboard shortcut
+- Export/Import progress data
+- Enable auto-sync (exports after each review, imports on startup)
 - Reset all progress
 
 ## Development
