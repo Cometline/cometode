@@ -9,7 +9,7 @@ import { app } from 'electron'
 type ProblemSet = 'neetcode150' | 'google' | 'all'
 
 interface ProblemFilters {
-  difficulty?: string
+  difficulty?: string[]
   category?: string
   status?: string
   searchText?: string
