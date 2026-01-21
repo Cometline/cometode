@@ -2,7 +2,13 @@ import { ipcMain, dialog } from 'electron'
 import { writeFileSync, readFileSync, existsSync } from 'fs'
 import path from 'path'
 import type Database from 'better-sqlite3'
-import { calculateNextReview, formatReviewDate, INITIAL_EASE_FACTOR } from './lib/sm2'
+import {
+  calculateNextReview,
+  formatReviewDate,
+  INITIAL_EASE_FACTOR,
+  INITIAL_SUCCESS_RATE,
+  type Difficulty
+} from './lib/cir'
 import { app } from 'electron'
 
 // Types
@@ -37,6 +43,9 @@ interface ExportProgressEntry {
   first_learned_at: string | null
   last_reviewed_at: string | null
   total_reviews: number
+  // CIR algorithm fields (v1.1+)
+  success_rate?: number
+  consecutive_successes?: number
 }
 
 interface ExportData {
@@ -65,6 +74,8 @@ export function setupIPC(db: Database.Database): void {
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
         COALESCE(pp.ease_factor, ${INITIAL_EASE_FACTOR}) as ease_factor,
+        COALESCE(pp.success_rate, ${INITIAL_SUCCESS_RATE}) as success_rate,
+        COALESCE(pp.consecutive_successes, 0) as consecutive_successes,
         pp.next_review_date,
         COALESCE(pp.total_reviews, 0) as total_reviews,
         pp.last_reviewed_at
@@ -109,16 +120,17 @@ export function setupIPC(db: Database.Database): void {
     }
 
     if (filters?.dueOnly) {
-      query += " AND pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now')"
+      query +=
+        " AND pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime')"
     }
 
     // Sort order:
-    // 1. Due for review (has next_review_date <= today)
+    // 1. Due for review (has next_review_date <= today, using local timezone)
     // 2. New/never practiced (total_reviews = 0 or NULL)
     // 3. Then by problem number
     query += ` ORDER BY
       CASE
-        WHEN pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now') THEN 0
+        WHEN pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime') THEN 0
         WHEN COALESCE(pp.total_reviews, 0) = 0 THEN 1
         ELSE 2
       END ASC,
@@ -144,6 +156,8 @@ export function setupIPC(db: Database.Database): void {
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
         COALESCE(pp.ease_factor, ${INITIAL_EASE_FACTOR}) as ease_factor,
+        COALESCE(pp.success_rate, ${INITIAL_SUCCESS_RATE}) as success_rate,
+        COALESCE(pp.consecutive_successes, 0) as consecutive_successes,
         pp.next_review_date,
         COALESCE(pp.total_reviews, 0) as total_reviews,
         pp.last_reviewed_at
@@ -154,7 +168,7 @@ export function setupIPC(db: Database.Database): void {
     return db.prepare(query).get(problemId)
   })
 
-  // Get today's due reviews
+  // Get today's due reviews (using local timezone)
   ipcMain.handle('get-today-reviews', () => {
     const query = `
       SELECT
@@ -166,11 +180,13 @@ export function setupIPC(db: Database.Database): void {
         p.neetcode_url,
         pp.repetitions,
         pp.ease_factor,
+        pp.success_rate,
+        pp.consecutive_successes,
         pp.next_review_date
       FROM problems p
       JOIN problem_progress pp ON p.id = pp.problem_id
       WHERE pp.next_review_date IS NOT NULL
-        AND DATE(pp.next_review_date) <= DATE('now')
+        AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
       ORDER BY pp.ease_factor ASC, p.neet_id ASC
     `
@@ -181,59 +197,89 @@ export function setupIPC(db: Database.Database): void {
   ipcMain.handle('submit-review', (_event, data: ReviewSubmission) => {
     const { problemId, quality } = data
 
-    // Get current progress
+    // Get problem difficulty
+    const problem = db
+      .prepare('SELECT difficulty FROM problems WHERE id = ?')
+      .get(problemId) as { difficulty: Difficulty } | undefined
+    const difficulty: Difficulty = problem?.difficulty ?? 'Medium'
+
+    // Get interview mode preference
+    const interviewModePref = db
+      .prepare('SELECT value FROM preferences WHERE key = ?')
+      .get('interview_mode_enabled') as { value: string } | undefined
+    const interviewMode = interviewModePref?.value === 'true'
+
+    // Get current progress (including CIR fields)
     const progress = db
       .prepare(
         `
-      SELECT repetitions, interval, ease_factor
+      SELECT repetitions, interval, ease_factor, success_rate, consecutive_successes, total_reviews
       FROM problem_progress
       WHERE problem_id = ?
     `
       )
-      .get(problemId) as { repetitions: number; interval: number; ease_factor: number } | undefined
+      .get(problemId) as {
+      repetitions: number
+      interval: number
+      ease_factor: number
+      success_rate: number
+      consecutive_successes: number
+      total_reviews: number
+    } | undefined
 
     const currentState = {
-      repetitions: progress?.repetitions ?? 0,
+      consecutiveSuccesses: progress?.consecutive_successes ?? 0,
       interval: progress?.interval ?? 0,
-      easeFactor: progress?.ease_factor ?? INITIAL_EASE_FACTOR
+      easeFactor: progress?.ease_factor ?? INITIAL_EASE_FACTOR,
+      successRate: progress?.success_rate ?? INITIAL_SUCCESS_RATE,
+      totalReviews: progress?.total_reviews ?? 0
     }
 
-    // Calculate new state
-    const { newState, nextReviewDate } = calculateNextReview(currentState, quality)
+    // Calculate new state using CIR algorithm
+    const { newState, nextReviewDate } = calculateNextReview(
+      currentState,
+      quality,
+      difficulty,
+      interviewMode
+    )
     const nextReviewStr = formatReviewDate(nextReviewDate)
 
-    // Determine status
+    // Determine status based on consecutive successes
     let status = 'learning'
-    if (newState.repetitions >= 3) {
+    if (newState.consecutiveSuccesses >= 3) {
       status = 'reviewing'
     }
 
-    // Transaction: update progress and record history
+    // Transaction: update progress
     const transaction = db.transaction(() => {
-      // Upsert progress
+      // Upsert progress with CIR fields
       db.prepare(
         `
         INSERT INTO problem_progress
-        (problem_id, status, repetitions, interval, ease_factor, next_review_date, last_reviewed_at, total_reviews, first_learned_at)
-        VALUES (?, ?, ?, ?, ?, ?, datetime('now'), 1, datetime('now'))
+        (problem_id, status, repetitions, interval, ease_factor, success_rate, consecutive_successes, next_review_date, last_reviewed_at, total_reviews, first_learned_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, datetime('now'))
         ON CONFLICT(problem_id) DO UPDATE SET
           status = excluded.status,
           repetitions = excluded.repetitions,
           interval = excluded.interval,
           ease_factor = excluded.ease_factor,
+          success_rate = excluded.success_rate,
+          consecutive_successes = excluded.consecutive_successes,
           next_review_date = excluded.next_review_date,
           last_reviewed_at = excluded.last_reviewed_at,
-          total_reviews = total_reviews + 1
+          total_reviews = excluded.total_reviews
       `
       ).run(
         problemId,
         status,
-        newState.repetitions,
+        newState.consecutiveSuccesses, // Use consecutiveSuccesses for repetitions too
         newState.interval,
         newState.easeFactor,
-        nextReviewStr
+        newState.successRate,
+        newState.consecutiveSuccesses,
+        nextReviewStr,
+        newState.totalReviews
       )
-
     })
 
     transaction()
@@ -297,12 +343,12 @@ export function setupIPC(db: Database.Database): void {
       )
       .all()
 
-    // For todayDue, we need to join with problems to filter by set
+    // For todayDue, we need to join with problems to filter by set (using local timezone)
     let todayDueQuery = `
       SELECT COUNT(*) as count
       FROM problem_progress pp
       JOIN problems p ON pp.problem_id = p.id
-      WHERE DATE(pp.next_review_date) <= DATE('now')
+      WHERE DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
     `
     if (problemSet === 'neetcode150') {
@@ -420,7 +466,7 @@ export function setupIPC(db: Database.Database): void {
     return { success: true }
   })
 
-  // Export progress data
+  // Export progress data (v1.1 includes CIR algorithm fields)
   ipcMain.handle('export-progress', () => {
     const progress = db
       .prepare(
@@ -434,7 +480,9 @@ export function setupIPC(db: Database.Database): void {
         pp.next_review_date,
         pp.first_learned_at,
         pp.last_reviewed_at,
-        pp.total_reviews
+        pp.total_reviews,
+        pp.success_rate,
+        pp.consecutive_successes
       FROM problem_progress pp
       JOIN problems p ON pp.problem_id = p.id
       WHERE pp.total_reviews > 0
@@ -444,7 +492,7 @@ export function setupIPC(db: Database.Database): void {
       .all() as ExportProgressEntry[]
 
     const exportData: ExportData = {
-      version: '1.0',
+      version: '1.1',
       exportDate: new Date().toISOString(),
       appVersion: app.getVersion(),
       progress
@@ -453,7 +501,7 @@ export function setupIPC(db: Database.Database): void {
     return exportData
   })
 
-  // Import progress data
+  // Import progress data (supports v1.0 and v1.1 formats)
   ipcMain.handle('import-progress', (_event, data: ExportData) => {
     if (!data || !data.progress || !Array.isArray(data.progress)) {
       return { success: false, error: 'Invalid data format', imported: 0 }
@@ -471,17 +519,24 @@ export function setupIPC(db: Database.Database): void {
 
         if (!problem) continue
 
-        // Upsert progress
+        // For v1.0 imports, estimate CIR fields from existing data
+        const successRate = entry.success_rate ?? (entry.status === 'reviewing' ? 0.8 : 0.6)
+        const consecutiveSuccesses =
+          entry.consecutive_successes ?? Math.min(entry.repetitions, 5)
+
+        // Upsert progress with CIR fields
         db.prepare(
           `
           INSERT INTO problem_progress
-          (problem_id, status, repetitions, interval, ease_factor, next_review_date, first_learned_at, last_reviewed_at, total_reviews)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (problem_id, status, repetitions, interval, ease_factor, success_rate, consecutive_successes, next_review_date, first_learned_at, last_reviewed_at, total_reviews)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(problem_id) DO UPDATE SET
             status = excluded.status,
             repetitions = excluded.repetitions,
             interval = excluded.interval,
             ease_factor = excluded.ease_factor,
+            success_rate = excluded.success_rate,
+            consecutive_successes = excluded.consecutive_successes,
             next_review_date = excluded.next_review_date,
             first_learned_at = excluded.first_learned_at,
             last_reviewed_at = excluded.last_reviewed_at,
@@ -493,6 +548,8 @@ export function setupIPC(db: Database.Database): void {
           entry.repetitions,
           entry.interval,
           entry.ease_factor,
+          successRate,
+          consecutiveSuccesses,
           entry.next_review_date,
           entry.first_learned_at,
           entry.last_reviewed_at,
@@ -619,10 +676,10 @@ export function setupIPC(db: Database.Database): void {
     return result.filePaths[0] || null
   })
 
-  // Perform auto-export to specified folder
+  // Perform auto-export to specified folder (v1.1 format with CIR fields)
   ipcMain.handle('perform-auto-export', (_event, folderPath: string) => {
     try {
-      // Get export data (same logic as export-progress)
+      // Get export data (same logic as export-progress, v1.1 with CIR fields)
       const progress = db
         .prepare(
           `
@@ -635,7 +692,9 @@ export function setupIPC(db: Database.Database): void {
           pp.next_review_date,
           pp.first_learned_at,
           pp.last_reviewed_at,
-          pp.total_reviews
+          pp.total_reviews,
+          pp.success_rate,
+          pp.consecutive_successes
         FROM problem_progress pp
         JOIN problems p ON pp.problem_id = p.id
         WHERE pp.total_reviews > 0
@@ -645,7 +704,7 @@ export function setupIPC(db: Database.Database): void {
         .all() as ExportProgressEntry[]
 
       const exportData: ExportData = {
-        version: '1.0',
+        version: '1.1',
         exportDate: new Date().toISOString(),
         appVersion: app.getVersion(),
         progress
@@ -722,5 +781,27 @@ export function setupIPC(db: Database.Database): void {
     `
     ).run(new Date().toISOString())
     return { success: true }
+  })
+
+  // ===== Interview Mode Handlers =====
+
+  // Get interview mode status
+  ipcMain.handle('get-interview-mode', () => {
+    const result = db
+      .prepare('SELECT value FROM preferences WHERE key = ?')
+      .get('interview_mode_enabled') as { value: string } | undefined
+    return result?.value === 'true'
+  })
+
+  // Set interview mode status
+  ipcMain.handle('set-interview-mode', (_event, enabled: boolean) => {
+    db.prepare(
+      `
+      INSERT INTO preferences (key, value, updated_at)
+      VALUES ('interview_mode_enabled', ?, datetime('now'))
+      ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+    `
+    ).run(enabled ? 'true' : 'false')
+    return { success: true, enabled }
   })
 }

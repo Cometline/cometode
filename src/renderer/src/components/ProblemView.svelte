@@ -18,8 +18,10 @@
 
   const isDue = $derived(() => {
     if (!problem.next_review_date) return false
-    const today = new Date().toISOString().split('T')[0]
-    return problem.next_review_date <= today
+    // Use local date (not UTC) to match backend's DATE('now', 'localtime')
+    const today = new Date()
+    const localToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    return problem.next_review_date <= localToday
   })
 
   async function handleReview(quality: number): Promise<void> {

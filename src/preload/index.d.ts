@@ -17,6 +17,8 @@ export interface Problem {
   repetitions: number
   interval: number
   ease_factor: number
+  success_rate: number
+  consecutive_successes: number
   next_review_date: string | null
   total_reviews: number
   last_reviewed_at: string | null
@@ -69,6 +71,9 @@ export interface ExportProgressEntry {
   first_learned_at: string | null
   last_reviewed_at: string | null
   total_reviews: number
+  // CIR algorithm fields (v1.1+)
+  success_rate?: number
+  consecutive_successes?: number
 }
 
 export interface ExportData {
@@ -133,6 +138,10 @@ export interface API {
     reason?: string
   }>
   setLastImportDate: () => Promise<{ success: boolean }>
+
+  // Interview Mode
+  getInterviewMode: () => Promise<boolean>
+  setInterviewMode: (enabled: boolean) => Promise<{ success: boolean; enabled: boolean }>
 }
 
 declare global {

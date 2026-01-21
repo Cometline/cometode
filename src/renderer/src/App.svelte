@@ -35,6 +35,9 @@
   let isSelectingFolder = $state(false)
   let autoSyncMessage = $state<{ type: 'success' | 'error'; text: string } | null>(null)
 
+  // Interview mode state
+  let interviewModeEnabled = $state(false)
+
   onMount(() => {
     // Initialize async operations
     const init = async (): Promise<void> => {
@@ -43,6 +46,7 @@
       currentShortcut = await window.api.getShortcut()
       await refreshUpdateStatus()
       await loadAutoSyncPreferences()
+      interviewModeEnabled = await window.api.getInterviewMode()
     }
     init()
 
@@ -322,6 +326,20 @@
     const parts = path.split('/')
     return parts[parts.length - 1] || path
   }
+
+  // Interview mode functions
+  async function handleToggleInterviewMode(): Promise<void> {
+    const newEnabled = !interviewModeEnabled
+    interviewModeEnabled = newEnabled
+
+    try {
+      await window.api.setInterviewMode(newEnabled)
+    } catch (error) {
+      // Revert on error
+      interviewModeEnabled = !newEnabled
+      console.error('Failed to update interview mode:', error)
+    }
+  }
 </script>
 
 <div class="h-screen flex flex-col bg-white dark:bg-gray-900 overflow-hidden">
@@ -457,6 +475,38 @@
           >
             {isCheckingUpdate ? 'Checking...' : 'Check for Updates'}
           </button>
+        {/if}
+      </div>
+
+      <!-- Interview Mode -->
+      <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Interview Mode
+            </span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              Halves review intervals for intensive prep
+            </p>
+          </div>
+          <button
+            onclick={handleToggleInterviewMode}
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {interviewModeEnabled ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600'}"
+            role="switch"
+            aria-checked={interviewModeEnabled}
+            aria-label="Toggle interview mode"
+          >
+            <span
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {interviewModeEnabled ? 'translate-x-6' : 'translate-x-1'}"
+            ></span>
+          </button>
+        </div>
+        {#if interviewModeEnabled}
+          <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-md">
+            <div class="text-xs text-amber-700 dark:text-amber-400">
+              ⚡ All intervals reduced by 50%
+            </div>
+          </div>
         {/if}
       </div>
 

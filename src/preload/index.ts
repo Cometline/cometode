@@ -68,7 +68,11 @@ const api = {
   showFolderDialog: () => ipcRenderer.invoke('show-folder-dialog'),
   performAutoExport: (folderPath: string) => ipcRenderer.invoke('perform-auto-export', folderPath),
   checkAutoImport: (folderPath: string) => ipcRenderer.invoke('check-auto-import', folderPath),
-  setLastImportDate: () => ipcRenderer.invoke('set-last-import-date')
+  setLastImportDate: () => ipcRenderer.invoke('set-last-import-date'),
+
+  // Interview Mode
+  getInterviewMode: () => ipcRenderer.invoke('get-interview-mode'),
+  setInterviewMode: (enabled: boolean) => ipcRenderer.invoke('set-interview-mode', enabled)
 }
 
 // Expose APIs

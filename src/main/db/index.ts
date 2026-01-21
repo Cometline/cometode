@@ -71,13 +71,13 @@ export function getDatabase(): Database.Database {
 }
 
 function runMigrations(database: Database.Database): void {
-  // Check if in_neetcode_150 column exists
-  const columns = database
+  // Check if in_neetcode_150 column exists in problems table
+  const problemColumns = database
     .prepare("PRAGMA table_info(problems)")
     .all() as { name: string }[]
-  const columnNames = columns.map((c) => c.name)
+  const problemColumnNames = problemColumns.map((c) => c.name)
 
-  if (!columnNames.includes('in_neetcode_150')) {
+  if (!problemColumnNames.includes('in_neetcode_150')) {
     console.log('Running migration: adding problem set columns...')
 
     // Add new columns
@@ -92,6 +92,46 @@ function runMigrations(database: Database.Database): void {
     // Reseed to add new problems
     seedProblems(database, true)
     console.log('Migration completed')
+  }
+
+  // Check if CIR algorithm columns exist in problem_progress table
+  const progressColumns = database
+    .prepare("PRAGMA table_info(problem_progress)")
+    .all() as { name: string }[]
+  const progressColumnNames = progressColumns.map((c) => c.name)
+
+  if (!progressColumnNames.includes('success_rate')) {
+    console.log('Running migration: adding CIR algorithm columns...')
+
+    // Add CIR-specific columns
+    database.exec(`
+      ALTER TABLE problem_progress ADD COLUMN success_rate REAL DEFAULT 0.5;
+      ALTER TABLE problem_progress ADD COLUMN consecutive_successes INTEGER DEFAULT 0;
+    `)
+
+    // Initialize consecutive_successes from existing repetitions
+    // (repetitions roughly maps to consecutive successes in the old model)
+    database.exec(`
+      UPDATE problem_progress
+      SET consecutive_successes = CASE
+        WHEN repetitions >= 5 THEN 5
+        ELSE repetitions
+      END
+    `)
+
+    // Estimate initial success rate from total_reviews and current state
+    // If they've reviewed and are in 'reviewing' status, assume ~80% success rate
+    database.exec(`
+      UPDATE problem_progress
+      SET success_rate = CASE
+        WHEN total_reviews = 0 THEN 0.5
+        WHEN status = 'reviewing' THEN 0.8
+        WHEN status = 'learning' THEN 0.6
+        ELSE 0.5
+      END
+    `)
+
+    console.log('CIR migration completed')
   }
 }
 

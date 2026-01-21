@@ -72,8 +72,10 @@
   function getProblemStatus(problem: Problem): ProblemStatus {
     if (problem.total_reviews === 0) return 'new'
     if (problem.next_review_date) {
-      const today = new Date().toISOString().split('T')[0]
-      if (problem.next_review_date <= today) return 'due'
+      // Use local date (not UTC) to match backend's DATE('now', 'localtime')
+      const today = new Date()
+      const localToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+      if (problem.next_review_date <= localToday) return 'due'
     }
     return 'practiced'
   }
