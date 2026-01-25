@@ -106,6 +106,15 @@
   const progressPercentage = $derived(
     $stats ? Math.round(($stats.practiced / $stats.total) * 100) : 0
   )
+
+  // Calculate tomorrow's review count from problems list
+  const tomorrowReviewCount = $derived(() => {
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
+
+    return $problems.filter(p => p.next_review_date === tomorrowStr).length
+  })
 </script>
 
 <div class="flex flex-col h-full">
@@ -127,17 +136,25 @@
     </div>
   </div>
 
-  <!-- Due Today Card -->
-  {#if $todayReviews.length > 0}
-    <div class="mx-3 mt-3 p-3 bg-linear-to-r from-orange-500 to-amber-500 rounded-lg text-white">
-      <div class="text-sm opacity-90">Due for review</div>
-      <div class="text-2xl font-bold">{$todayReviews.length} problem{$todayReviews.length > 1 ? 's' : ''}</div>
-      <button
-        onclick={onStartReview}
-        class="mt-2 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-md text-sm font-medium transition-all hover:scale-105  cursor-pointer"
-      >
-        Start Review
-      </button>
+  <!-- Review Status Card -->
+  {#if $todayReviews.length > 0 || tomorrowReviewCount() > 0}
+    <div class="mx-3 mt-3 p-3 bg-linear-to-r {$todayReviews.length > 0 ? 'from-orange-500 to-amber-500' : 'from-sky-500 to-blue-500'} rounded-lg text-white min-h-[100px]">
+      {#if $todayReviews.length > 0}
+        <div class="text-sm opacity-90">Due today</div>
+        <div class="text-2xl font-bold">{$todayReviews.length} problem{$todayReviews.length > 1 ? 's' : ''}</div>
+        <button
+          onclick={onStartReview}
+          class="mt-2 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-md text-sm font-medium transition-all hover:scale-105 cursor-pointer"
+        >
+          Start Review
+        </button>
+      {:else}
+        <div class="flex flex-col justify-center h-full">
+          <div class="text-sm opacity-90">Coming tomorrow</div>
+          <div class="text-2xl font-bold">{tomorrowReviewCount()} problem{tomorrowReviewCount() > 1 ? 's' : ''}</div>
+          <div class="mt-2 text-sm opacity-75">All caught up for today!</div>
+        </div>
+      {/if}
     </div>
   {/if}
 
