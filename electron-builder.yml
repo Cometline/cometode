@@ -21,7 +21,7 @@ nsis:
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
 mac:
-  identity: "HSIU-CHI LIU (W8PJ7773T8)"
+  identity: 'HSIU-CHI LIU (W8PJ7773T8)'
   hardenedRuntime: true
   gatekeeperAssess: false
   target:

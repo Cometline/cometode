@@ -57,10 +57,10 @@ The app will appear in your menu bar.
 
 ### Problem Sets
 
-| Set | Problems | Description |
-|-----|----------|-------------|
-| NeetCode 150 | 150 | Curated list of essential coding interview problems |
-| Google | 440 | Problems frequently asked in Google interviews |
+| Set          | Problems | Description                                         |
+| ------------ | -------- | --------------------------------------------------- |
+| NeetCode 150 | 150      | Curated list of essential coding interview problems |
+| Google       | 440      | Problems frequently asked in Google interviews      |
 
 **Note:** 149 problems appear in both sets. Your learning progress is shared - if you practice a problem in one set, your progress carries over to the other.
 
@@ -76,6 +76,7 @@ When problems are due for review, you'll see a notification. The "Due Today" car
 ### Settings
 
 Click the gear icon to:
+
 - Change the keyboard shortcut
 - Export/Import progress data
 - Enable auto-sync (exports after each review, imports on startup)
@@ -139,15 +140,14 @@ src/
 
 The SM-2 algorithm adjusts review intervals based on your performance:
 
-| Rating | Meaning | Effect |
-|--------|---------|--------|
-| Again | Forgot completely | Reset to 1 day |
-| Hard | Struggled to recall | Shorter interval |
-| Good | Recalled with effort | Normal interval |
-| Easy | Instant recall | Longer interval |
+| Rating | Meaning              | Effect           |
+| ------ | -------------------- | ---------------- |
+| Again  | Forgot completely    | Reset to 1 day   |
+| Hard   | Struggled to recall  | Shorter interval |
+| Good   | Recalled with effort | Normal interval  |
+| Easy   | Instant recall       | Longer interval  |
 
 Each successful review increases the interval exponentially. Miss a review, and the interval resets.
-
 
 ## Credits
 

@@ -86,7 +86,9 @@ export interface ExportData {
 export interface API {
   getProblems: (filters?: ProblemFilters) => Promise<Problem[]>
   getProblem: (problemId: number) => Promise<Problem | null>
-  getTodayReviews: () => Promise<Problem[]>
+  getTodayReviews: (problemSet?: ProblemSet, offset?: number) => Promise<Problem[]>
+  getTodayReviewsCount: (problemSet?: ProblemSet) => Promise<number>
+  getTomorrowReviews: (problemSet?: ProblemSet) => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
   getStats: (problemSet?: ProblemSet) => Promise<Stats>
@@ -107,7 +109,9 @@ export interface API {
 
   // Import/Export
   exportProgress: () => Promise<ExportData>
-  importProgress: (data: ExportData) => Promise<{ success: boolean; imported: number; error?: string }>
+  importProgress: (
+    data: ExportData
+  ) => Promise<{ success: boolean; imported: number; error?: string }>
   showSaveDialog: (defaultFileName: string) => Promise<string | null>
   showOpenDialog: () => Promise<string | null>
   writeFile: (filePath: string, content: string) => Promise<{ success: boolean; error?: string }>

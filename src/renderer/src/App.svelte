@@ -3,7 +3,7 @@
   import HomeView from './components/HomeView.svelte'
   import ProblemView from './components/ProblemView.svelte'
   import ThemeToggle from './components/ThemeToggle.svelte'
-  import { todayReviews, loadTodayReviews, loadProblems } from './stores/problems'
+  import { todayReview, loadTodayReviews, loadProblems, currentProblemSet } from './stores/problems'
   import { loadStats } from './stores/stats'
   import { theme } from './stores/theme'
   import type { Problem } from '../../preload/index.d'
@@ -42,7 +42,8 @@
     // Initialize async operations
     const init = async (): Promise<void> => {
       await theme.init()
-      await loadTodayReviews()
+      const set = $currentProblemSet
+      await loadTodayReviews(set)
       currentShortcut = await window.api.getShortcut()
       await refreshUpdateStatus()
       await loadAutoSyncPreferences()
@@ -60,7 +61,8 @@
     // Refresh data when window becomes visible (e.g., popup shown after new day)
     const handleVisibilityChange = async (): Promise<void> => {
       if (document.visibilityState === 'visible') {
-        await Promise.all([loadTodayReviews(), loadProblems(), loadStats()])
+        const set = $currentProblemSet
+        await Promise.all([loadTodayReviews(set), loadProblems(), loadStats(set)])
       }
     }
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -84,16 +86,9 @@
   }
 
   async function goHome(): Promise<void> {
-    // Ensure todayReviews is refreshed before switching view
-    await loadTodayReviews()
+    // Don't reload reviews - maintain current session state
     selectedProblem = null
     currentView = 'home'
-  }
-
-  function startReview(): void {
-    if ($todayReviews.length > 0) {
-      selectProblem($todayReviews[0])
-    }
   }
 
   function handleReset(): void {
@@ -104,7 +99,8 @@
     isResetting = true
     try {
       await window.api.resetAllProgress()
-      await Promise.all([loadProblems(), loadTodayReviews(), loadStats()])
+      const set = $currentProblemSet
+      await Promise.all([loadProblems(), loadTodayReviews(set), loadStats(set)])
       showResetConfirm = false
       goHome()
     } finally {
@@ -191,12 +187,15 @@
       if (filePath) {
         const result = await window.api.writeFile(filePath, JSON.stringify(data, null, 2))
         if (result.success) {
-          importExportMessage = { type: 'success', text: `Exported ${data.progress.length} problems` }
+          importExportMessage = {
+            type: 'success',
+            text: `Exported ${data.progress.length} problems`
+          }
         } else {
           importExportMessage = { type: 'error', text: 'Failed to save file' }
         }
       }
-    } catch (error) {
+    } catch {
       importExportMessage = { type: 'error', text: 'Export failed' }
     } finally {
       isExporting = false
@@ -223,12 +222,13 @@
         if (result.success) {
           importExportMessage = { type: 'success', text: `Imported ${result.imported} problems` }
           // Refresh data
-          await Promise.all([loadProblems(), loadTodayReviews(), loadStats()])
+          const set = $currentProblemSet
+          await Promise.all([loadProblems(), loadTodayReviews(set), loadStats(set)])
         } else {
           importExportMessage = { type: 'error', text: result.error || 'Import failed' }
         }
       }
-    } catch (error) {
+    } catch {
       importExportMessage = { type: 'error', text: 'Invalid file format' }
     } finally {
       isImporting = false
@@ -261,7 +261,7 @@
       if (newEnabled && !autoSyncFolderPath) {
         autoSyncMessage = { type: 'error', text: 'Please select a sync folder' }
       }
-    } catch (error) {
+    } catch {
       autoSyncEnabled = !newEnabled
       autoSyncMessage = { type: 'error', text: 'Failed to update setting' }
     }
@@ -282,7 +282,7 @@
         })
         autoSyncMessage = { type: 'success', text: 'Folder configured' }
       }
-    } catch (error) {
+    } catch {
       autoSyncMessage = { type: 'error', text: 'Failed to select folder' }
     } finally {
       isSelectingFolder = false
@@ -305,7 +305,7 @@
       } else {
         autoSyncMessage = { type: 'error', text: result.error || 'Export failed' }
       }
-    } catch (error) {
+    } catch {
       autoSyncMessage = { type: 'error', text: 'Sync failed' }
     }
   }
@@ -344,11 +344,13 @@
 
 <div class="h-screen flex flex-col bg-white dark:bg-gray-900 overflow-hidden">
   <!-- Header -->
-  <header class="h-10 flex items-center justify-between px-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur shrink-0">
+  <header
+    class="h-10 flex items-center justify-between px-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur shrink-0"
+  >
     <div class="flex items-center gap-1.5">
       <img src={cometlineLogo} alt="Cometode" class="w-5 h-5" />
       <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">Cometode</span>
-      {#if $todayReviews.length > 0 && currentView === 'home'}
+      {#if $todayReview !== null && currentView === 'home'}
         <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
       {/if}
     </div>
@@ -359,9 +361,24 @@
         class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-105 cursor-pointer"
         title="Settings"
       >
-        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
         </svg>
       </button>
       <ThemeToggle />
@@ -371,15 +388,9 @@
   <!-- Main Content -->
   <main class="flex-1 overflow-hidden">
     {#if currentView === 'home'}
-      <HomeView
-        onSelectProblem={selectProblem}
-        onStartReview={startReview}
-      />
+      <HomeView onSelectProblem={selectProblem} />
     {:else if currentView === 'problem' && selectedProblem}
-      <ProblemView
-        problem={selectedProblem}
-        onBack={goHome}
-      />
+      <ProblemView problem={selectedProblem} onBack={goHome} />
     {/if}
   </main>
 </div>
@@ -387,7 +398,9 @@
 <!-- Settings Modal -->
 {#if showSettings}
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 mx-4 max-w-xs w-full max-h-[calc(100vh-32px)] overflow-y-auto">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 mx-4 max-w-xs w-full max-h-[calc(100vh-32px)] overflow-y-auto"
+    >
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Settings</h3>
         <button
@@ -396,7 +409,12 @@
           aria-label="Close settings"
         >
           <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -408,11 +426,17 @@
         </span>
         <div class="flex gap-2">
           {#if isRecordingShortcut}
-            <div class="flex-1 px-3 py-2 text-sm bg-indigo-50 dark:bg-indigo-900/30 border-2 border-indigo-400 rounded-md text-center text-indigo-700 dark:text-indigo-300 animate-pulse">
-              {recordedKeys.length > 0 ? formatShortcutDisplay(recordedKeys.join('+')) : 'Press keys...'}
+            <div
+              class="flex-1 px-3 py-2 text-sm bg-indigo-50 dark:bg-indigo-900/30 border-2 border-indigo-400 rounded-md text-center text-indigo-700 dark:text-indigo-300 animate-pulse"
+            >
+              {recordedKeys.length > 0
+                ? formatShortcutDisplay(recordedKeys.join('+'))
+                : 'Press keys...'}
             </div>
           {:else}
-            <div class="flex-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-md text-center font-mono text-gray-900 dark:text-gray-100">
+            <div
+              class="flex-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-md text-center font-mono text-gray-900 dark:text-gray-100"
+            >
               {formatShortcutDisplay(currentShortcut)}
             </div>
           {/if}
@@ -491,13 +515,17 @@
           </div>
           <button
             onclick={handleToggleInterviewMode}
-            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {interviewModeEnabled ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600'}"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {interviewModeEnabled
+              ? 'bg-amber-500'
+              : 'bg-gray-300 dark:bg-gray-600'}"
             role="switch"
             aria-checked={interviewModeEnabled}
             aria-label="Toggle interview mode"
           >
             <span
-              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {interviewModeEnabled ? 'translate-x-6' : 'translate-x-1'}"
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {interviewModeEnabled
+                ? 'translate-x-6'
+                : 'translate-x-1'}"
             ></span>
           </button>
         </div>
@@ -532,7 +560,11 @@
           </button>
         </div>
         {#if importExportMessage}
-          <p class="mt-2 text-xs {importExportMessage.type === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
+          <p
+            class="mt-2 text-xs {importExportMessage.type === 'success'
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : 'text-rose-600 dark:text-rose-400'}"
+          >
             {importExportMessage.text}
           </p>
         {/if}
@@ -544,18 +576,20 @@
       <!-- Auto Sync -->
       <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Auto Sync
-          </span>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300"> Auto Sync </span>
           <button
             onclick={handleToggleAutoSync}
-            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {autoSyncEnabled ? 'bg-indigo-500' : 'bg-gray-300 dark:bg-gray-600'}"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {autoSyncEnabled
+              ? 'bg-indigo-500'
+              : 'bg-gray-300 dark:bg-gray-600'}"
             role="switch"
             aria-checked={autoSyncEnabled}
             aria-label="Toggle auto sync"
           >
             <span
-              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {autoSyncEnabled ? 'translate-x-6' : 'translate-x-1'}"
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {autoSyncEnabled
+                ? 'translate-x-6'
+                : 'translate-x-1'}"
             ></span>
           </button>
         </div>
@@ -564,7 +598,9 @@
           <div class="space-y-2 mb-3">
             <div class="flex gap-2">
               <div
-                class="flex-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-md truncate {autoSyncFolderPath ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'}"
+                class="flex-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-md truncate {autoSyncFolderPath
+                  ? 'text-gray-700 dark:text-gray-300'
+                  : 'text-gray-400 dark:text-gray-500'}"
                 title={autoSyncFolderPath || 'No folder selected'}
               >
                 {getFolderDisplayName(autoSyncFolderPath)}
@@ -595,7 +631,11 @@
         {/if}
 
         {#if autoSyncMessage}
-          <p class="mb-2 text-xs {autoSyncMessage.type === 'success' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
+          <p
+            class="mb-2 text-xs {autoSyncMessage.type === 'success'
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : 'text-rose-600 dark:text-rose-400'}"
+          >
             {autoSyncMessage.text}
           </p>
         {/if}
@@ -608,7 +648,10 @@
       <!-- Reset Progress -->
       <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
         <button
-          onclick={() => { closeSettings(); handleReset(); }}
+          onclick={() => {
+            closeSettings()
+            handleReset()
+          }}
           class="w-full px-3 py-2 text-sm font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-md transition-colors"
         >
           Reset All Progress
@@ -623,13 +666,27 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 mx-4 max-w-xs w-full">
       <div class="text-center">
-        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center">
-          <svg class="w-6 h-6 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div
+          class="w-12 h-12 mx-auto mb-3 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center"
+        >
+          <svg
+            class="w-6 h-6 text-rose-600 dark:text-rose-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
         </div>
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Reset Progress?</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">This will delete all your review history and cannot be undone.</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          This will delete all your review history and cannot be undone.
+        </p>
         <div class="flex gap-2">
           <button
             onclick={cancelReset}

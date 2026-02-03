@@ -3,7 +3,12 @@ import { writable } from 'svelte/store'
 export type Theme = 'light' | 'dark' | 'system'
 
 // Create theme store
-function createThemeStore() {
+function createThemeStore(): {
+  subscribe: (run: (value: Theme) => void) => () => void
+  set: (theme: Theme) => Promise<void>
+  toggle: () => Promise<void>
+  init: () => Promise<void>
+} {
   const { subscribe, set, update } = writable<Theme>('system')
 
   return {

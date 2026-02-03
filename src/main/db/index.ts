@@ -72,9 +72,7 @@ export function getDatabase(): Database.Database {
 
 function runMigrations(database: Database.Database): void {
   // Check if in_neetcode_150 column exists in problems table
-  const problemColumns = database
-    .prepare("PRAGMA table_info(problems)")
-    .all() as { name: string }[]
+  const problemColumns = database.prepare('PRAGMA table_info(problems)').all() as { name: string }[]
   const problemColumnNames = problemColumns.map((c) => c.name)
 
   if (!problemColumnNames.includes('in_neetcode_150')) {
@@ -95,9 +93,9 @@ function runMigrations(database: Database.Database): void {
   }
 
   // Check if CIR algorithm columns exist in problem_progress table
-  const progressColumns = database
-    .prepare("PRAGMA table_info(problem_progress)")
-    .all() as { name: string }[]
+  const progressColumns = database.prepare('PRAGMA table_info(problem_progress)').all() as {
+    name: string
+  }[]
   const progressColumnNames = progressColumns.map((c) => c.name)
 
   if (!progressColumnNames.includes('success_rate')) {

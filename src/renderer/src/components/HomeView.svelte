@@ -3,9 +3,13 @@
   import {
     problems,
     filters,
-    todayReviews,
+    todayReview,
+    todayReviewsCount,
+    completedInSession,
+    MAX_REVIEWS_PER_SESSION,
     loadProblems,
     loadTodayReviews,
+    loadMoreReviews,
     loadCategories,
     filterUIState,
     currentProblemSet,
@@ -17,10 +21,9 @@
 
   interface Props {
     onSelectProblem: (problem: Problem) => void
-    onStartReview: () => void
   }
 
-  let { onSelectProblem, onStartReview }: Props = $props()
+  let { onSelectProblem }: Props = $props()
 
   // Use store values for filter state persistence
   let searchText = $state($filterUIState.searchText)
@@ -41,8 +44,9 @@
   // Load data on mount (only once, not reactive)
   $effect(() => {
     initProblemSet().then(() => {
-      loadTodayReviews()
-      loadStats()
+      const set = $currentProblemSet
+      loadTodayReviews(set)
+      loadStats(set)
       loadCategories()
     })
   })
@@ -57,7 +61,7 @@
       dueOnly: showDueOnly || undefined
     }
     filters.set(newFilters)
-    await Promise.all([loadProblems(newFilters), loadStats(set), loadTodayReviews()])
+    await Promise.all([loadProblems(newFilters), loadStats(set), loadTodayReviews(set)])
   }
 
   // Apply filters when search/filter changes
@@ -129,14 +133,27 @@
     $stats ? Math.round(($stats.practiced / $stats.total) * 100) : 0
   )
 
-  // Calculate tomorrow's review count from problems list
-  const tomorrowReviewCount = $derived(() => {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
+  // Current session quota = min(MAX_REVIEWS_PER_SESSION, total due today)
+  const sessionQuota = $derived(
+    Math.min(MAX_REVIEWS_PER_SESSION, $todayReviewsCount + $completedInSession)
+  )
 
-    return $problems.filter((p) => p.next_review_date === tomorrowStr).length
-  })
+  // Check if we can still review (under quota and have reviews available)
+  const canReview = $derived($completedInSession < sessionQuota && $todayReview !== null)
+
+  // Remaining in current quota
+  const remainingQuota = $derived(sessionQuota - $completedInSession)
+
+  async function handleLoadMore(): Promise<void> {
+    await loadMoreReviews($currentProblemSet)
+  }
+
+  // Start review with the current problem
+  function handleStartReview(): void {
+    if ($todayReview) {
+      onSelectProblem($todayReview)
+    }
+  }
 </script>
 
 <div class="flex flex-col h-full">
@@ -165,30 +182,53 @@
   </div>
 
   <!-- Review Status Card -->
-  {#if $todayReviews.length > 0 || tomorrowReviewCount() > 0}
+  {#if $todayReviewsCount > 0 || $completedInSession > 0}
     <div
-      class="mx-3 mt-3 p-3 bg-linear-to-r {$todayReviews.length > 0
-        ? 'from-orange-500 to-amber-500'
-        : 'from-sky-500 to-blue-500'} rounded-lg text-white min-h-[100px]"
+      class="mx-3 mt-3 p-3 bg-linear-to-r rounded-lg min-h-[100px] {canReview
+        ? 'from-orange-500 to-amber-500 text-white'
+        : 'from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700'}"
     >
-      {#if $todayReviews.length > 0}
-        <div class="text-sm opacity-90">Due today</div>
+      {#if canReview}
+        <!-- Can still review -->
+        <div class="text-sm opacity-90">Completed: {$completedInSession}/{sessionQuota}</div>
         <div class="text-2xl font-bold">
-          {$todayReviews.length} problem{$todayReviews.length > 1 ? 's' : ''}
+          {remainingQuota} review{remainingQuota > 1 ? 's' : ''} left
         </div>
-        <button
-          onclick={onStartReview}
-          class="mt-2 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-md text-sm font-medium transition-all hover:scale-105 cursor-pointer"
-        >
-          Start Review
-        </button>
-      {:else}
-        <div class="flex flex-col justify-center h-full">
-          <div class="text-sm opacity-90">Coming tomorrow</div>
-          <div class="text-2xl font-bold">
-            {tomorrowReviewCount()} problem{tomorrowReviewCount() > 1 ? 's' : ''}
+        <div class="text-xs opacity-75 mt-1">({$todayReviewsCount} total due today)</div>
+        <div class="flex gap-2 mt-2">
+          <button
+            onclick={handleStartReview}
+            class="flex-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-md text-sm font-medium transition-all hover:scale-105 cursor-pointer"
+          >
+            Review Next
+          </button>
+        </div>
+      {:else if $completedInSession >= sessionQuota && $completedInSession > 0}
+        <!-- Quota completed -->
+        <div class="flex flex-col items-center justify-center h-full">
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+            ✨ Session completed ({$completedInSession}/{sessionQuota})
           </div>
-          <div class="mt-2 text-sm opacity-75">All caught up for today!</div>
+          {#if $todayReviewsCount > 0}
+            <div class="text-xs text-gray-400 dark:text-gray-500 mb-2">
+              {$todayReviewsCount} more review{$todayReviewsCount > 1 ? 's' : ''} available
+            </div>
+            <button
+              onclick={handleLoadMore}
+              class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-all hover:scale-105 cursor-pointer shadow-sm"
+            >
+              Review More
+            </button>
+          {:else}
+            <div class="text-xs text-gray-400 dark:text-gray-500">All reviews completed! 🎉</div>
+          {/if}
+        </div>
+      {:else}
+        <!-- No reviews due but some completed -->
+        <div class="flex flex-col items-center justify-center h-full">
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            ✨ All caught up! ({$completedInSession} reviewed today)
+          </div>
         </div>
       {/if}
     </div>
@@ -280,7 +320,7 @@
                 Difficulty
               </div>
               <div class="flex gap-1">
-                {#each ['Easy', 'Medium', 'Hard'] as diff}
+                {#each ['Easy', 'Medium', 'Hard'] as diff (diff)}
                   <button
                     onclick={() => {
                       if (selectedDifficulties.includes(diff)) {

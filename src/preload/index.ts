@@ -18,7 +18,14 @@ const api = {
 
   getProblem: (problemId: number) => ipcRenderer.invoke('get-problem', problemId),
 
-  getTodayReviews: () => ipcRenderer.invoke('get-today-reviews'),
+  getTodayReviews: (problemSet?: ProblemSet, offset?: number) =>
+    ipcRenderer.invoke('get-today-reviews', problemSet, offset),
+
+  getTodayReviewsCount: (problemSet?: ProblemSet) =>
+    ipcRenderer.invoke('get-today-reviews-count', problemSet),
+
+  getTomorrowReviews: (problemSet?: ProblemSet) =>
+    ipcRenderer.invoke('get-tomorrow-reviews', problemSet),
 
   startProblem: (problemId: number) => ipcRenderer.invoke('start-problem', problemId),
 
@@ -56,9 +63,11 @@ const api = {
   // Import/Export
   exportProgress: () => ipcRenderer.invoke('export-progress'),
   importProgress: (data: unknown) => ipcRenderer.invoke('import-progress', data),
-  showSaveDialog: (defaultFileName: string) => ipcRenderer.invoke('show-save-dialog', defaultFileName),
+  showSaveDialog: (defaultFileName: string) =>
+    ipcRenderer.invoke('show-save-dialog', defaultFileName),
   showOpenDialog: () => ipcRenderer.invoke('show-open-dialog'),
-  writeFile: (filePath: string, content: string) => ipcRenderer.invoke('write-file', filePath, content),
+  writeFile: (filePath: string, content: string) =>
+    ipcRenderer.invoke('write-file', filePath, content),
   readFile: (filePath: string) => ipcRenderer.invoke('read-file', filePath),
 
   // Auto-Sync

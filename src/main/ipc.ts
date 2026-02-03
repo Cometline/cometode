@@ -169,8 +169,9 @@ export function setupIPC(db: Database.Database): void {
   })
 
   // Get today's due reviews (using local timezone)
-  ipcMain.handle('get-today-reviews', () => {
-    const query = `
+  // Returns only 1 problem at a time (the one with lowest ease_factor)
+  ipcMain.handle('get-today-reviews', (_event, problemSet?: ProblemSet) => {
+    let query = `
       SELECT
         p.id,
         p.neet_id,
@@ -188,9 +189,42 @@ export function setupIPC(db: Database.Database): void {
       WHERE pp.next_review_date IS NOT NULL
         AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
-      ORDER BY pp.ease_factor ASC, p.neet_id ASC
     `
+
+    // Filter by problem set
+    if (problemSet === 'neetcode150') {
+      query += ' AND p.in_neetcode_150 = 1'
+    } else if (problemSet === 'google') {
+      query += ' AND p.in_google = 1'
+    }
+    // 'all' or undefined means no filter
+
+    // Order by ease_factor (lowest first = least familiar) and only return 1
+    query += ' ORDER BY pp.ease_factor ASC, p.neet_id ASC LIMIT 1'
+
     return db.prepare(query).all()
+  })
+
+  // Get total count of today's due reviews (for showing X remaining)
+  ipcMain.handle('get-today-reviews-count', (_event, problemSet?: ProblemSet) => {
+    let query = `
+      SELECT COUNT(*) as count
+      FROM problems p
+      JOIN problem_progress pp ON p.id = pp.problem_id
+      WHERE pp.next_review_date IS NOT NULL
+        AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
+        AND pp.status != 'new'
+    `
+
+    // Filter by problem set
+    if (problemSet === 'neetcode150') {
+      query += ' AND p.in_neetcode_150 = 1'
+    } else if (problemSet === 'google') {
+      query += ' AND p.in_google = 1'
+    }
+
+    const result = db.prepare(query).get() as { count: number }
+    return result.count
   })
 
   // Submit review result
@@ -198,9 +232,9 @@ export function setupIPC(db: Database.Database): void {
     const { problemId, quality } = data
 
     // Get problem difficulty
-    const problem = db
-      .prepare('SELECT difficulty FROM problems WHERE id = ?')
-      .get(problemId) as { difficulty: Difficulty } | undefined
+    const problem = db.prepare('SELECT difficulty FROM problems WHERE id = ?').get(problemId) as
+      | { difficulty: Difficulty }
+      | undefined
     const difficulty: Difficulty = problem?.difficulty ?? 'Medium'
 
     // Get interview mode preference
@@ -218,14 +252,16 @@ export function setupIPC(db: Database.Database): void {
       WHERE problem_id = ?
     `
       )
-      .get(problemId) as {
-      repetitions: number
-      interval: number
-      ease_factor: number
-      success_rate: number
-      consecutive_successes: number
-      total_reviews: number
-    } | undefined
+      .get(problemId) as
+      | {
+          repetitions: number
+          interval: number
+          ease_factor: number
+          success_rate: number
+          consecutive_successes: number
+          total_reviews: number
+        }
+      | undefined
 
     const currentState = {
       consecutiveSuccesses: progress?.consecutive_successes ?? 0,
@@ -521,8 +557,7 @@ export function setupIPC(db: Database.Database): void {
 
         // For v1.0 imports, estimate CIR fields from existing data
         const successRate = entry.success_rate ?? (entry.status === 'reviewing' ? 0.8 : 0.6)
-        const consecutiveSuccesses =
-          entry.consecutive_successes ?? Math.min(entry.repetitions, 5)
+        const consecutiveSuccesses = entry.consecutive_successes ?? Math.min(entry.repetitions, 5)
 
         // Upsert progress with CIR fields
         db.prepare(
@@ -615,9 +650,9 @@ export function setupIPC(db: Database.Database): void {
 
   // Get auto-sync preferences
   ipcMain.handle('get-auto-sync-preferences', () => {
-    const enabled = db.prepare('SELECT value FROM preferences WHERE key = ?').get('sync_enabled') as
-      | { value: string }
-      | undefined
+    const enabled = db
+      .prepare('SELECT value FROM preferences WHERE key = ?')
+      .get('sync_enabled') as { value: string } | undefined
 
     const folderPath = db
       .prepare('SELECT value FROM preferences WHERE key = ?')

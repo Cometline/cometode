@@ -1,9 +1,11 @@
 # Cometode - Menu Bar App
 
 ## Overview
+
 A macOS menu bar app for tracking coding problem practice using Anki-style SM-2 spaced repetition. Supports multiple problem sets: NeetCode 150, Google interview questions, and a combined set.
 
 ## Tech Stack
+
 - Electron 39 + electron-vite 5
 - Svelte 5 + TypeScript (using runes: `$state`, `$effect`, `$derived`)
 - Tailwind CSS 4 (`@tailwindcss/vite`)
@@ -13,6 +15,7 @@ A macOS menu bar app for tracking coding problem practice using Anki-style SM-2 
 ## App Features
 
 ### Menu Bar Popup
+
 - Click tray icon to show/hide popup (360x520px)
 - Right-click tray for quit/update options
 - Auto-hides when clicking outside
@@ -20,6 +23,7 @@ A macOS menu bar app for tracking coding problem practice using Anki-style SM-2 
 - Global keyboard shortcut (default: Cmd+Shift+M, customizable)
 
 ### Core Features
+
 - 150+ coding problems with categories/tags
 - Multiple problem sets: NeetCode 150, Google, All
 - SM-2 spaced repetition algorithm

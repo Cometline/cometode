@@ -51,8 +51,17 @@ export const problems = writable<Problem[]>([])
 // Selected problem
 export const selectedProblem = writable<Problem | null>(null)
 
-// Today's due reviews
-export const todayReviews = writable<Problem[]>([])
+// Today's due review (only 1 at a time)
+export const todayReview = writable<Problem | null>(null)
+
+// Today's total review count
+export const todayReviewsCount = writable<number>(0)
+
+// Completed reviews in current session (persists until app restart or manual reset)
+export const completedInSession = writable<number>(0)
+
+// Max reviews per session
+export const MAX_REVIEWS_PER_SESSION = 5
 
 // Categories
 export const categories = writable<string[]>([])
@@ -87,13 +96,28 @@ export async function loadProblems(currentFilters?: ProblemFilters): Promise<voi
   }
 }
 
-export async function loadTodayReviews(): Promise<void> {
+export async function loadTodayReviews(problemSet?: ProblemSet): Promise<void> {
   try {
-    const data = await window.api.getTodayReviews()
-    todayReviews.set(data)
+    // Don't reset completedInSession here - it persists across reloads
+    const data = await window.api.getTodayReviews(problemSet, 0)
+    const count = await window.api.getTodayReviewsCount(problemSet)
+    todayReview.set(data.length > 0 ? data[0] : null)
+    todayReviewsCount.set(count)
   } catch (error) {
     console.error('Failed to load today reviews:', error)
   }
+}
+
+export async function loadMoreReviews(problemSet?: ProblemSet): Promise<void> {
+  // Reset completed count to allow 5 more reviews
+  completedInSession.set(0)
+  await loadTodayReviews(problemSet)
+}
+
+export function markReviewCompleted(): void {
+  // Increment completed count and clear current review
+  completedInSession.update((count) => count + 1)
+  todayReview.set(null)
 }
 
 export async function loadCategories(): Promise<void> {
@@ -139,9 +163,17 @@ export async function submitReview(
 export async function startProblem(problemId: number): Promise<void> {
   try {
     await window.api.startProblem(problemId)
+    const set = await getCurrentProblemSetValue()
     await loadProblems()
-    await loadTodayReviews()
+    await loadTodayReviews(set)
   } catch (error) {
     console.error('Failed to start problem:', error)
   }
+}
+
+// Helper to get current problem set value
+async function getCurrentProblemSetValue(): Promise<ProblemSet> {
+  let value: ProblemSet = 'neetcode150'
+  currentProblemSet.subscribe((v) => (value = v))()
+  return value
 }

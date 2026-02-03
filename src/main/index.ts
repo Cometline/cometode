@@ -306,11 +306,19 @@ function setupPopupIPC(): void {
 
   ipcMain.handle('check-for-updates', async () => {
     if (is.dev) {
-      return { checking: false, updateReady: false, message: 'Updates are disabled in development mode' }
+      return {
+        checking: false,
+        updateReady: false,
+        message: 'Updates are disabled in development mode'
+      }
     }
     try {
       await autoUpdater.checkForUpdatesAndNotify()
-      return { checking: true, updateReady, message: updateReady ? 'Update ready to install' : 'Checking for updates...' }
+      return {
+        checking: true,
+        updateReady,
+        message: updateReady ? 'Update ready to install' : 'Checking for updates...'
+      }
     } catch (error) {
       console.error('Failed to check for updates:', error)
       return { checking: false, updateReady: false, message: 'Failed to check for updates' }
@@ -370,9 +378,12 @@ app.whenReady().then(() => {
   }, 3000)
 
   // Check every hour for due reviews
-  setInterval(() => {
-    checkAndShowNotification()
-  }, 60 * 60 * 1000)
+  setInterval(
+    () => {
+      checkAndShowNotification()
+    },
+    60 * 60 * 1000
+  )
 
   // Auto-sync: Check for import on startup (after a short delay to ensure UI is ready)
   setTimeout(() => {
@@ -384,9 +395,12 @@ app.whenReady().then(() => {
     checkAndPerformAutoExport()
   }, 5000)
 
-  setInterval(() => {
-    checkAndPerformAutoExport()
-  }, 60 * 60 * 1000)
+  setInterval(
+    () => {
+      checkAndPerformAutoExport()
+    },
+    60 * 60 * 1000
+  )
 
   // Setup auto-updater (only in production)
   if (!is.dev) {
@@ -451,9 +465,12 @@ function setupAutoUpdater(): void {
   autoUpdater.checkForUpdatesAndNotify()
 
   // Check for updates every 4 hours
-  setInterval(() => {
-    autoUpdater.checkForUpdatesAndNotify()
-  }, 4 * 60 * 60 * 1000)
+  setInterval(
+    () => {
+      autoUpdater.checkForUpdatesAndNotify()
+    },
+    4 * 60 * 60 * 1000
+  )
 }
 
 // ===== Auto-Sync Functions =====
@@ -468,9 +485,9 @@ interface ExportData {
 function getAutoSyncPreferences(): { enabled: boolean; folderPath: string | null } {
   try {
     const db = getDatabase()
-    const enabled = db.prepare('SELECT value FROM preferences WHERE key = ?').get('sync_enabled') as
-      | { value: string }
-      | undefined
+    const enabled = db
+      .prepare('SELECT value FROM preferences WHERE key = ?')
+      .get('sync_enabled') as { value: string } | undefined
     const folderPath = db
       .prepare('SELECT value FROM preferences WHERE key = ?')
       .get('sync_folder_path') as { value: string } | undefined
@@ -623,9 +640,9 @@ function performAutoImportOnStartup(): void {
         last_reviewed_at: string | null
         total_reviews: number
       }[]) {
-        const problem = db.prepare('SELECT id FROM problems WHERE neet_id = ?').get(entry.neet_id) as
-          | { id: number }
-          | undefined
+        const problem = db
+          .prepare('SELECT id FROM problems WHERE neet_id = ?')
+          .get(entry.neet_id) as { id: number } | undefined
 
         if (!problem) continue
 
