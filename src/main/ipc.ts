@@ -177,13 +177,21 @@ export function setupIPC(db: Database.Database): void {
         p.neet_id,
         p.title,
         p.difficulty,
+        p.categories,
+        p.tags,
         p.leetcode_url,
         p.neetcode_url,
-        pp.repetitions,
-        pp.ease_factor,
-        pp.success_rate,
-        pp.consecutive_successes,
-        pp.next_review_date
+        p.in_neetcode_150,
+        p.in_google,
+        COALESCE(pp.status, 'new') as status,
+        COALESCE(pp.repetitions, 0) as repetitions,
+        COALESCE(pp.interval, 0) as interval,
+        COALESCE(pp.ease_factor, ${INITIAL_EASE_FACTOR}) as ease_factor,
+        COALESCE(pp.success_rate, ${INITIAL_SUCCESS_RATE}) as success_rate,
+        COALESCE(pp.consecutive_successes, 0) as consecutive_successes,
+        pp.next_review_date,
+        COALESCE(pp.total_reviews, 0) as total_reviews,
+        pp.last_reviewed_at
       FROM problems p
       JOIN problem_progress pp ON p.id = pp.problem_id
       WHERE pp.next_review_date IS NOT NULL
