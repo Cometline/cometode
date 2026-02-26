@@ -158,6 +158,8 @@ export function initDatabase(): Database.Database {
   } else {
     // Existing database - run migrations first
     runMigrations(db)
+    // Always upsert to sync new/updated problems from JSON
+    seedProblems(db, true)
   }
 
   // Always ensure indexes exist (safe to run multiple times)
