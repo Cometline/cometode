@@ -357,7 +357,7 @@
                   onclick={() => {
                     clearFilters()
                   }}
-                  class="w-full text-xs text-red-500 hover:text-red-600"
+                  class="w-full text-xs text-red-500 hover:text-red-600 cursor-pointer"
                 >
                   Clear filters
                 </button>
@@ -385,7 +385,7 @@
       <button
         transition:slide={{ duration: 300, delay: (index * 20) % 100 }}
         onclick={() => onSelectProblem(problem)}
-        class="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 text-left transition-colors"
+        class="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 text-left transition-colors cursor-pointer"
       >
         <!-- Status Icon -->
         <div class="w-5 shrink-0">

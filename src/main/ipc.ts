@@ -125,14 +125,15 @@ export function setupIPC(db: Database.Database): void {
     }
 
     // Sort order:
-    // 1. Due for review (has next_review_date <= today, using local timezone)
-    // 2. New/never practiced (total_reviews = 0 or NULL)
-    // 3. Then by problem number
+    // 1. Unsolved/new problems first (never reviewed)
+    // 2. Learning/practiced problems in the middle
+    // 3. Reviewing problems at the bottom
+    // 4. Then by problem number
     query += ` ORDER BY
       CASE
-        WHEN pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime') THEN 0
-        WHEN COALESCE(pp.total_reviews, 0) = 0 THEN 1
-        ELSE 2
+        WHEN COALESCE(pp.total_reviews, 0) = 0 THEN 0
+        WHEN COALESCE(pp.status, 'new') = 'reviewing' THEN 2
+        ELSE 1
       END ASC,
       p.neet_id ASC`
 

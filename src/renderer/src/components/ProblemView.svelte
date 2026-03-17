@@ -100,7 +100,7 @@
   <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
     <button
       onclick={onBack}
-      class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
       aria-label="Go back"
     >
       <svg
@@ -178,7 +178,7 @@
             href={problem.neetcode_url}
             target="_blank"
             rel="noopener noreferrer"
-            class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-400/90 hover:bg-orange-500/95 text-white rounded-md text-sm font-medium transition-all shadow-sm hover:scale-105"
+            class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-400/90 hover:bg-orange-500/95 text-white rounded-md text-sm font-medium transition-all shadow-sm hover:scale-105 cursor-pointer"
           >
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -195,7 +195,7 @@
               href={problem.leetcode_url}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-amber-500/90 hover:bg-amber-600/95 text-white rounded-md text-sm font-medium transition-all shadow-sm hover:scale-105"
+              class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-amber-500/90 hover:bg-amber-600/95 text-white rounded-md text-sm font-medium transition-all shadow-sm hover:scale-105 cursor-pointer"
             >
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path

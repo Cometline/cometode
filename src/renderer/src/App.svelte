@@ -412,7 +412,7 @@
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Settings</h3>
         <button
           onclick={closeSettings}
-          class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
           aria-label="Close settings"
         >
           <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,7 +449,7 @@
           {/if}
           <button
             onclick={startRecordingShortcut}
-            class="px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-md transition-colors"
+            class="px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-md transition-colors cursor-pointer"
           >
             {isRecordingShortcut ? 'Cancel' : 'Change'}
           </button>
@@ -476,7 +476,7 @@
             onclick={async () => {
               await window.api.installUpdate()
             }}
-            class="w-full px-3 py-2 text-sm font-medium text-white bg-emerald-500/90 hover:bg-emerald-600/95 rounded-md transition-colors shadow-sm"
+            class="w-full px-3 py-2 text-sm font-medium text-white bg-emerald-500/90 hover:bg-emerald-600/95 rounded-md transition-colors shadow-sm cursor-pointer"
           >
             🔄 Restart to Update
           </button>
@@ -502,7 +502,7 @@
               isCheckingUpdate = false
             }}
             disabled={isCheckingUpdate}
-            class="w-full px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+            class="w-full px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isCheckingUpdate ? 'Checking...' : 'Check for Updates'}
           </button>
@@ -554,14 +554,14 @@
           <button
             onclick={handleExport}
             disabled={isExporting}
-            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isExporting ? 'Exporting...' : 'Export'}
           </button>
           <button
             onclick={handleImport}
             disabled={isImporting}
-            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50"
+            class="flex-1 px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 rounded-md transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isImporting ? 'Importing...' : 'Import'}
           </button>
@@ -615,7 +615,7 @@
               <button
                 onclick={handleSelectSyncFolder}
                 disabled={isSelectingFolder}
-                class="px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-md transition-colors disabled:opacity-50"
+                class="px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-md transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 {isSelectingFolder ? '...' : 'Choose'}
               </button>
@@ -628,7 +628,7 @@
                 </span>
                 <button
                   onclick={handleManualSync}
-                  class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                  class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
                 >
                   Sync now
                 </button>
@@ -659,7 +659,7 @@
             closeSettings()
             handleReset()
           }}
-          class="w-full px-3 py-2 text-sm font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-md transition-colors"
+          class="w-full px-3 py-2 text-sm font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-md transition-colors cursor-pointer"
         >
           Reset All Progress
         </button>
@@ -698,14 +698,14 @@
           <button
             onclick={cancelReset}
             disabled={isResetting}
-            class="flex-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors disabled:opacity-50"
+            class="flex-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Cancel
           </button>
           <button
             onclick={confirmReset}
             disabled={isResetting}
-            class="flex-1 px-3 py-2 text-sm font-medium text-white bg-rose-500/90 hover:bg-rose-600/95 rounded-md transition-colors shadow-sm disabled:opacity-50"
+            class="flex-1 px-3 py-2 text-sm font-medium text-white bg-rose-500/90 hover:bg-rose-600/95 rounded-md transition-colors shadow-sm disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isResetting ? 'Resetting...' : 'Reset'}
           </button>
