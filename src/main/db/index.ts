@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS problem_progress (
   repetitions INTEGER DEFAULT 0,
   interval INTEGER DEFAULT 0,
   ease_factor REAL DEFAULT 2.5,
+  success_rate REAL DEFAULT 0.5,
+  consecutive_successes INTEGER DEFAULT 0,
   next_review_date TEXT,
   first_learned_at DATETIME,
   last_reviewed_at DATETIME,
@@ -149,6 +151,9 @@ export function initDatabase(): Database.Database {
   // Run schema (creates tables if not exist)
   db.exec(SCHEMA)
 
+  // Always run migrations after schema creation to handle older partial schemas
+  runMigrations(db)
+
   // Check if problems table exists and has data
   const count = db.prepare('SELECT COUNT(*) as count FROM problems').get() as { count: number }
 
@@ -156,9 +161,7 @@ export function initDatabase(): Database.Database {
     // Fresh install - seed all problems
     seedProblems(db)
   } else {
-    // Existing database - run migrations first
-    runMigrations(db)
-    // Always upsert to sync new/updated problems from JSON
+    // Existing database - sync new/updated problems from JSON
     seedProblems(db, true)
   }
 
