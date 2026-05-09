@@ -119,13 +119,13 @@ export async function loadProblems(currentFilters?: ProblemFilters): Promise<voi
   }
 }
 
-export async function loadTodayReviews(problemSet?: ProblemSet): Promise<void> {
+export async function loadTodayReviews(): Promise<void> {
   try {
     // Auto-reset session if a new day has started
     checkAndResetSessionIfNewDay()
 
-    const data = await window.api.getTodayReviews(problemSet, 0)
-    const count = await window.api.getTodayReviewsCount(problemSet)
+    const data = await window.api.getTodayReviews()
+    const count = await window.api.getTodayReviewsCount()
     todayReview.set(data.length > 0 ? data[0] : null)
     todayReviewsCount.set(count)
   } catch (error) {
@@ -133,10 +133,10 @@ export async function loadTodayReviews(problemSet?: ProblemSet): Promise<void> {
   }
 }
 
-export async function loadMoreReviews(problemSet?: ProblemSet): Promise<void> {
+export async function loadMoreReviews(): Promise<void> {
   // Reset completed count to allow 5 more reviews
   completedInSession.set(0)
-  await loadTodayReviews(problemSet)
+  await loadTodayReviews()
 }
 
 export function markReviewCompleted(): void {
@@ -196,17 +196,11 @@ export async function submitReview(
 export async function startProblem(problemId: number): Promise<void> {
   try {
     await window.api.startProblem(problemId)
-    const set = await getCurrentProblemSetValue()
     await loadProblems()
-    await loadTodayReviews(set)
+    await loadTodayReviews()
   } catch (error) {
     console.error('Failed to start problem:', error)
   }
 }
 
-// Helper to get current problem set value
-async function getCurrentProblemSetValue(): Promise<ProblemSet> {
-  let value: ProblemSet = 'neetcode150'
-  currentProblemSet.subscribe((v) => (value = v))()
-  return value
-}
+

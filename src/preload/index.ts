@@ -18,14 +18,11 @@ const api = {
 
   getProblem: (problemId: number) => ipcRenderer.invoke('get-problem', problemId),
 
-  getTodayReviews: (problemSet?: ProblemSet, offset?: number) =>
-    ipcRenderer.invoke('get-today-reviews', problemSet, offset),
+  getTodayReviews: () => ipcRenderer.invoke('get-today-reviews'),
 
-  getTodayReviewsCount: (problemSet?: ProblemSet) =>
-    ipcRenderer.invoke('get-today-reviews-count', problemSet),
+  getTodayReviewsCount: () => ipcRenderer.invoke('get-today-reviews-count'),
 
-  getTomorrowReviews: (problemSet?: ProblemSet) =>
-    ipcRenderer.invoke('get-tomorrow-reviews', problemSet),
+  getTomorrowReviews: () => ipcRenderer.invoke('get-tomorrow-reviews'),
 
   startProblem: (problemId: number) => ipcRenderer.invoke('start-problem', problemId),
 

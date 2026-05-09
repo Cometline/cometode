@@ -171,8 +171,8 @@ export function setupIPC(db: Database.Database): void {
 
   // Get today's due reviews (using local timezone)
   // Returns only 1 problem at a time (the one with lowest ease_factor)
-  ipcMain.handle('get-today-reviews', (_event, problemSet?: ProblemSet) => {
-    let query = `
+  ipcMain.handle('get-today-reviews', () => {
+    const query = `
       SELECT
         p.id,
         p.neet_id,
@@ -198,25 +198,15 @@ export function setupIPC(db: Database.Database): void {
       WHERE pp.next_review_date IS NOT NULL
         AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
+      ORDER BY pp.ease_factor ASC, p.neet_id ASC LIMIT 1
     `
-
-    // Filter by problem set
-    if (problemSet === 'neetcode150') {
-      query += ' AND p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      query += ' AND p.in_google = 1'
-    }
-    // 'all' or undefined means no filter
-
-    // Order by ease_factor (lowest first = least familiar) and only return 1
-    query += ' ORDER BY pp.ease_factor ASC, p.neet_id ASC LIMIT 1'
 
     return db.prepare(query).all()
   })
 
   // Get total count of today's due reviews (for showing X remaining)
-  ipcMain.handle('get-today-reviews-count', (_event, problemSet?: ProblemSet) => {
-    let query = `
+  ipcMain.handle('get-today-reviews-count', () => {
+    const query = `
       SELECT COUNT(*) as count
       FROM problems p
       JOIN problem_progress pp ON p.id = pp.problem_id
@@ -224,13 +214,6 @@ export function setupIPC(db: Database.Database): void {
         AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
     `
-
-    // Filter by problem set
-    if (problemSet === 'neetcode150') {
-      query += ' AND p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      query += ' AND p.in_google = 1'
-    }
 
     const result = db.prepare(query).get() as { count: number }
     return result.count

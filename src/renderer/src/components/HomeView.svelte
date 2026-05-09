@@ -46,7 +46,7 @@
   $effect(() => {
     initProblemSet().then(() => {
       const set = $currentProblemSet
-      loadTodayReviews(set)
+      loadTodayReviews()
       loadStats(set)
       loadCategories()
     })
@@ -62,7 +62,7 @@
       dueOnly: showDueOnly || undefined
     }
     filters.set(newFilters)
-    await Promise.all([loadProblems(newFilters), loadStats(set), loadTodayReviews(set)])
+    await Promise.all([loadProblems(newFilters), loadStats(set), loadTodayReviews()])
   }
 
   // Apply filters when search/filter changes
@@ -146,7 +146,7 @@
   const remainingQuota = $derived(sessionQuota - $completedInSession)
 
   async function handleLoadMore(): Promise<void> {
-    await loadMoreReviews($currentProblemSet)
+    await loadMoreReviews()
   }
 
   // Start review with the current problem

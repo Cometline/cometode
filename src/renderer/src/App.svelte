@@ -48,8 +48,7 @@
     // Initialize async operations
     const init = async (): Promise<void> => {
       await theme.init()
-      const set = $currentProblemSet
-      await loadTodayReviews(set)
+      await loadTodayReviews()
       currentShortcut = await window.api.getShortcut()
       await refreshUpdateStatus()
       await loadAutoSyncPreferences()
@@ -68,7 +67,7 @@
     const handleVisibilityChange = async (): Promise<void> => {
       if (document.visibilityState === 'visible') {
         const set = $currentProblemSet
-        await Promise.all([loadTodayReviews(set), loadProblems(), loadStats(set)])
+        await Promise.all([loadTodayReviews(), loadProblems(), loadStats(set)])
       }
     }
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -107,7 +106,7 @@
     try {
       await window.api.resetAllProgress()
       const set = $currentProblemSet
-      await Promise.all([loadProblems(), loadTodayReviews(set), loadStats(set)])
+      await Promise.all([loadProblems(), loadTodayReviews(), loadStats(set)])
       showResetConfirm = false
       goHome()
     } finally {
@@ -230,7 +229,7 @@
           importExportMessage = { type: 'success', text: `Imported ${result.imported} problems` }
           // Refresh data
           const set = $currentProblemSet
-          await Promise.all([loadProblems(), loadTodayReviews(set), loadStats(set)])
+          await Promise.all([loadProblems(), loadTodayReviews(), loadStats(set)])
         } else {
           importExportMessage = { type: 'error', text: result.error || 'Import failed' }
         }

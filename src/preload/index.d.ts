@@ -86,9 +86,9 @@ export interface ExportData {
 export interface API {
   getProblems: (filters?: ProblemFilters) => Promise<Problem[]>
   getProblem: (problemId: number) => Promise<Problem | null>
-  getTodayReviews: (problemSet?: ProblemSet, offset?: number) => Promise<Problem[]>
-  getTodayReviewsCount: (problemSet?: ProblemSet) => Promise<number>
-  getTomorrowReviews: (problemSet?: ProblemSet) => Promise<Problem[]>
+  getTodayReviews: () => Promise<Problem[]>
+  getTodayReviewsCount: () => Promise<number>
+  getTomorrowReviews: () => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
   getStats: (problemSet?: ProblemSet) => Promise<Stats>
