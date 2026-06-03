@@ -12,6 +12,8 @@
     loadMoreReviews,
     loadCategories,
     filterUIState,
+    initFilterUIState,
+    setFilterUIState,
     currentProblemSet,
     setProblemSet,
     initProblemSet,
@@ -31,10 +33,13 @@
   let selectedDifficulties = $state<string[]>([...$filterUIState.selectedDifficulties])
   let showDueOnly = $state($filterUIState.showDueOnly)
   let showFilterMenu = $state($filterUIState.showFilterMenu)
+  let filtersInitialized = $state(false)
 
   // Sync local state back to store when changed
   $effect(() => {
-    filterUIState.set({
+    if (!filtersInitialized) return
+
+    setFilterUIState({
       searchText,
       selectedDifficulties,
       showDueOnly,
@@ -44,7 +49,14 @@
 
   // Load data on mount (only once, not reactive)
   $effect(() => {
-    initProblemSet().then(() => {
+    initProblemSet().then(async () => {
+      const savedFilterState = await initFilterUIState()
+      searchText = savedFilterState.searchText
+      selectedDifficulties = [...savedFilterState.selectedDifficulties]
+      showDueOnly = savedFilterState.showDueOnly
+      showFilterMenu = false
+      filtersInitialized = true
+
       const set = $currentProblemSet
       loadTodayReviews()
       loadStats(set)
@@ -67,6 +79,8 @@
 
   // Apply filters when search/filter changes
   $effect(() => {
+    if (!filtersInitialized) return
+
     // Spread to ensure Svelte tracks the array contents
     const difficulties = [...selectedDifficulties]
     const newFilters: typeof $filters = {

@@ -1,6 +1,22 @@
 import { writable, derived } from 'svelte/store'
 import type { Problem, ProblemFilters, ProblemSet } from '../../../preload/index.d'
 
+interface FilterUIState {
+  searchText: string
+  selectedDifficulties: string[]
+  showDueOnly: boolean
+  showFilterMenu: boolean
+}
+
+const VALID_DIFFICULTIES = ['Easy', 'Medium', 'Hard']
+
+const DEFAULT_FILTER_UI_STATE: FilterUIState = {
+  searchText: '',
+  selectedDifficulties: [],
+  showDueOnly: false,
+  showFilterMenu: false
+}
+
 // Problem set preference
 export const currentProblemSet = writable<ProblemSet>('neetcode150')
 
@@ -33,17 +49,52 @@ export const filters = writable<ProblemFilters>({
 })
 
 // UI filter state (persists across view changes)
-export const filterUIState = writable<{
-  searchText: string
-  selectedDifficulties: string[]
-  showDueOnly: boolean
-  showFilterMenu: boolean
-}>({
-  searchText: '',
-  selectedDifficulties: [],
-  showDueOnly: false,
-  showFilterMenu: false
-})
+export const filterUIState = writable<FilterUIState>(DEFAULT_FILTER_UI_STATE)
+
+function normalizeFilterUIState(value: unknown): FilterUIState {
+  if (!value || typeof value !== 'object') return DEFAULT_FILTER_UI_STATE
+
+  const parsed = value as Partial<FilterUIState>
+  const selectedDifficulties = Array.isArray(parsed.selectedDifficulties)
+    ? parsed.selectedDifficulties.filter((difficulty) => VALID_DIFFICULTIES.includes(difficulty))
+    : []
+
+  return {
+    searchText: typeof parsed.searchText === 'string' ? parsed.searchText : '',
+    selectedDifficulties,
+    showDueOnly: parsed.showDueOnly === true,
+    showFilterMenu: false
+  }
+}
+
+export async function initFilterUIState(): Promise<FilterUIState> {
+  try {
+    const saved = await window.api.getPreference('filterUIState')
+    if (saved !== null) {
+      const state = normalizeFilterUIState(JSON.parse(saved))
+      filterUIState.set(state)
+      return state
+    }
+  } catch (error) {
+    console.error('Failed to load filter preference:', error)
+  }
+
+  filterUIState.set(DEFAULT_FILTER_UI_STATE)
+  return DEFAULT_FILTER_UI_STATE
+}
+
+export async function setFilterUIState(state: FilterUIState): Promise<void> {
+  const normalized = normalizeFilterUIState(state)
+  filterUIState.set({ ...normalized, showFilterMenu: state.showFilterMenu })
+  await window.api.savePreference({
+    key: 'filterUIState',
+    value: JSON.stringify({
+      searchText: normalized.searchText,
+      selectedDifficulties: normalized.selectedDifficulties,
+      showDueOnly: normalized.showDueOnly
+    })
+  })
+}
 
 // All problems
 export const problems = writable<Problem[]>([])
@@ -159,7 +210,7 @@ export async function loadTodayReviews(): Promise<void> {
 }
 
 export async function loadMoreReviews(): Promise<void> {
-  // Reset completed count to allow 5 more reviews
+  // Reset completed count to allow another daily quota of reviews
   completedInSession.set(0)
   await loadTodayReviews()
 }
