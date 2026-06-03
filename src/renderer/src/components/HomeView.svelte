@@ -6,7 +6,7 @@
     todayReview,
     todayReviewsCount,
     completedInSession,
-    MAX_REVIEWS_PER_SESSION,
+    dailyReviewCount,
     loadProblems,
     loadTodayReviews,
     loadMoreReviews,
@@ -134,9 +134,9 @@
     $stats ? Math.round(($stats.practiced / $stats.total) * 100) : 0
   )
 
-  // Current session quota = min(MAX_REVIEWS_PER_SESSION, total due today)
+  // Current session quota = min(daily review preference, total due today)
   const sessionQuota = $derived(
-    Math.min(MAX_REVIEWS_PER_SESSION, $todayReviewsCount + $completedInSession)
+    Math.min($dailyReviewCount, $todayReviewsCount + $completedInSession)
   )
 
   // Check if we can still review (under quota and have reviews available)

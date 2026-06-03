@@ -8,7 +8,12 @@
     loadTodayReviews,
     loadProblems,
     currentProblemSet,
-    isReviewQueueProblem
+    isReviewQueueProblem,
+    dailyReviewCount,
+    initDailyReviewCount,
+    setDailyReviewCount,
+    MIN_DAILY_REVIEW_COUNT,
+    MAX_DAILY_REVIEW_COUNT
   } from './stores/problems'
   import { loadStats } from './stores/stats'
   import { theme } from './stores/theme'
@@ -48,6 +53,7 @@
     // Initialize async operations
     const init = async (): Promise<void> => {
       await theme.init()
+      await initDailyReviewCount()
       await loadTodayReviews()
       currentShortcut = await window.api.getShortcut()
       await refreshUpdateStatus()
@@ -126,6 +132,11 @@
     showSettings = false
     isRecordingShortcut = false
     recordedKeys = []
+  }
+
+  async function handleDailyReviewCountChange(e: Event): Promise<void> {
+    const input = e.currentTarget as HTMLInputElement
+    await setDailyReviewCount(Number(input.value))
   }
 
   function startRecordingShortcut(): void {
@@ -456,6 +467,39 @@
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
           Press a key combination with Cmd/Ctrl
         </p>
+      </div>
+
+      <!-- Daily Review Count -->
+      <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Daily Reviews
+            </span>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              How many due problems to review per session
+            </p>
+          </div>
+          <div
+            class="px-2 py-1 text-sm font-semibold rounded-md bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300"
+          >
+            {$dailyReviewCount}
+          </div>
+        </div>
+        <input
+          type="range"
+          min={MIN_DAILY_REVIEW_COUNT}
+          max={MAX_DAILY_REVIEW_COUNT}
+          step="1"
+          value={$dailyReviewCount}
+          oninput={handleDailyReviewCountChange}
+          class="w-full accent-indigo-500 cursor-pointer"
+          aria-label="Daily review count"
+        />
+        <div class="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <span>{MIN_DAILY_REVIEW_COUNT}</span>
+          <span>{MAX_DAILY_REVIEW_COUNT}</span>
+        </div>
       </div>
 
       <!-- Updates -->

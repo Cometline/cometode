@@ -66,8 +66,33 @@ export const completedInSession = writable<number>(0)
 // Track the date when the current session started (for auto-reset on new day)
 let sessionDate: string | null = null
 
-// Max reviews per session
-export const MAX_REVIEWS_PER_SESSION = 5
+// Daily review count preference
+export const MIN_DAILY_REVIEW_COUNT = 1
+export const MAX_DAILY_REVIEW_COUNT = 10
+export const DEFAULT_DAILY_REVIEW_COUNT = 5
+export const dailyReviewCount = writable<number>(DEFAULT_DAILY_REVIEW_COUNT)
+
+function clampDailyReviewCount(count: number): number {
+  if (!Number.isFinite(count)) return DEFAULT_DAILY_REVIEW_COUNT
+  return Math.min(MAX_DAILY_REVIEW_COUNT, Math.max(MIN_DAILY_REVIEW_COUNT, Math.round(count)))
+}
+
+export async function initDailyReviewCount(): Promise<void> {
+  try {
+    const saved = await window.api.getPreference('dailyReviewCount')
+    if (saved !== null) {
+      dailyReviewCount.set(clampDailyReviewCount(Number(saved)))
+    }
+  } catch (error) {
+    console.error('Failed to load daily review count preference:', error)
+  }
+}
+
+export async function setDailyReviewCount(count: number): Promise<void> {
+  const clamped = clampDailyReviewCount(count)
+  dailyReviewCount.set(clamped)
+  await window.api.savePreference({ key: 'dailyReviewCount', value: String(clamped) })
+}
 
 // Get today's date string in local timezone (YYYY-MM-DD)
 function getLocalDateString(): string {
@@ -202,5 +227,3 @@ export async function startProblem(problemId: number): Promise<void> {
     console.error('Failed to start problem:', error)
   }
 }
-
-
