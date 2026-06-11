@@ -3,9 +3,8 @@
  *
  * A spaced repetition algorithm optimized for coding interview preparation.
  * Key differences from SM-2:
- * - Max interval of 28 days (vs unbounded)
  * - Difficulty-weighted intervals (Easy 0.7x / Hard 1.3x)
- * - Doubling progression (1→2→4→8→16→28)
+ * - Doubling progression (1→2→4→8→16→28→56...)
  * - Success rate tracking (< 80% shortens intervals)
  * - Interview mode (halves all intervals)
  * - Local timezone support
@@ -33,7 +32,6 @@ export interface CIRResult {
 }
 
 // Algorithm constants
-const MAX_INTERVAL_DAYS = 28
 const BASE_INTERVALS = [1, 2, 4, 8, 16, 28]
 const DIFFICULTY_MULTIPLIERS: Record<Difficulty, number> = {
   Easy: 1.1, // Easier to remember, can wait longer
@@ -54,8 +52,12 @@ export const INITIAL_SUCCESS_RATE = 0.5
  * Get the base interval for a given consecutive success count
  */
 function getBaseInterval(consecutiveSuccesses: number): number {
-  const index = Math.min(consecutiveSuccesses, BASE_INTERVALS.length - 1)
-  return BASE_INTERVALS[index]
+  if (consecutiveSuccesses < BASE_INTERVALS.length) {
+    return BASE_INTERVALS[consecutiveSuccesses]
+  }
+
+  const extraSuccesses = consecutiveSuccesses - (BASE_INTERVALS.length - 1)
+  return BASE_INTERVALS[BASE_INTERVALS.length - 1] * 2 ** extraSuccesses
 }
 
 /**
@@ -132,9 +134,6 @@ export function calculateNextReview(
   if (interviewMode) {
     newInterval = Math.max(1, Math.round(newInterval * INTERVIEW_MODE_MULTIPLIER))
   }
-
-  // Cap at maximum interval
-  newInterval = Math.min(MAX_INTERVAL_DAYS, newInterval)
 
   // Ensure minimum interval of 1 day
   newInterval = Math.max(1, newInterval)
