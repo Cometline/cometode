@@ -17,6 +17,7 @@ import { autoUpdater } from 'electron-updater'
 import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase, getDatabase } from './db'
 import { setupIPC } from './ipc'
+import { INITIAL_SUCCESS_RATE } from './lib/cir'
 
 let popupWindow: BrowserWindow | null = null
 let tray: Tray | null = null
@@ -26,6 +27,7 @@ let updateReady: boolean = false
 let isQuitting: boolean = false
 let updateInfo: { version: string; progress: number } | null = null
 let lastAutoExportDate: string | null = null
+let lastImportedExportDate: string | null = null
 
 const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 520
@@ -387,8 +389,13 @@ app.whenReady().then(() => {
 
   // Auto-sync: Check for import on startup (after a short delay to ensure UI is ready)
   setTimeout(() => {
-    performAutoImportOnStartup()
+    performAutoImportWithNotification()
   }, 2000)
+
+  // Auto-sync: keep polling the shared folder for changes from other devices
+  setInterval(() => {
+    performAutoImportWithNotification()
+  }, 10 * 1000)
 
   // Auto-sync: Check for daily export on startup and every hour
   setTimeout(() => {
@@ -475,6 +482,20 @@ function setupAutoUpdater(): void {
 
 // ===== Auto-Sync Functions =====
 
+interface ExportProgressEntry {
+  neet_id: number
+  status: string
+  repetitions: number
+  interval: number
+  ease_factor: number
+  success_rate?: number
+  consecutive_successes?: number
+  next_review_date: string | null
+  first_learned_at: string | null
+  last_reviewed_at: string | null
+  total_reviews: number
+}
+
 interface ExportData {
   version: string
   exportDate: string
@@ -504,6 +525,12 @@ function getAutoSyncPreferences(): { enabled: boolean; folderPath: string | null
 
 function performAutoExport(folderPath: string): boolean {
   try {
+    // Pull in whatever another device may have already pushed to the shared
+    // file before we snapshot our own state - otherwise our export would
+    // blindly overwrite the shared file with a copy that doesn't know about
+    // changes we haven't imported yet (a classic "pull before push" race).
+    performAutoImport()
+
     const db = getDatabase()
 
     // Get export data
@@ -516,6 +543,8 @@ function performAutoExport(folderPath: string): boolean {
         pp.repetitions,
         pp.interval,
         pp.ease_factor,
+        pp.success_rate,
+        pp.consecutive_successes,
         pp.next_review_date,
         pp.first_learned_at,
         pp.last_reviewed_at,
@@ -580,82 +609,80 @@ function checkAndPerformAutoExport(): void {
   }
 }
 
-function performAutoImportOnStartup(): void {
+/**
+ * Merge the shared sync file into the local DB, one problem at a time.
+ *
+ * Unlike the old whole-file approach (which compared a single global
+ * timestamp and then blindly overwrote every row), this compares each
+ * imported entry's `last_reviewed_at` against the *same problem's* local
+ * `last_reviewed_at` and only overwrites that row if the import is actually
+ * newer. This prevents a device that's globally "ahead" (has reviewed some
+ * other problem more recently) from clobbering a problem's progress that was
+ * actually more recently/advanced on this machine.
+ *
+ * Returns the number of rows actually updated (0 if nothing changed).
+ */
+function performAutoImport(): number {
   try {
     const { enabled, folderPath } = getAutoSyncPreferences()
 
     if (!enabled || !folderPath) {
-      return
+      return 0
     }
 
     const filePath = path.join(folderPath, 'cometode-progress.json')
 
-    // Check if file exists
     if (!existsSync(filePath)) {
-      console.log('Auto-import: No sync file found, skipping')
-      return
+      return 0
     }
 
-    // Read export file
     const content = readFileSync(filePath, 'utf-8')
     const exportData = JSON.parse(content) as ExportData
 
     if (!exportData.exportDate || !exportData.progress) {
       console.warn('Auto-import: Invalid file format')
-      return
+      return 0
     }
 
-    const exportDate = new Date(exportData.exportDate)
+    // Nothing has changed in the shared file since we last merged it.
+    if (lastImportedExportDate === exportData.exportDate) {
+      return 0
+    }
 
-    // Get max last_reviewed_at from DB
     const db = getDatabase()
-    const maxReview = db
-      .prepare('SELECT MAX(last_reviewed_at) as max_date FROM problem_progress')
-      .get() as { max_date: string | null }
-
-    const maxLocalDate = maxReview.max_date ? new Date(maxReview.max_date) : null
-
-    // Compare dates - import if export is newer
-    const shouldImport = !maxLocalDate || exportDate > maxLocalDate
-
-    if (!shouldImport) {
-      console.log('Auto-import: Local data is up to date, skipping')
-      return
-    }
-
-    console.log(`Auto-import: Importing data from ${exportData.exportDate}`)
-
-    // Perform import using transaction
     let importedCount = 0
 
     const transaction = db.transaction(() => {
-      for (const entry of exportData.progress as {
-        neet_id: number
-        status: string
-        repetitions: number
-        interval: number
-        ease_factor: number
-        next_review_date: string | null
-        first_learned_at: string | null
-        last_reviewed_at: string | null
-        total_reviews: number
-      }[]) {
+      for (const entry of exportData.progress as ExportProgressEntry[]) {
         const problem = db
           .prepare('SELECT id FROM problems WHERE neet_id = ?')
           .get(entry.neet_id) as { id: number } | undefined
 
         if (!problem) continue
 
+        const localRow = db
+          .prepare('SELECT last_reviewed_at FROM problem_progress WHERE problem_id = ?')
+          .get(problem.id) as { last_reviewed_at: string | null } | undefined
+
+        // Per-problem freshness check: skip unless the imported entry is
+        // strictly newer than what we already have for THIS problem.
+        if (localRow?.last_reviewed_at) {
+          if (!entry.last_reviewed_at) continue
+          if (new Date(entry.last_reviewed_at) <= new Date(localRow.last_reviewed_at)) continue
+        }
+
         db.prepare(
           `
           INSERT INTO problem_progress
-          (problem_id, status, repetitions, interval, ease_factor, next_review_date, first_learned_at, last_reviewed_at, total_reviews)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (problem_id, status, repetitions, interval, ease_factor, success_rate, consecutive_successes, next_review_date, first_learned_at, last_reviewed_at, total_reviews)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(problem_id) DO UPDATE SET
             status = excluded.status,
             repetitions = excluded.repetitions,
             interval = excluded.interval,
             ease_factor = excluded.ease_factor,
+            success_rate = excluded.success_rate,
+            consecutive_successes = excluded.consecutive_successes,
             next_review_date = excluded.next_review_date,
             first_learned_at = excluded.first_learned_at,
             last_reviewed_at = excluded.last_reviewed_at,
@@ -667,6 +694,8 @@ function performAutoImportOnStartup(): void {
           entry.repetitions,
           entry.interval,
           entry.ease_factor,
+          entry.success_rate ?? INITIAL_SUCCESS_RATE,
+          entry.consecutive_successes ?? 0,
           entry.next_review_date,
           entry.first_learned_at,
           entry.last_reviewed_at,
@@ -676,29 +705,45 @@ function performAutoImportOnStartup(): void {
         importedCount++
       }
 
-      // Update last import date
-      db.prepare(
+      if (importedCount > 0) {
+        db.prepare(
+          `
+          INSERT INTO preferences (key, value, updated_at)
+          VALUES ('last_import_date', ?, datetime('now'))
+          ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
         `
-        INSERT INTO preferences (key, value, updated_at)
-        VALUES ('last_import_date', ?, datetime('now'))
-        ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
-      `
-      ).run(new Date().toISOString())
+        ).run(new Date().toISOString())
+      }
     })
 
     transaction()
+    lastImportedExportDate = exportData.exportDate
 
-    console.log(`Auto-import completed: ${importedCount} problems imported`)
+    if (importedCount > 0) {
+      console.log(`Auto-import: merged ${importedCount} problem(s) from ${exportData.exportDate}`)
+    }
 
-    // Show notification
+    return importedCount
+  } catch (error) {
+    console.error('Auto-import failed:', error)
+    return 0
+  }
+}
+
+// Wraps performAutoImport with a user-facing notification. Used for the
+// startup/periodic background checks only - NOT for the silent
+// pull-before-push call inside performAutoExport, which would otherwise
+// notify on every single review submission.
+function performAutoImportWithNotification(): void {
+  const importedCount = performAutoImport()
+
+  if (importedCount > 0) {
     const notification = new Notification({
       title: 'Cometode Sync',
-      body: `Imported ${importedCount} problems from sync folder`,
+      body: `Imported ${importedCount} problem${importedCount > 1 ? 's' : ''} from sync folder`,
       icon: icon
     })
     notification.show()
-  } catch (error) {
-    console.error('Auto-import failed:', error)
   }
 }
 
