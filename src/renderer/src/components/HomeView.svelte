@@ -20,6 +20,7 @@
     isReviewQueueProblem
   } from '../stores/problems'
   import { stats, loadStats } from '../stores/stats'
+  import CompanyIcon from './CompanyIcon.svelte'
   import type { Problem, ProblemSet } from '../../../preload/index.d'
 
   interface Props {
@@ -27,6 +28,19 @@
   }
 
   let { onSelectProblem }: Props = $props()
+
+  const PROBLEM_SET_TABS: { set: ProblemSet; label: string }[] = [
+    { set: 'neetcode150', label: 'NeetCode 150' },
+    { set: 'google', label: 'Google' },
+    { set: 'amazon', label: 'Amazon' },
+    { set: 'meta', label: 'Meta' },
+    { set: 'microsoft', label: 'Microsoft' },
+    { set: 'all', label: 'All Questions' }
+  ]
+
+  function problemSetLabel(set: ProblemSet): string {
+    return PROBLEM_SET_TABS.find((tab) => tab.set === set)?.label ?? set
+  }
 
   // Use store values for filter state persistence
   let searchText = $state($filterUIState.searchText)
@@ -176,26 +190,23 @@
 <div class="flex flex-col h-full">
   <!-- Problem Set Toggle -->
   <div class="mx-3 mt-3">
-    <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
-      <button
-        onclick={() => handleProblemSetChange('neetcode150')}
-        class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer hover:scale-105 {$currentProblemSet ===
-        'neetcode150'
-          ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100'
-          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
-      >
-        NeetCode 150
-      </button>
-      <button
-        onclick={() => handleProblemSetChange('google')}
-        class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer hover:scale-105 {$currentProblemSet ===
-        'google'
-          ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100'
-          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
-      >
-        Google
-      </button>
+    <div class="grid grid-cols-6 gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+      {#each PROBLEM_SET_TABS as tab (tab.set)}
+        <button
+          onclick={() => handleProblemSetChange(tab.set)}
+          title={tab.label}
+          aria-label={tab.label}
+          aria-pressed={$currentProblemSet === tab.set}
+          class="flex items-center justify-center py-1.5 rounded-md transition-all cursor-pointer hover:scale-105 {$currentProblemSet ===
+          tab.set
+            ? 'bg-white dark:bg-gray-700 shadow-sm'
+            : 'opacity-60 hover:opacity-100'}"
+        >
+          <CompanyIcon set={tab.set} class="w-4 h-4" />
+        </button>
+      {/each}
     </div>
+
   </div>
 
   <!-- Review Status Card -->
@@ -447,9 +458,8 @@
   <div
     class="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 text-center border-t border-gray-200 dark:border-gray-700"
   >
-    {$problems.length} problem{$problems.length !== 1 ? 's' : ''} ({$currentProblemSet ===
-    'neetcode150'
-      ? 'NeetCode 150'
-      : 'Google'})
+    {$problems.length} problem{$problems.length !== 1 ? 's' : ''} ({problemSetLabel(
+      $currentProblemSet
+    )})
   </div>
 </div>

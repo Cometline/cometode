@@ -1,6 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
-export type ProblemSet = 'neetcode150' | 'google' | 'all'
+export type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
 
 export interface Problem {
   id: number
@@ -13,6 +13,9 @@ export interface Problem {
   neetcode_url: string
   in_neetcode_150: number
   in_google: number
+  in_amazon: number
+  in_meta: number
+  in_microsoft: number
   status: 'new' | 'learning' | 'reviewing'
   repetitions: number
   interval: number

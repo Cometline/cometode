@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS problems (
   neetcode_url TEXT NOT NULL,
   in_neetcode_150 INTEGER NOT NULL DEFAULT 0,
   in_google INTEGER NOT NULL DEFAULT 0,
+  in_amazon INTEGER NOT NULL DEFAULT 0,
+  in_meta INTEGER NOT NULL DEFAULT 0,
+  in_microsoft INTEGER NOT NULL DEFAULT 0,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -92,6 +95,20 @@ function runMigrations(database: Database.Database): void {
     // Reseed to add new problems
     seedProblems(database, true)
     console.log('Migration completed')
+  }
+
+  if (!problemColumnNames.includes('in_amazon')) {
+    console.log('Running migration: adding company problem set columns...')
+
+    database.exec(`
+      ALTER TABLE problems ADD COLUMN in_amazon INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE problems ADD COLUMN in_meta INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE problems ADD COLUMN in_microsoft INTEGER NOT NULL DEFAULT 0;
+    `)
+
+    // Reseed to populate the new columns (and add any new problems) from problems-all.json
+    seedProblems(database, true)
+    console.log('Company problem set migration completed')
   }
 
   // Check if CIR algorithm columns exist in problem_progress table
@@ -169,6 +186,9 @@ export function initDatabase(): Database.Database {
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_problems_neetcode_150 ON problems(in_neetcode_150);
     CREATE INDEX IF NOT EXISTS idx_problems_google ON problems(in_google);
+    CREATE INDEX IF NOT EXISTS idx_problems_amazon ON problems(in_amazon);
+    CREATE INDEX IF NOT EXISTS idx_problems_meta ON problems(in_meta);
+    CREATE INDEX IF NOT EXISTS idx_problems_microsoft ON problems(in_microsoft);
   `)
 
   console.log('Database initialized successfully')

@@ -12,7 +12,21 @@ import {
 import { app } from 'electron'
 
 // Types
-type ProblemSet = 'neetcode150' | 'google' | 'all'
+type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
+
+// Maps a problem set to its corresponding `problems` table column ('all' has no column - no filter)
+const PROBLEM_SET_COLUMN: Record<ProblemSet, string | null> = {
+  neetcode150: 'in_neetcode_150',
+  google: 'in_google',
+  amazon: 'in_amazon',
+  meta: 'in_meta',
+  microsoft: 'in_microsoft',
+  all: null
+}
+
+function problemSetColumn(problemSet?: ProblemSet): string | null {
+  return problemSet ? PROBLEM_SET_COLUMN[problemSet] : null
+}
 
 interface ProblemFilters {
   difficulty?: string[]
@@ -70,6 +84,9 @@ export function setupIPC(db: Database.Database): void {
         p.neetcode_url,
         p.in_neetcode_150,
         p.in_google,
+        p.in_amazon,
+        p.in_meta,
+        p.in_microsoft,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -86,13 +103,11 @@ export function setupIPC(db: Database.Database): void {
 
     const params: (string | number)[] = []
 
-    // Filter by problem set
-    if (filters?.problemSet === 'neetcode150') {
-      query += ' AND p.in_neetcode_150 = 1'
-    } else if (filters?.problemSet === 'google') {
-      query += ' AND p.in_google = 1'
+    // Filter by problem set ('all' or undefined means no filter)
+    const problemSetCol = problemSetColumn(filters?.problemSet)
+    if (problemSetCol) {
+      query += ` AND p.${problemSetCol} = 1`
     }
-    // 'all' or undefined means no filter
 
     if (filters?.difficulty && filters.difficulty.length > 0) {
       const placeholders = filters.difficulty.map(() => '?').join(', ')
@@ -184,6 +199,9 @@ export function setupIPC(db: Database.Database): void {
         p.neetcode_url,
         p.in_neetcode_150,
         p.in_google,
+        p.in_amazon,
+        p.in_meta,
+        p.in_microsoft,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -322,12 +340,8 @@ export function setupIPC(db: Database.Database): void {
   // Get statistics
   ipcMain.handle('get-stats', (_event, problemSet?: ProblemSet) => {
     // Build WHERE clause based on problem set
-    let problemSetFilter = ''
-    if (problemSet === 'neetcode150') {
-      problemSetFilter = ' WHERE p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      problemSetFilter = ' WHERE p.in_google = 1'
-    }
+    const psColumn = problemSetColumn(problemSet)
+    const problemSetFilter = psColumn ? ` WHERE p.${psColumn} = 1` : ''
 
     const total = db
       .prepare(`SELECT COUNT(*) as count FROM problems p${problemSetFilter}`)
@@ -379,10 +393,8 @@ export function setupIPC(db: Database.Database): void {
       WHERE DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
     `
-    if (problemSet === 'neetcode150') {
-      todayDueQuery += ' AND p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      todayDueQuery += ' AND p.in_google = 1'
+    if (psColumn) {
+      todayDueQuery += ` AND p.${psColumn} = 1`
     }
     const todayDue = db.prepare(todayDueQuery).get() as { count: number }
 
@@ -393,10 +405,8 @@ export function setupIPC(db: Database.Database): void {
       JOIN problems p ON pp.problem_id = p.id
       WHERE 1=1
     `
-    if (problemSet === 'neetcode150') {
-      totalReviewsQuery += ' AND p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      totalReviewsQuery += ' AND p.in_google = 1'
+    if (psColumn) {
+      totalReviewsQuery += ` AND p.${psColumn} = 1`
     }
     const totalReviews = db.prepare(totalReviewsQuery).get() as { count: number }
 
@@ -407,10 +417,8 @@ export function setupIPC(db: Database.Database): void {
       JOIN problems p ON pp.problem_id = p.id
       WHERE pp.total_reviews > 0
     `
-    if (problemSet === 'neetcode150') {
-      practicedQuery += ' AND p.in_neetcode_150 = 1'
-    } else if (problemSet === 'google') {
-      practicedQuery += ' AND p.in_google = 1'
+    if (psColumn) {
+      practicedQuery += ` AND p.${psColumn} = 1`
     }
     const practiced = db.prepare(practicedQuery).get() as { count: number }
 

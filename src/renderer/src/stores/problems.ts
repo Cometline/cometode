@@ -9,6 +9,14 @@ interface FilterUIState {
 }
 
 const VALID_DIFFICULTIES = ['Easy', 'Medium', 'Hard']
+const VALID_PROBLEM_SETS: ProblemSet[] = [
+  'neetcode150',
+  'google',
+  'amazon',
+  'meta',
+  'microsoft',
+  'all'
+]
 
 const DEFAULT_FILTER_UI_STATE: FilterUIState = {
   searchText: '',
@@ -24,8 +32,8 @@ export const currentProblemSet = writable<ProblemSet>('neetcode150')
 export async function initProblemSet(): Promise<void> {
   try {
     const saved = await window.api.getPreference('problemSet')
-    if (saved === 'neetcode150' || saved === 'google' || saved === 'all') {
-      currentProblemSet.set(saved)
+    if (VALID_PROBLEM_SETS.includes(saved as ProblemSet)) {
+      currentProblemSet.set(saved as ProblemSet)
     }
   } catch (error) {
     console.error('Failed to load problem set preference:', error)

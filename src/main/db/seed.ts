@@ -11,14 +11,34 @@ interface Problem {
   neetcode_url: string
   in_neetcode_150: boolean
   in_google: boolean
+  in_amazon?: boolean
+  in_meta?: boolean
+  in_microsoft?: boolean
+}
+
+function toRow(problem: Problem): Record<string, string | number> {
+  return {
+    neet_id: problem.neet_id,
+    title: problem.title,
+    difficulty: problem.difficulty,
+    categories: JSON.stringify(problem.categories),
+    tags: JSON.stringify(problem.tags),
+    leetcode_url: problem.leetcode_url,
+    neetcode_url: problem.neetcode_url,
+    in_neetcode_150: problem.in_neetcode_150 ? 1 : 0,
+    in_google: problem.in_google ? 1 : 0,
+    in_amazon: problem.in_amazon ? 1 : 0,
+    in_meta: problem.in_meta ? 1 : 0,
+    in_microsoft: problem.in_microsoft ? 1 : 0
+  }
 }
 
 export function seedProblems(db: Database.Database, isMigration = false): void {
   if (isMigration) {
     // Migration mode: upsert problems
     const upsert = db.prepare(`
-      INSERT INTO problems (neet_id, title, difficulty, categories, tags, leetcode_url, neetcode_url, in_neetcode_150, in_google)
-      VALUES (@neet_id, @title, @difficulty, @categories, @tags, @leetcode_url, @neetcode_url, @in_neetcode_150, @in_google)
+      INSERT INTO problems (neet_id, title, difficulty, categories, tags, leetcode_url, neetcode_url, in_neetcode_150, in_google, in_amazon, in_meta, in_microsoft)
+      VALUES (@neet_id, @title, @difficulty, @categories, @tags, @leetcode_url, @neetcode_url, @in_neetcode_150, @in_google, @in_amazon, @in_meta, @in_microsoft)
       ON CONFLICT(neet_id) DO UPDATE SET
         title = excluded.title,
         difficulty = excluded.difficulty,
@@ -27,22 +47,15 @@ export function seedProblems(db: Database.Database, isMigration = false): void {
         leetcode_url = excluded.leetcode_url,
         neetcode_url = excluded.neetcode_url,
         in_neetcode_150 = excluded.in_neetcode_150,
-        in_google = excluded.in_google
+        in_google = excluded.in_google,
+        in_amazon = excluded.in_amazon,
+        in_meta = excluded.in_meta,
+        in_microsoft = excluded.in_microsoft
     `)
 
     const upsertMany = db.transaction((problems: Problem[]) => {
       for (const problem of problems) {
-        upsert.run({
-          neet_id: problem.neet_id,
-          title: problem.title,
-          difficulty: problem.difficulty,
-          categories: JSON.stringify(problem.categories),
-          tags: JSON.stringify(problem.tags),
-          leetcode_url: problem.leetcode_url,
-          neetcode_url: problem.neetcode_url,
-          in_neetcode_150: problem.in_neetcode_150 ? 1 : 0,
-          in_google: problem.in_google ? 1 : 0
-        })
+        upsert.run(toRow(problem))
       }
     })
 
@@ -51,23 +64,13 @@ export function seedProblems(db: Database.Database, isMigration = false): void {
   } else {
     // Fresh seed mode: insert all
     const insert = db.prepare(`
-      INSERT INTO problems (neet_id, title, difficulty, categories, tags, leetcode_url, neetcode_url, in_neetcode_150, in_google)
-      VALUES (@neet_id, @title, @difficulty, @categories, @tags, @leetcode_url, @neetcode_url, @in_neetcode_150, @in_google)
+      INSERT INTO problems (neet_id, title, difficulty, categories, tags, leetcode_url, neetcode_url, in_neetcode_150, in_google, in_amazon, in_meta, in_microsoft)
+      VALUES (@neet_id, @title, @difficulty, @categories, @tags, @leetcode_url, @neetcode_url, @in_neetcode_150, @in_google, @in_amazon, @in_meta, @in_microsoft)
     `)
 
     const insertMany = db.transaction((problems: Problem[]) => {
       for (const problem of problems) {
-        insert.run({
-          neet_id: problem.neet_id,
-          title: problem.title,
-          difficulty: problem.difficulty,
-          categories: JSON.stringify(problem.categories),
-          tags: JSON.stringify(problem.tags),
-          leetcode_url: problem.leetcode_url,
-          neetcode_url: problem.neetcode_url,
-          in_neetcode_150: problem.in_neetcode_150 ? 1 : 0,
-          in_google: problem.in_google ? 1 : 0
-        })
+        insert.run(toRow(problem))
       }
     })
 

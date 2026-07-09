@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Problem set type
-type ProblemSet = 'neetcode150' | 'google' | 'all'
+type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
 
 // Custom APIs for renderer
 const api = {
