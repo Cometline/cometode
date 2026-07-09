@@ -109,6 +109,9 @@ function main() {
           entry[company.flag] = true;
           matched++;
         }
+        if (!entry.categories.includes(company.placeholderCategory)) {
+          entry.categories.push(company.placeholderCategory);
+        }
         continue;
       }
       entry = ensureFlags({

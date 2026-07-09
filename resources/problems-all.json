@@ -4,7 +4,11 @@
     "title": "Contains Duplicate",
     "difficulty": "Easy",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -23,7 +27,11 @@
     "title": "Valid Anagram",
     "difficulty": "Easy",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -43,7 +51,11 @@
     "title": "Two Sum",
     "difficulty": "Easy",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -62,7 +74,11 @@
     "title": "Group Anagrams",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -83,7 +99,11 @@
     "title": "Top K Frequent Elements",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -104,7 +124,11 @@
     "title": "Encode and Decode Strings",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -123,7 +147,11 @@
     "title": "Product of Array Except Self",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -142,7 +170,11 @@
     "title": "Valid Sudoku",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -162,7 +194,11 @@
     "title": "Longest Consecutive Sequence",
     "difficulty": "Medium",
     "categories": [
-      "Arrays & Hashing"
+      "Arrays & Hashing",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -182,7 +218,11 @@
     "title": "Valid Palindrome",
     "difficulty": "Easy",
     "categories": [
-      "Two Pointers"
+      "Two Pointers",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Two Pointers",
@@ -201,7 +241,11 @@
     "title": "Two Sum II - Input Array Is Sorted",
     "difficulty": "Medium",
     "categories": [
-      "Two Pointers"
+      "Two Pointers",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -221,7 +265,11 @@
     "title": "3Sum",
     "difficulty": "Medium",
     "categories": [
-      "Two Pointers"
+      "Two Pointers",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -241,7 +289,11 @@
     "title": "Container With Most Water",
     "difficulty": "Medium",
     "categories": [
-      "Two Pointers"
+      "Two Pointers",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -261,7 +313,11 @@
     "title": "Trapping Rain Water",
     "difficulty": "Hard",
     "categories": [
-      "Two Pointers"
+      "Two Pointers",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -282,7 +338,11 @@
     "title": "Best Time to Buy and Sell Stock",
     "difficulty": "Easy",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -301,7 +361,11 @@
     "title": "Longest Substring Without Repeating Characters",
     "difficulty": "Medium",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -321,7 +385,11 @@
     "title": "Longest Repeating Character Replacement",
     "difficulty": "Medium",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -341,7 +409,11 @@
     "title": "Permutation in String",
     "difficulty": "Medium",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -362,7 +434,11 @@
     "title": "Minimum Window Substring",
     "difficulty": "Hard",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -382,7 +458,11 @@
     "title": "Sliding Window Maximum",
     "difficulty": "Hard",
     "categories": [
-      "Sliding Window"
+      "Sliding Window",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -404,7 +484,11 @@
     "title": "Valid Parentheses",
     "difficulty": "Easy",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -423,7 +507,11 @@
     "title": "Min Stack",
     "difficulty": "Medium",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Stack",
@@ -442,7 +530,11 @@
     "title": "Evaluate Reverse Polish Notation",
     "difficulty": "Medium",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -462,7 +554,11 @@
     "title": "Generate Parentheses",
     "difficulty": "Medium",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -482,7 +578,11 @@
     "title": "Daily Temperatures",
     "difficulty": "Medium",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -502,7 +602,11 @@
     "title": "Car Fleet",
     "difficulty": "Medium",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -523,7 +627,11 @@
     "title": "Largest Rectangle in Histogram",
     "difficulty": "Hard",
     "categories": [
-      "Stack"
+      "Stack",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -543,7 +651,11 @@
     "title": "Binary Search",
     "difficulty": "Easy",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -562,7 +674,11 @@
     "title": "Search a 2D Matrix",
     "difficulty": "Medium",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -582,7 +698,11 @@
     "title": "Koko Eating Bananas",
     "difficulty": "Medium",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -601,7 +721,11 @@
     "title": "Find Minimum in Rotated Sorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -620,7 +744,11 @@
     "title": "Search in Rotated Sorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -639,7 +767,11 @@
     "title": "Time Based Key-Value Store",
     "difficulty": "Medium",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -660,7 +792,11 @@
     "title": "Median of Two Sorted Arrays",
     "difficulty": "Hard",
     "categories": [
-      "Binary Search"
+      "Binary Search",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -680,7 +816,11 @@
     "title": "Reverse Linked List",
     "difficulty": "Easy",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -699,7 +839,11 @@
     "title": "Merge Two Sorted Lists",
     "difficulty": "Easy",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -718,7 +862,11 @@
     "title": "Reorder List",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -739,7 +887,11 @@
     "title": "Remove Nth Node From End of List",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -758,7 +910,11 @@
     "title": "Copy List with Random Pointer",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -777,7 +933,11 @@
     "title": "Add Two Numbers",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -797,7 +957,11 @@
     "title": "Linked List Cycle",
     "difficulty": "Easy",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -817,7 +981,11 @@
     "title": "Find the Duplicate Number",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -837,7 +1005,11 @@
     "title": "LRU Cache",
     "difficulty": "Medium",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -858,7 +1030,11 @@
     "title": "Merge k Sorted Lists",
     "difficulty": "Hard",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -879,7 +1055,11 @@
     "title": "Reverse Nodes in k-Group",
     "difficulty": "Hard",
     "categories": [
-      "Linked List"
+      "Linked List",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Linked List",
@@ -898,7 +1078,11 @@
     "title": "Invert Binary Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -919,7 +1103,11 @@
     "title": "Maximum Depth of Binary Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -940,7 +1128,11 @@
     "title": "Diameter of Binary Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -960,7 +1152,11 @@
     "title": "Balanced Binary Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -980,7 +1176,11 @@
     "title": "Same Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1001,7 +1201,11 @@
     "title": "Subtree of Another Tree",
     "difficulty": "Easy",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1023,7 +1227,11 @@
     "title": "Lowest Common Ancestor of a Binary Search Tree",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1044,7 +1252,11 @@
     "title": "Binary Tree Level Order Traversal",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1064,7 +1276,11 @@
     "title": "Binary Tree Right Side View",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1085,7 +1301,11 @@
     "title": "Count Good Nodes in Binary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1106,7 +1326,11 @@
     "title": "Validate Binary Search Tree",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1127,7 +1351,11 @@
     "title": "Kth Smallest Element in a BST",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1148,7 +1376,11 @@
     "title": "Construct Binary Tree from Preorder and Inorder Traversal",
     "difficulty": "Medium",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1170,7 +1402,11 @@
     "title": "Binary Tree Maximum Path Sum",
     "difficulty": "Hard",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Dynamic Programming",
@@ -1191,7 +1427,11 @@
     "title": "Serialize and Deserialize Binary Tree",
     "difficulty": "Hard",
     "categories": [
-      "Trees"
+      "Trees",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -1214,7 +1454,11 @@
     "title": "Kth Largest Element in a Stream",
     "difficulty": "Easy",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Tree",
@@ -1237,7 +1481,11 @@
     "title": "Last Stone Weight",
     "difficulty": "Easy",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1256,7 +1504,11 @@
     "title": "K Closest Points to Origin",
     "difficulty": "Medium",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1280,7 +1532,11 @@
     "title": "Kth Largest Element in an Array",
     "difficulty": "Medium",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1302,7 +1558,11 @@
     "title": "Task Scheduler",
     "difficulty": "Medium",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1325,7 +1585,11 @@
     "title": "Design Twitter",
     "difficulty": "Medium",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -1346,7 +1610,11 @@
     "title": "Find Median from Data Stream",
     "difficulty": "Hard",
     "categories": [
-      "Heap / Priority Queue"
+      "Heap / Priority Queue",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Two Pointers",
@@ -1368,7 +1636,11 @@
     "title": "Subsets",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1388,7 +1660,11 @@
     "title": "Combination Sum",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1407,7 +1683,11 @@
     "title": "Permutations",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1426,7 +1706,11 @@
     "title": "Subsets II",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1446,7 +1730,11 @@
     "title": "Combination Sum II",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1465,7 +1753,11 @@
     "title": "Word Search",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1485,7 +1777,11 @@
     "title": "Palindrome Partitioning",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -1505,7 +1801,11 @@
     "title": "Letter Combinations of a Phone Number",
     "difficulty": "Medium",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -1525,7 +1825,11 @@
     "title": "N-Queens",
     "difficulty": "Hard",
     "categories": [
-      "Backtracking"
+      "Backtracking",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1544,7 +1848,11 @@
     "title": "Implement Trie (Prefix Tree)",
     "difficulty": "Medium",
     "categories": [
-      "Tries"
+      "Tries",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -1565,7 +1873,11 @@
     "title": "Design Add and Search Words Data Structure",
     "difficulty": "Medium",
     "categories": [
-      "Tries"
+      "Tries",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -1586,7 +1898,11 @@
     "title": "Word Search II",
     "difficulty": "Hard",
     "categories": [
-      "Tries"
+      "Tries",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1608,7 +1924,11 @@
     "title": "Number of Islands",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1630,7 +1950,11 @@
     "title": "Max Area of Island",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1652,7 +1976,11 @@
     "title": "Clone Graph",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -1673,7 +2001,11 @@
     "title": "Walls and Gates",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1693,7 +2025,11 @@
     "title": "Rotting Oranges",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1713,7 +2049,11 @@
     "title": "Pacific Atlantic Water Flow",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1734,7 +2074,11 @@
     "title": "Surrounded Regions",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1756,7 +2100,11 @@
     "title": "Course Schedule",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1777,7 +2125,11 @@
     "title": "Course Schedule II",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1798,7 +2150,11 @@
     "title": "Graph Valid Tree",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1819,7 +2175,10 @@
     "title": "Number of Connected Components in an Undirected Graph",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [
       "DFS",
@@ -1840,7 +2199,11 @@
     "title": "Redundant Connection",
     "difficulty": "Medium",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1861,7 +2224,11 @@
     "title": "Word Ladder",
     "difficulty": "Hard",
     "categories": [
-      "Graphs"
+      "Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -1881,7 +2248,11 @@
     "title": "Reconstruct Itinerary",
     "difficulty": "Hard",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1901,7 +2272,11 @@
     "title": "Min Cost to Connect All Points",
     "difficulty": "Medium",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1922,7 +2297,11 @@
     "title": "Network Delay Time",
     "difficulty": "Medium",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "DFS",
@@ -1944,7 +2323,11 @@
     "title": "Swim in Rising Water",
     "difficulty": "Hard",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1968,7 +2351,11 @@
     "title": "Alien Dictionary",
     "difficulty": "Hard",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -1991,7 +2378,11 @@
     "title": "Cheapest Flights Within K Stops",
     "difficulty": "Medium",
     "categories": [
-      "Advanced Graphs"
+      "Advanced Graphs",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Dynamic Programming",
@@ -2014,7 +2405,11 @@
     "title": "Climbing Stairs",
     "difficulty": "Easy",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math",
@@ -2034,7 +2429,11 @@
     "title": "Min Cost Climbing Stairs",
     "difficulty": "Easy",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2053,7 +2452,11 @@
     "title": "House Robber",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2072,7 +2475,11 @@
     "title": "House Robber II",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2091,7 +2498,11 @@
     "title": "Longest Palindromic Substring",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2110,7 +2521,11 @@
     "title": "Palindromic Substrings",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2129,7 +2544,11 @@
     "title": "Decode Ways",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2148,7 +2567,11 @@
     "title": "Coin Change",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2168,7 +2591,11 @@
     "title": "Maximum Product Subarray",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2187,7 +2614,11 @@
     "title": "Word Break",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2210,7 +2641,11 @@
     "title": "Longest Increasing Subsequence",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2230,7 +2665,11 @@
     "title": "Partition Equal Subset Sum",
     "difficulty": "Medium",
     "categories": [
-      "1-D Dynamic Programming"
+      "1-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2249,7 +2688,11 @@
     "title": "Unique Paths",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math",
@@ -2269,7 +2712,11 @@
     "title": "Longest Common Subsequence",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2288,7 +2735,10 @@
     "title": "Best Time to Buy and Sell Stock with Cooldown",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2307,7 +2757,11 @@
     "title": "Coin Change II",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2326,7 +2780,11 @@
     "title": "Target Sum",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2346,7 +2804,11 @@
     "title": "Interleaving String",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2365,7 +2827,11 @@
     "title": "Longest Increasing Path in a Matrix",
     "difficulty": "Hard",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2390,7 +2856,11 @@
     "title": "Distinct Subsequences",
     "difficulty": "Hard",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2409,7 +2879,11 @@
     "title": "Edit Distance",
     "difficulty": "Medium",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2428,7 +2902,11 @@
     "title": "Burst Balloons",
     "difficulty": "Hard",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2447,7 +2925,11 @@
     "title": "Regular Expression Matching",
     "difficulty": "Hard",
     "categories": [
-      "2-D Dynamic Programming"
+      "2-D Dynamic Programming",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2467,7 +2949,11 @@
     "title": "Maximum Subarray",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2487,7 +2973,11 @@
     "title": "Jump Game",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2507,7 +2997,11 @@
     "title": "Jump Game II",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2527,7 +3021,11 @@
     "title": "Gas Station",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2546,7 +3044,11 @@
     "title": "Hand of Straights",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2567,7 +3069,8 @@
     "title": "Merge Triplets to Form Target Triplet",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google"
     ],
     "tags": [
       "Array",
@@ -2586,7 +3089,11 @@
     "title": "Partition Labels",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -2607,7 +3114,11 @@
     "title": "Valid Parenthesis String",
     "difficulty": "Medium",
     "categories": [
-      "Greedy"
+      "Greedy",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "String",
@@ -2628,7 +3139,11 @@
     "title": "Insert Interval",
     "difficulty": "Medium",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array"
@@ -2646,7 +3161,11 @@
     "title": "Merge Intervals",
     "difficulty": "Medium",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2665,7 +3184,11 @@
     "title": "Non-overlapping Intervals",
     "difficulty": "Medium",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2686,7 +3209,11 @@
     "title": "Meeting Rooms",
     "difficulty": "Easy",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2705,7 +3232,11 @@
     "title": "Meeting Rooms II",
     "difficulty": "Medium",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2727,7 +3258,9 @@
     "title": "Minimum Interval to Include Each Query",
     "difficulty": "Hard",
     "categories": [
-      "Intervals"
+      "Intervals",
+      "Google",
+      "Amazon"
     ],
     "tags": [
       "Array",
@@ -2749,7 +3282,11 @@
     "title": "Rotate Image",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2769,7 +3306,10 @@
     "title": "Spiral Matrix",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [
       "Array",
@@ -2789,7 +3329,11 @@
     "title": "Set Matrix Zeroes",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2809,7 +3353,11 @@
     "title": "Happy Number",
     "difficulty": "Easy",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Hash Table",
@@ -2829,7 +3377,11 @@
     "title": "Plus One",
     "difficulty": "Easy",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2848,7 +3400,11 @@
     "title": "Pow(x, n)",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math",
@@ -2867,7 +3423,11 @@
     "title": "Multiply Strings",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math",
@@ -2887,7 +3447,10 @@
     "title": "Detect Squares",
     "difficulty": "Medium",
     "categories": [
-      "Math & Geometry"
+      "Math & Geometry",
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [
       "Array",
@@ -2908,7 +3471,11 @@
     "title": "Single Number",
     "difficulty": "Easy",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -2927,7 +3494,11 @@
     "title": "Number of 1 Bits",
     "difficulty": "Easy",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Divide and Conquer",
@@ -2946,7 +3517,11 @@
     "title": "Counting Bits",
     "difficulty": "Easy",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Dynamic Programming",
@@ -2965,7 +3540,11 @@
     "title": "Reverse Bits",
     "difficulty": "Easy",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Divide and Conquer",
@@ -2984,7 +3563,11 @@
     "title": "Missing Number",
     "difficulty": "Easy",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Array",
@@ -3007,7 +3590,11 @@
     "title": "Sum of Two Integers",
     "difficulty": "Medium",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math",
@@ -3026,7 +3613,11 @@
     "title": "Reverse Integer",
     "difficulty": "Medium",
     "categories": [
-      "Bit Manipulation"
+      "Bit Manipulation",
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [
       "Math"
@@ -3044,7 +3635,10 @@
     "title": "Longest Common Prefix",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-common-prefix/",
@@ -3060,7 +3654,10 @@
     "title": "Palindrome Number",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/palindrome-number/",
@@ -3076,7 +3673,9 @@
     "title": "Moving Average from Data Stream",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/moving-average-from-data-stream/",
@@ -3092,7 +3691,10 @@
     "title": "Subarray Sum Equals K",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/subarray-sum-equals-k/",
@@ -3108,7 +3710,10 @@
     "title": "Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/",
@@ -3124,7 +3729,9 @@
     "title": "Number of Islands II",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-islands-ii/",
@@ -3140,7 +3747,10 @@
     "title": "Merge Sorted Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/merge-sorted-array/",
@@ -3156,7 +3766,10 @@
     "title": "Decode String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/decode-string/",
@@ -3172,7 +3785,10 @@
     "title": "Roman to Integer",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/roman-to-integer/",
@@ -3188,7 +3804,10 @@
     "title": "Majority Element",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/majority-element/",
@@ -3204,7 +3823,10 @@
     "title": "Number of Visible People in a Queue",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-visible-people-in-a-queue/",
@@ -3220,7 +3842,10 @@
     "title": "Find The Index of The First Occurrence in a String",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
@@ -3236,7 +3861,10 @@
     "title": "Minimum Remove to Make Valid Parentheses",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/",
@@ -3252,7 +3880,10 @@
     "title": "Remove Duplicates From Sorted Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
@@ -3268,7 +3899,10 @@
     "title": "Find the Difference",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-the-difference/",
@@ -3284,7 +3918,10 @@
     "title": "Island Perimeter",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/island-perimeter/",
@@ -3300,7 +3937,10 @@
     "title": "Insert into a Binary Search Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/insert-into-a-binary-search-tree/",
@@ -3316,7 +3956,10 @@
     "title": "Next Permutation",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/next-permutation/",
@@ -3332,7 +3975,9 @@
     "title": "Maximum Number of Points with Cost",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-number-of-points-with-cost/",
@@ -3348,7 +3993,10 @@
     "title": "Rotate Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/rotate-array/",
@@ -3364,7 +4012,10 @@
     "title": "Minimum Cost For Tickets",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-cost-for-tickets/",
@@ -3380,7 +4031,10 @@
     "title": "Merge Strings Alternately",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/merge-strings-alternately/",
@@ -3396,7 +4050,10 @@
     "title": "Remove Element",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-element/",
@@ -3412,7 +4069,10 @@
     "title": "Split Array Largest Sum",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/split-array-largest-sum/",
@@ -3428,7 +4088,10 @@
     "title": "Binary Tree Postorder Traversal",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
@@ -3444,7 +4107,10 @@
     "title": "Move Zeroes",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/move-zeroes/",
@@ -3460,7 +4126,10 @@
     "title": "Shortest Distance from All Buildings",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/shortest-distance-from-all-buildings/",
@@ -3476,7 +4145,10 @@
     "title": "Sort Colors",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sort-colors/",
@@ -3492,7 +4164,10 @@
     "title": "Sqrt(x)",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sqrtx/",
@@ -3508,7 +4183,10 @@
     "title": "LFU Cache",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/lfu-cache/",
@@ -3524,7 +4202,10 @@
     "title": "Range Sum of BST",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/range-sum-of-bst/",
@@ -3540,7 +4221,10 @@
     "title": "Grumpy Bookstore Owner",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/grumpy-bookstore-owner/",
@@ -3556,7 +4240,10 @@
     "title": "Search Insert Position",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/search-insert-position/",
@@ -3572,7 +4259,10 @@
     "title": "IPO",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/ipo/",
@@ -3588,7 +4278,8 @@
     "title": "Stone Game",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/stone-game/",
@@ -3604,7 +4295,10 @@
     "title": "Add Binary",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/add-binary/",
@@ -3620,7 +4314,10 @@
     "title": "K-th Smallest in Lexicographical Order",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/k-th-smallest-in-lexicographical-order/",
@@ -3636,7 +4333,9 @@
     "title": "Take Gifts From the Richest Pile",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/take-gifts-from-the-richest-pile/",
@@ -3652,7 +4351,10 @@
     "title": "Count Primes",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-primes/",
@@ -3668,7 +4370,8 @@
     "title": "Parallel Courses",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/parallel-courses/",
@@ -3684,7 +4387,10 @@
     "title": "4Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/4sum/",
@@ -3700,7 +4406,9 @@
     "title": "N-th Tribonacci Number",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/n-th-tribonacci-number/",
@@ -3716,7 +4424,10 @@
     "title": "Find First And Last Position of Element In Sorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
@@ -3732,7 +4443,10 @@
     "title": "String Compression",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/string-compression/",
@@ -3748,7 +4462,10 @@
     "title": "Valid Perfect Square",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/valid-perfect-square/",
@@ -3764,7 +4481,9 @@
     "title": "Matrix Diagonal Sum",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/matrix-diagonal-sum/",
@@ -3780,7 +4499,10 @@
     "title": "Count Servers that Communicate",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-servers-that-communicate/",
@@ -3796,7 +4518,9 @@
     "title": "Counting Words With a Given Prefix",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/counting-words-with-a-given-prefix/",
@@ -3812,7 +4536,10 @@
     "title": "Sort Array by Increasing Frequency",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sort-array-by-increasing-frequency/",
@@ -3828,7 +4555,9 @@
     "title": "Insertion Sort List",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/insertion-sort-list/",
@@ -3844,7 +4573,10 @@
     "title": "String Matching in an Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/string-matching-in-an-array/",
@@ -3860,7 +4592,10 @@
     "title": "Sort an Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sort-an-array/",
@@ -3876,7 +4611,10 @@
     "title": "Reverse String",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/reverse-string/",
@@ -3892,7 +4630,10 @@
     "title": "Partition to K Equal Sum Subsets",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/partition-to-k-equal-sum-subsets/",
@@ -3908,7 +4649,10 @@
     "title": "Minimum Path Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-path-sum/",
@@ -3924,7 +4668,9 @@
     "title": "Minimum Array End",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-array-end/",
@@ -3940,7 +4686,10 @@
     "title": "Find Peak Element",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-peak-element/",
@@ -3956,7 +4705,10 @@
     "title": "Zigzag Conversion",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/zigzag-conversion/",
@@ -3972,7 +4724,10 @@
     "title": "Russian Doll Envelopes",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/russian-doll-envelopes/",
@@ -3988,7 +4743,9 @@
     "title": "Distribute Candies Among Children II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/distribute-candies-among-children-ii/",
@@ -4004,7 +4761,10 @@
     "title": "Minimum Number of Increments on Subarrays to Form a Target Array",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-number-of-increments-on-subarrays-to-form-a-target-array/",
@@ -4020,7 +4780,9 @@
     "title": "Replace Elements With Greatest Element On Right Side",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/replace-elements-with-greatest-element-on-right-side/",
@@ -4036,7 +4798,10 @@
     "title": "Maximum Nesting Depth of the Parentheses",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/",
@@ -4052,7 +4817,10 @@
     "title": "Rotate List",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/rotate-list/",
@@ -4068,7 +4836,10 @@
     "title": "Fruits into Basket",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/fruit-into-baskets/",
@@ -4084,7 +4855,10 @@
     "title": "Middle of the Linked List",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/middle-of-the-linked-list/",
@@ -4100,7 +4874,10 @@
     "title": "Minimize the Maximum Difference of Pairs",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/",
@@ -4116,7 +4893,10 @@
     "title": "Maximal Square",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximal-square/",
@@ -4132,7 +4912,10 @@
     "title": "First Missing Positive",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/first-missing-positive/",
@@ -4148,7 +4931,10 @@
     "title": "Reverse Linked List II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/reverse-linked-list-ii/",
@@ -4164,7 +4950,9 @@
     "title": "Longest Happy String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-happy-string/",
@@ -4180,7 +4968,9 @@
     "title": "Perfect Squares",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/perfect-squares/",
@@ -4196,7 +4986,9 @@
     "title": "Stone Game II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/stone-game-ii/",
@@ -4212,7 +5004,10 @@
     "title": "Candy",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/candy/",
@@ -4228,7 +5023,10 @@
     "title": "Basic Calculator II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/basic-calculator-ii/",
@@ -4244,7 +5042,9 @@
     "title": "Kth Smallest Product of Two Sorted Arrays",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/kth-smallest-product-of-two-sorted-arrays/",
@@ -4260,7 +5060,10 @@
     "title": "Frequency of The Most Frequent Element",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/frequency-of-the-most-frequent-element/",
@@ -4276,7 +5079,10 @@
     "title": "Random Pick with Weight",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/random-pick-with-weight/",
@@ -4292,7 +5098,10 @@
     "title": "Path with Maximum Probability",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/path-with-maximum-probability/",
@@ -4308,7 +5117,10 @@
     "title": "Power of Two",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/power-of-two/",
@@ -4324,7 +5136,10 @@
     "title": "Cherry Pickup",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/cherry-pickup/",
@@ -4340,7 +5155,10 @@
     "title": "Intersection of Two Arrays",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/intersection-of-two-arrays/",
@@ -4356,7 +5174,10 @@
     "title": "Binary Tree Zigzag Level Order Traversal",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/",
@@ -4372,7 +5193,8 @@
     "title": "Wiggle Sort",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/wiggle-sort/",
@@ -4388,7 +5210,8 @@
     "title": "Number of Senior Citizens",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-senior-citizens/",
@@ -4404,7 +5227,10 @@
     "title": "Boats to Save People",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/boats-to-save-people/",
@@ -4420,7 +5246,10 @@
     "title": "Minimum Size Subarray Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-size-subarray-sum/",
@@ -4436,7 +5265,9 @@
     "title": "Find K Closest Elements",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-k-closest-elements/",
@@ -4452,7 +5283,10 @@
     "title": "Search In Rotated Sorted Array II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/",
@@ -4468,7 +5302,10 @@
     "title": "Sum of All Subsets XOR Total",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sum-of-all-subset-xor-totals/",
@@ -4484,7 +5321,10 @@
     "title": "Combinations",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/combinations/",
@@ -4500,7 +5340,8 @@
     "title": "Jump Game VII",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/jump-game-vii/",
@@ -4516,7 +5357,9 @@
     "title": "Dota2 Senate",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/dota2-senate/",
@@ -4532,7 +5375,10 @@
     "title": "Bitwise AND of Numbers Range",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/bitwise-and-of-numbers-range/",
@@ -4564,7 +5410,10 @@
     "title": "Implement Stack Using Queues",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/implement-stack-using-queues/",
@@ -4580,7 +5429,10 @@
     "title": "Online Stock Span",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/online-stock-span/",
@@ -4596,7 +5448,10 @@
     "title": "Pascals Triangle",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/pascals-triangle/",
@@ -4612,7 +5467,10 @@
     "title": "Max Consecutive Ones",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/max-consecutive-ones/",
@@ -4628,7 +5486,10 @@
     "title": "Next Greater Element I",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/next-greater-element-i/",
@@ -4644,7 +5505,10 @@
     "title": "Find Lucky Integer in an Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-lucky-integer-in-an-array/",
@@ -4660,7 +5524,10 @@
     "title": "Add Two Numbers II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/add-two-numbers-ii/",
@@ -4676,7 +5543,10 @@
     "title": "Remove Linked List Elements",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-linked-list-elements/",
@@ -4692,7 +5562,10 @@
     "title": "Minimum Number of Moves to Seat Everyone",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-number-of-moves-to-seat-everyone/",
@@ -4708,7 +5581,10 @@
     "title": "Ugly Number",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/ugly-number/",
@@ -4724,7 +5600,10 @@
     "title": "Binary Subarrays with Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-subarrays-with-sum/",
@@ -4740,7 +5619,10 @@
     "title": "Single Element in a Sorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/single-element-in-a-sorted-array/",
@@ -4756,7 +5638,10 @@
     "title": "Remove All Adjacent Duplicates In String II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/",
@@ -4772,7 +5657,10 @@
     "title": "Find All Numbers Disappeared in An Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/",
@@ -4788,7 +5676,10 @@
     "title": "Length of Last Word",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/length-of-last-word/",
@@ -4804,7 +5695,8 @@
     "title": "Insert into a Sorted Circular Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/",
@@ -4820,7 +5712,9 @@
     "title": "Binary Tree Longest Consecutive Sequence",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-longest-consecutive-sequence/",
@@ -4836,7 +5730,9 @@
     "title": "The Maze",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/the-maze/",
@@ -4852,7 +5748,10 @@
     "title": "Minimum Knight Moves",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-knight-moves/",
@@ -4868,7 +5767,10 @@
     "title": "Design In-Memory File System",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-in-memory-file-system/",
@@ -4900,7 +5802,10 @@
     "title": "Put Marbles in Bags",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/put-marbles-in-bags/",
@@ -4916,7 +5821,10 @@
     "title": "Best Time to Buy And Sell Stock II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
@@ -4932,7 +5840,10 @@
     "title": "Capacity to Ship Packages Within D Days",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/",
@@ -4948,7 +5859,10 @@
     "title": "Car Pooling",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/car-pooling/",
@@ -4964,7 +5878,9 @@
     "title": "Verifying An Alien Dictionary",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/verifying-an-alien-dictionary/",
@@ -4980,7 +5896,10 @@
     "title": "Course Schedule IV",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/course-schedule-iv/",
@@ -4996,7 +5915,10 @@
     "title": "Unique Paths II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/unique-paths-ii/",
@@ -5012,7 +5934,10 @@
     "title": "Sum Root to Leaf Numbers",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sum-root-to-leaf-numbers/",
@@ -5028,7 +5953,10 @@
     "title": "Shortest Path in Binary Matrix",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/shortest-path-in-binary-matrix/",
@@ -5044,7 +5972,10 @@
     "title": "Squares of a Sorted Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/squares-of-a-sorted-array/",
@@ -5060,7 +5991,9 @@
     "title": "Maximum Frequency After Subarray Operation",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-frequency-after-subarray-operation/",
@@ -5076,7 +6009,10 @@
     "title": "Lowest Common Ancestor of a Binary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
@@ -5092,7 +6028,10 @@
     "title": "Intersection of Two Linked Lists",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/intersection-of-two-linked-lists/",
@@ -5108,7 +6047,10 @@
     "title": "Minimum Difference Between Highest And Lowest of K Scores",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-difference-between-highest-and-lowest-of-k-scores/",
@@ -5124,7 +6066,10 @@
     "title": "Palindrome Linked List",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/palindrome-linked-list/",
@@ -5140,7 +6085,10 @@
     "title": "Text Justification",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/text-justification/",
@@ -5156,7 +6104,10 @@
     "title": "Insert Delete Get Random O(1)",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/insert-delete-getrandom-o1/",
@@ -5172,7 +6123,10 @@
     "title": "Isomorphic Strings",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/isomorphic-strings/",
@@ -5204,7 +6158,10 @@
     "title": "Longest Substring with At Most Two Distinct Characters",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/",
@@ -5220,7 +6177,9 @@
     "title": "Largest Submatrix With Rearrangements",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/largest-submatrix-with-rearrangements/",
@@ -5236,7 +6195,9 @@
     "title": "Maximum Distance in Arrays",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-distance-in-arrays/",
@@ -5268,7 +6229,8 @@
     "title": "Max Consecutive Ones II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/max-consecutive-ones-ii/",
@@ -5284,7 +6246,9 @@
     "title": "Add Bold Tag in String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/add-bold-tag-in-string/",
@@ -5300,7 +6264,8 @@
     "title": "Count Univalue Subtrees",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-univalue-subtrees/",
@@ -5316,7 +6281,9 @@
     "title": "Closest Binary Search Tree Value",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/closest-binary-search-tree-value/",
@@ -5332,7 +6299,10 @@
     "title": "Find the Celebrity",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-the-celebrity/",
@@ -5364,7 +6334,9 @@
     "title": "Number of Distinct Islands",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-distinct-islands/",
@@ -5380,7 +6352,8 @@
     "title": "Rearrange String k Distance Apart",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/rearrange-string-k-distance-apart/",
@@ -5396,7 +6369,9 @@
     "title": "Design Snake Game",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-snake-game/",
@@ -5428,7 +6403,8 @@
     "title": "Zigzag Iterator",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/zigzag-iterator/",
@@ -5444,7 +6420,9 @@
     "title": "Max Stack",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/max-stack/",
@@ -5460,7 +6438,8 @@
     "title": "Strobogrammatic Number II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/strobogrammatic-number-ii/",
@@ -5476,7 +6455,8 @@
     "title": "Paint Fence",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/paint-fence/",
@@ -5492,7 +6472,10 @@
     "title": "Valid Palindrome II",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/valid-palindrome-ii/",
@@ -5508,7 +6491,10 @@
     "title": "Reorganize String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/reorganize-string/",
@@ -5524,7 +6510,8 @@
     "title": "Analyze User Website Visit Pattern",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/analyze-user-website-visit-pattern/",
@@ -5540,7 +6527,10 @@
     "title": "Concatenation of Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/concatenation-of-array/",
@@ -5556,7 +6546,10 @@
     "title": "Simplify Path",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/simplify-path/",
@@ -5572,7 +6565,10 @@
     "title": "Binary Tree Inorder Traversal",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
@@ -5588,7 +6584,10 @@
     "title": "Binary Tree Preorder Traversal",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-preorder-traversal/",
@@ -5604,7 +6603,10 @@
     "title": "Delete Node in a BST",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/delete-node-in-a-bst/",
@@ -5620,7 +6622,8 @@
     "title": "Delete Leaves With a Given Value",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/delete-leaves-with-a-given-value/",
@@ -5636,7 +6639,9 @@
     "title": "Construct Quad Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/construct-quad-tree/",
@@ -5652,7 +6657,10 @@
     "title": "Permutations II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/permutations-ii/",
@@ -5668,7 +6676,9 @@
     "title": "Extra Characters in a String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/extra-characters-in-a-string/",
@@ -5684,7 +6694,10 @@
     "title": "Evaluate Division",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/evaluate-division/",
@@ -5716,7 +6729,9 @@
     "title": "Combination Sum IV",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/combination-sum-iv/",
@@ -5732,7 +6747,10 @@
     "title": "Last Stone Weight II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/last-stone-weight-ii/",
@@ -5748,7 +6766,10 @@
     "title": "Lemonade Change",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/lemonade-change/",
@@ -5764,7 +6785,10 @@
     "title": "Maximum Sum Circular Subarray",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-sum-circular-subarray/",
@@ -5780,7 +6804,10 @@
     "title": "Greatest Common Divisor of Strings",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/greatest-common-divisor-of-strings/",
@@ -5796,7 +6823,10 @@
     "title": "Insert Greatest Common Divisors in Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/",
@@ -5812,7 +6842,10 @@
     "title": "Design Circular Queue",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-circular-queue/",
@@ -5828,7 +6861,10 @@
     "title": "Implement Queue using Stacks",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/implement-queue-using-stacks/",
@@ -5844,7 +6880,10 @@
     "title": "Range Sum Query 2D Immutable",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/range-sum-query-2d-immutable/",
@@ -5860,7 +6899,10 @@
     "title": "Integer to Roman",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/integer-to-roman/",
@@ -5876,7 +6918,10 @@
     "title": "Maximum Difference Between Even and Odd Frequency I",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-difference-between-even-and-odd-frequency-i/",
@@ -5892,7 +6937,10 @@
     "title": "Recover Binary Search Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/recover-binary-search-tree/",
@@ -5908,7 +6956,10 @@
     "title": "Convert Bst to Greater Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/convert-bst-to-greater-tree/",
@@ -5924,7 +6975,10 @@
     "title": "Ransom Note",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/ransom-note/",
@@ -5940,7 +6994,10 @@
     "title": "Number of Provinces",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-provinces/",
@@ -5956,7 +7013,10 @@
     "title": "Score of a String",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/score-of-a-string/",
@@ -5972,7 +7032,8 @@
     "title": "N-ary Tree Postorder Traversal",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/n-ary-tree-postorder-traversal/",
@@ -5988,7 +7049,8 @@
     "title": "Buy Two Chocolates",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/buy-two-chocolates/",
@@ -6004,7 +7066,9 @@
     "title": "Maximum Odd Binary Number",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-odd-binary-number/",
@@ -6020,7 +7084,10 @@
     "title": "Remove Sub-Folders from the Filesystem",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-sub-folders-from-the-filesystem/",
@@ -6036,7 +7103,10 @@
     "title": "Restore IP Addresses",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/restore-ip-addresses/",
@@ -6052,7 +7122,10 @@
     "title": "Populating Next Right Pointers In Each Node",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/populating-next-right-pointers-in-each-node/",
@@ -6068,7 +7141,10 @@
     "title": "Spiral Matrix II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/spiral-matrix-ii/",
@@ -6084,7 +7160,10 @@
     "title": "Maximum Points You Can Obtain From Cards",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/",
@@ -6100,7 +7179,10 @@
     "title": "Triangle",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/triangle/",
@@ -6116,7 +7198,10 @@
     "title": "Assign Cookies",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/assign-cookies/",
@@ -6132,7 +7217,10 @@
     "title": "Rearrange Array Elements by Sign",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/rearrange-array-elements-by-sign/",
@@ -6148,7 +7236,10 @@
     "title": "Number of Subsequences That Satisfy The Given Sum Condition",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/",
@@ -6196,7 +7287,8 @@
     "title": "Group Shifted Strings",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/group-shifted-strings/",
@@ -6212,7 +7304,8 @@
     "title": "Sparse Matrix Multiplication",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sparse-matrix-multiplication/",
@@ -6228,7 +7321,8 @@
     "title": "Plus One Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/plus-one-linked-list/",
@@ -6244,7 +7338,8 @@
     "title": "Binary Tree Longest Consecutive Sequence II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii/",
@@ -6260,7 +7355,10 @@
     "title": "Boundary of Binary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/boundary-of-binary-tree/",
@@ -6276,7 +7374,8 @@
     "title": "Closest Binary Search Tree Value II",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/closest-binary-search-tree-value-ii/",
@@ -6292,7 +7391,8 @@
     "title": "Find Root of N-Ary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-root-of-n-ary-tree/",
@@ -6308,7 +7408,10 @@
     "title": "Design Search Autocomplete System",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-search-autocomplete-system/",
@@ -6340,7 +7443,9 @@
     "title": "Append Characters to String to Make Subsequence",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/append-characters-to-string-to-make-subsequence/",
@@ -6356,7 +7461,8 @@
     "title": "4 Keys Keyboard",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/4-keys-keyboard/",
@@ -6372,7 +7478,10 @@
     "title": "Binary Tree Vertical Order Traversal",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-tree-vertical-order-traversal/",
@@ -6388,7 +7497,9 @@
     "title": "Valid Word Abbreviation",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/valid-word-abbreviation/",
@@ -6404,7 +7515,9 @@
     "title": "Buildings With an Ocean View",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/buildings-with-an-ocean-view/",
@@ -6420,7 +7533,10 @@
     "title": "Maximum Profit in Job Scheduling",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-profit-in-job-scheduling/",
@@ -6436,7 +7552,10 @@
     "title": "Majority Element II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/majority-element-ii/",
@@ -6452,7 +7571,10 @@
     "title": "Contains Duplicate II",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/contains-duplicate-ii/",
@@ -6468,7 +7590,10 @@
     "title": "Baseball Game",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/baseball-game/",
@@ -6484,7 +7609,10 @@
     "title": "Asteroid Collision",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/asteroid-collision/",
@@ -6500,7 +7628,10 @@
     "title": "House Robber III",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/house-robber-iii/",
@@ -6516,7 +7647,10 @@
     "title": "Single Threaded CPU",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/single-threaded-cpu/",
@@ -6532,7 +7666,10 @@
     "title": "N Queens II",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/n-queens-ii/",
@@ -6548,7 +7685,10 @@
     "title": "Word Break II",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/word-break-ii/",
@@ -6564,7 +7704,10 @@
     "title": "Find the Town Judge",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-the-town-judge/",
@@ -6580,7 +7723,10 @@
     "title": "Open The Lock",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/open-the-lock/",
@@ -6596,7 +7742,10 @@
     "title": "Accounts Merge",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/accounts-merge/",
@@ -6612,7 +7761,10 @@
     "title": "Path with Minimum Effort",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/path-with-minimum-effort/",
@@ -6628,7 +7780,10 @@
     "title": "Integer Break",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/integer-break/",
@@ -6644,7 +7799,8 @@
     "title": "Stone Game III",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/stone-game-iii/",
@@ -6660,7 +7816,10 @@
     "title": "Meeting Rooms III",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/meeting-rooms-iii/",
@@ -6676,7 +7835,10 @@
     "title": "Excel Sheet Column Title",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/excel-sheet-column-title/",
@@ -6692,7 +7854,10 @@
     "title": "Transpose Matrix",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/transpose-matrix/",
@@ -6708,7 +7873,8 @@
     "title": "Find Critical and Pseudo Critical Edges in Minimum Spanning Tree",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/",
@@ -6724,7 +7890,10 @@
     "title": "Minimum Height Trees",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-height-trees/",
@@ -6740,7 +7909,9 @@
     "title": "Design HashSet",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-hashset/",
@@ -6756,7 +7927,10 @@
     "title": "Design HashMap",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-hashmap/",
@@ -6772,7 +7946,10 @@
     "title": "Rotating the Box",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/rotating-the-box/",
@@ -6788,7 +7965,10 @@
     "title": "Lowest Common Ancestor of a Binary Tree III",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/",
@@ -6804,7 +7984,10 @@
     "title": "Flood Fill",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/flood-fill/",
@@ -6820,7 +8003,9 @@
     "title": "Number of Enclaves",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-enclaves/",
@@ -6836,7 +8021,10 @@
     "title": "Max Consecutive Ones III",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/max-consecutive-ones-iii/",
@@ -6852,7 +8040,10 @@
     "title": "Custom Sort String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/custom-sort-string/",
@@ -6868,7 +8059,10 @@
     "title": "Interval List Intersections",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/interval-list-intersections/",
@@ -6884,7 +8078,10 @@
     "title": "Is Subsequence",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/is-subsequence/",
@@ -6900,7 +8097,8 @@
     "title": "Minimum Recolors to Get K Consecutive Black Blocks",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-recolors-to-get-k-consecutive-black-blocks/",
@@ -6916,7 +8114,10 @@
     "title": "Arranging Coins",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/arranging-coins/",
@@ -6932,7 +8133,9 @@
     "title": "Final Array State After K Multiplication Operations I",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/final-array-state-after-k-multiplication-operations-i/",
@@ -6948,7 +8151,10 @@
     "title": "Count Odd Numbers in an Interval Range",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/",
@@ -6964,7 +8170,9 @@
     "title": "Single Number III",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/single-number-iii/",
@@ -6980,7 +8188,8 @@
     "title": "Count Prefix and Suffix Pairs I",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-prefix-and-suffix-pairs-i/",
@@ -6996,7 +8205,10 @@
     "title": "Shortest Bridge",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/shortest-bridge/",
@@ -7012,7 +8224,10 @@
     "title": "Subarray Product Less Than K",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/subarray-product-less-than-k/",
@@ -7028,7 +8243,10 @@
     "title": "Construct Binary Tree from Inorder and Postorder Traversal",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
@@ -7044,7 +8262,9 @@
     "title": "Paint House",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/paint-house/",
@@ -7060,7 +8280,10 @@
     "title": "First Unique Character in a String",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/first-unique-character-in-a-string/",
@@ -7076,7 +8299,10 @@
     "title": "Sort Array by Parity",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sort-array-by-parity/",
@@ -7092,7 +8318,10 @@
     "title": "New 21 Game",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/new-21-game/",
@@ -7108,7 +8337,10 @@
     "title": "Bus Routes",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/bus-routes/",
@@ -7124,7 +8356,10 @@
     "title": "Largest Number",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/largest-number/",
@@ -7140,7 +8375,10 @@
     "title": "Merge Two Binary Trees",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/merge-two-binary-trees/",
@@ -7156,7 +8394,10 @@
     "title": "Continuous Subarray Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/continuous-subarray-sum/",
@@ -7172,7 +8413,10 @@
     "title": "Binary Search Tree Iterator",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-search-tree-iterator/",
@@ -7188,7 +8432,10 @@
     "title": "Find Pivot Index",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-pivot-index/",
@@ -7204,7 +8451,9 @@
     "title": "Two City Scheduling",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/two-city-scheduling/",
@@ -7220,7 +8469,10 @@
     "title": "Path Sum",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/path-sum/",
@@ -7236,7 +8488,10 @@
     "title": "Largest Divisible Subset",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/largest-divisible-subset/",
@@ -7268,7 +8523,8 @@
     "title": "One Edit Distance",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/one-edit-distance/",
@@ -7284,7 +8540,8 @@
     "title": "Shortest Way to Form String",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/shortest-way-to-form-string/",
@@ -7300,7 +8557,10 @@
     "title": "Longest Substring with At Most K Distinct Characters",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/",
@@ -7332,7 +8592,9 @@
     "title": "Palindrome Permutation",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/palindrome-permutation/",
@@ -7380,7 +8642,8 @@
     "title": "Missing Ranges",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/missing-ranges/",
@@ -7428,7 +8691,10 @@
     "title": "Basic Calculator III",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/basic-calculator-iii/",
@@ -7444,7 +8710,8 @@
     "title": "Find Leaves of Binary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-leaves-of-binary-tree/",
@@ -7460,7 +8727,9 @@
     "title": "The Maze II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/the-maze-ii/",
@@ -7492,7 +8761,8 @@
     "title": "Minimum Cost to Connect Sticks",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-cost-to-connect-sticks/",
@@ -7508,7 +8778,9 @@
     "title": "Missing Element in Sorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/missing-element-in-sorted-array/",
@@ -7540,7 +8812,10 @@
     "title": "Design Tic-Tac-Toe",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-tic-tac-toe/",
@@ -7556,7 +8831,8 @@
     "title": "Design A Leaderboard",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-a-leaderboard/",
@@ -7572,7 +8848,9 @@
     "title": "Serialize and Deserialize N-ary Tree",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/",
@@ -7604,7 +8882,8 @@
     "title": "Unique Email Addresses",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/unique-email-addresses/",
@@ -7636,7 +8915,10 @@
     "title": "Robot Room Cleaner",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/robot-room-cleaner/",
@@ -7652,7 +8934,10 @@
     "title": "Special Array I",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/special-array-i/",
@@ -7668,7 +8953,10 @@
     "title": "Guess Number Higher Or Lower",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/guess-number-higher-or-lower/",
@@ -7684,7 +8972,9 @@
     "title": "Maximum Ascending Subarray Sum",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-ascending-subarray-sum/",
@@ -7700,7 +8990,10 @@
     "title": "Can Place Flowers",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/can-place-flowers/",
@@ -7716,7 +9009,10 @@
     "title": "Logger Rate Limiter",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/logger-rate-limiter/",
@@ -7748,7 +9044,10 @@
     "title": "Meeting Scheduler",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/meeting-scheduler/",
@@ -7764,7 +9063,10 @@
     "title": "Check if Array Is Sorted and Rotated",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/",
@@ -7796,7 +9098,10 @@
     "title": "Longest Strictly Increasing or Strictly Decreasing Subarray",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-strictly-increasing-or-strictly-decreasing-subarray/",
@@ -7812,7 +9117,10 @@
     "title": "Word Pattern",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/word-pattern/",
@@ -7828,7 +9136,8 @@
     "title": "Nested List Weight Sum II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/nested-list-weight-sum-ii/",
@@ -7844,7 +9153,9 @@
     "title": "Design Excel Sum Formula",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-excel-sum-formula/",
@@ -7860,7 +9171,10 @@
     "title": "Matchsticks to Square",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/matchsticks-to-square/",
@@ -7876,7 +9190,10 @@
     "title": "Range Sum Query - Immutable",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/range-sum-query-immutable/",
@@ -7892,7 +9209,9 @@
     "title": "Nested List Weight Sum",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/nested-list-weight-sum/",
@@ -7908,7 +9227,10 @@
     "title": "Design File System",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-file-system/",
@@ -7924,7 +9246,8 @@
     "title": "Time Taken to Cross the Door",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/time-taken-to-cross-the-door/",
@@ -7940,7 +9263,10 @@
     "title": "Dot Product of Two Sparse Vectors",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/dot-product-of-two-sparse-vectors/",
@@ -7972,7 +9298,8 @@
     "title": "Strobogrammatic Number",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/strobogrammatic-number/",
@@ -7988,7 +9315,9 @@
     "title": "Best Meeting Point",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/best-meeting-point/",
@@ -8004,7 +9333,10 @@
     "title": "Height Checker",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/height-checker/",
@@ -8020,7 +9352,10 @@
     "title": "Number of Good Pairs",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-good-pairs/",
@@ -8036,7 +9371,10 @@
     "title": "Subarrays with K Different Integers",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/subarrays-with-k-different-integers/",
@@ -8052,7 +9390,10 @@
     "title": "Find the Difference of Two Arrays",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-the-difference-of-two-arrays/",
@@ -8068,7 +9409,8 @@
     "title": "Kth Distinct String in an Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/kth-distinct-string-in-an-array/",
@@ -8084,7 +9426,10 @@
     "title": "Design Hit Counter",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-hit-counter/",
@@ -8100,7 +9445,8 @@
     "title": "Binary Searchable Numbers in an Unsorted Array",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/binary-searchable-numbers-in-an-unsorted-array/",
@@ -8116,7 +9462,10 @@
     "title": "Divide Array Into Equal Pairs",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/divide-array-into-equal-pairs/",
@@ -8132,7 +9481,10 @@
     "title": "Find in Mountain Array",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-in-mountain-array/",
@@ -8148,7 +9500,8 @@
     "title": "Longest Turbulent Subarray",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-turbulent-subarray/",
@@ -8164,7 +9517,10 @@
     "title": "Maximum Frequency Stack",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-frequency-stack/",
@@ -8180,7 +9536,10 @@
     "title": "Minimum Time to Collect All Apples in a Tree",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/",
@@ -8196,7 +9555,10 @@
     "title": "Find Missing and Repeated Values",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-missing-and-repeated-values/",
@@ -8228,7 +9590,9 @@
     "title": "Number of Distinct Islands II",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-distinct-islands-ii/",
@@ -8244,7 +9608,9 @@
     "title": "Optimal Account Balancing",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/optimal-account-balancing/",
@@ -8260,7 +9626,9 @@
     "title": "Inorder Successor in BST II",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/inorder-successor-in-bst-ii/",
@@ -8292,7 +9660,8 @@
     "title": "Put Boxes Into the Warehouse I",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/put-boxes-into-the-warehouse-i/",
@@ -8308,7 +9677,9 @@
     "title": "Tree Diameter",
     "difficulty": "Medium",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/tree-diameter/",
@@ -8324,7 +9695,9 @@
     "title": "Employee Free Time",
     "difficulty": "Hard",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/employee-free-time/",
@@ -8340,7 +9713,9 @@
     "title": "Monotonic Array",
     "difficulty": "Easy",
     "categories": [
-      "Google"
+      "Google",
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/monotonic-array/",
@@ -8356,7 +9731,10 @@
     "title": "Longest Palindromic Subsequence",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-palindromic-subsequence/",
@@ -8372,7 +9750,10 @@
     "title": "Shortest Common Supersequence",
     "difficulty": "Hard",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/shortest-common-supersequence/",
@@ -8388,7 +9769,10 @@
     "title": "Longest Palindrome",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/longest-palindrome/",
@@ -8420,7 +9804,10 @@
     "title": "My Calendar I",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/my-calendar-i/",
@@ -8436,7 +9823,8 @@
     "title": "Path Crossing",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/path-crossing/",
@@ -8452,7 +9840,9 @@
     "title": "Count Vowel Strings in Ranges",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/count-vowel-strings-in-ranges/",
@@ -8468,7 +9858,10 @@
     "title": "Maximum Twin Sum Of A Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/",
@@ -8484,7 +9877,9 @@
     "title": "Design Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-linked-list/",
@@ -8500,7 +9895,10 @@
     "title": "Find Common Characters",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-common-characters/",
@@ -8516,7 +9914,9 @@
     "title": "Relative Sort Array",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/relative-sort-array/",
@@ -8548,7 +9948,8 @@
     "title": "Reverse Words in a String II",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/reverse-words-in-a-string-ii/",
@@ -8564,7 +9965,10 @@
     "title": "Pascal's Triangle II",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/pascals-triangle-ii/",
@@ -8596,7 +10000,8 @@
     "title": "Kill Process",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/kill-process/",
@@ -8628,7 +10033,9 @@
     "title": "Maximum Score After Splitting a String",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/maximum-score-after-splitting-a-string/",
@@ -8644,7 +10051,10 @@
     "title": "Set Mismatch",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/set-mismatch/",
@@ -8660,7 +10070,8 @@
     "title": "Minimum Number of Operations to Make Array Empty",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/",
@@ -8692,7 +10103,8 @@
     "title": "Path With Maximum Minimum Value",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/path-with-maximum-minimum-value/",
@@ -8756,7 +10168,8 @@
     "title": "Range Sum Query 2D - Mutable",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/range-sum-query-2d-mutable/",
@@ -8772,7 +10185,8 @@
     "title": "Find Words That Can Be Formed by Characters",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-words-that-can-be-formed-by-characters/",
@@ -8788,7 +10202,8 @@
     "title": "Sentence Similarity II",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sentence-similarity-ii/",
@@ -8804,7 +10219,10 @@
     "title": "Number of Students Unable to Eat Lunch",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/",
@@ -8836,7 +10254,9 @@
     "title": "Design Browser History",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/design-browser-history/",
@@ -8852,7 +10272,10 @@
     "title": "Remove Duplicates From Sorted Array II",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
@@ -8868,7 +10291,10 @@
     "title": "Special Array with X Elements Greater than or Equal X",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/",
@@ -8884,7 +10310,9 @@
     "title": "Average Waiting Time",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/average-waiting-time/",
@@ -8900,7 +10328,9 @@
     "title": "Split Array With Same Average",
     "difficulty": "Hard",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/split-array-with-same-average/",
@@ -8916,7 +10346,9 @@
     "title": "Crawler Log Folder",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/crawler-log-folder/",
@@ -8932,7 +10364,10 @@
     "title": "Check Completeness of a Binary Tree",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/check-completeness-of-a-binary-tree/",
@@ -8980,7 +10415,8 @@
     "title": "Find Smallest Common Element in All Rows",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/find-smallest-common-element-in-all-rows/",
@@ -8996,7 +10432,8 @@
     "title": "First Unique Number",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/first-unique-number/",
@@ -9044,7 +10481,9 @@
     "title": "Web Crawler",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/web-crawler/",
@@ -9124,7 +10563,8 @@
     "title": "Valid Palindrome III",
     "difficulty": "Hard",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/valid-palindrome-iii/",
@@ -9140,7 +10580,8 @@
     "title": "Minimum Changes To Make Alternating Binary String",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string/",
@@ -9156,7 +10597,8 @@
     "title": "Word Pattern II",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/word-pattern-ii/",
@@ -9172,7 +10614,9 @@
     "title": "Ones and Zeroes",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/ones-and-zeroes/",
@@ -9188,7 +10632,8 @@
     "title": "Minimize Max Distance to Gas Station",
     "difficulty": "Hard",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/minimize-max-distance-to-gas-station/",
@@ -9204,7 +10649,8 @@
     "title": "Sequence Reconstruction",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sequence-reconstruction/",
@@ -9220,7 +10666,9 @@
     "title": "Convert Binary Search Tree to Sorted Doubly Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/",
@@ -9236,7 +10684,8 @@
     "title": "Remove Duplicates From an Unsorted Linked List",
     "difficulty": "Medium",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/remove-duplicates-from-an-unsorted-linked-list/",
@@ -9268,7 +10717,10 @@
     "title": "Time Needed to Buy Tickets",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/time-needed-to-buy-tickets/",
@@ -9284,7 +10736,9 @@
     "title": "Sort the People",
     "difficulty": "Easy",
     "categories": [
-      "Amazon"
+      "Amazon",
+      "Google",
+      "Meta"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/sort-the-people/",
@@ -9300,7 +10754,8 @@
     "title": "Cutting Ribbons",
     "difficulty": "Medium",
     "categories": [
-      "Meta"
+      "Meta",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/cutting-ribbons/",
@@ -9316,7 +10771,8 @@
     "title": "Largest BST Subtree",
     "difficulty": "Medium",
     "categories": [
-      "Meta"
+      "Meta",
+      "Microsoft"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/largest-bst-subtree/",
@@ -9428,7 +10884,8 @@
     "title": "3Sum Smaller",
     "difficulty": "Medium",
     "categories": [
-      "Microsoft"
+      "Microsoft",
+      "Google"
     ],
     "tags": [],
     "leetcode_url": "https://leetcode.com/problems/3sum-smaller/",
