@@ -140,6 +140,8 @@ function togglePopup(): void {
   } else {
     const { x, y } = getPopupPosition()
     popupWindow.setPosition(x, y, false)
+    popupWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true })
+    popupWindow.setAlwaysOnTop(true, 'pop-up-menu')
     popupWindow.show()
     popupWindow.focus()
   }
