@@ -86,8 +86,8 @@ Click the gear icon to:
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm 9+
+- Node.js 22+ (see `.nvmrc`)
+- pnpm 11+
 
 ### Setup
 
