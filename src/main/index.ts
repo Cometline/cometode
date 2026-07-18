@@ -120,14 +120,13 @@ function createPopupWindow(): void {
 }
 
 function getPopupPosition(): { x: number; y: number } {
-  const trayBounds = tray?.getBounds()
-  if (!trayBounds) {
-    return { x: 0, y: 0 }
-  }
+  const { screen } = require('electron')
+  const display = screen.getPrimaryDisplay()
+  const { x: workX, y: workY, width: workWidth } = display.workArea
+  const MARGIN = 8
 
-  // Position below tray icon, centered
-  const x = Math.round(trayBounds.x + trayBounds.width / 2 - POPUP_WIDTH / 2)
-  const y = Math.round(trayBounds.y + trayBounds.height + 4)
+  const x = workX + workWidth - POPUP_WIDTH - MARGIN
+  const y = workY
 
   return { x, y }
 }
