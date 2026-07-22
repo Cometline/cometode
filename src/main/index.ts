@@ -30,7 +30,7 @@ let lastAutoExportDate: string | null = null
 let lastImportedExportDate: string | null = null
 
 const POPUP_WIDTH = 360
-const POPUP_HEIGHT = 520
+const POPUP_HEIGHT = 680
 const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+M'
 
 /**

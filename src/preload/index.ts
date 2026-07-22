@@ -32,6 +32,7 @@ const api = {
 
   // Stats
   getStats: (problemSet?: ProblemSet) => ipcRenderer.invoke('get-stats', problemSet),
+  getActivity: () => ipcRenderer.invoke('get-activity'),
 
   // Categories
   getCategories: () => ipcRenderer.invoke('get-categories'),
