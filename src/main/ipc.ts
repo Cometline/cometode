@@ -326,6 +326,22 @@ export function setupIPC(db: Database.Database): void {
         nextReviewStr,
         newState.totalReviews
       )
+
+      // Log this review for activity tracking
+      db.prepare(
+        `
+        INSERT INTO review_history
+        (problem_id, quality, interval_before, interval_after, ease_factor_before, ease_factor_after)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `
+      ).run(
+        problemId,
+        quality,
+        currentState.interval,
+        newState.interval,
+        currentState.easeFactor,
+        newState.easeFactor
+      )
     })
 
     transaction()
@@ -431,6 +447,18 @@ export function setupIPC(db: Database.Database): void {
       byCategory,
       reviewHistory: [] // No longer tracking daily history
     }
+  })
+
+  // Get daily activity counts (for contribution-style heatmap)
+  ipcMain.handle('get-activity', () => {
+    return db
+      .prepare(
+        `SELECT DATE(review_date, 'localtime') as date, COUNT(*) as count
+         FROM review_history
+         GROUP BY DATE(review_date, 'localtime')
+         ORDER BY date ASC`
+      )
+      .all() as { date: string; count: number }[]
   })
 
   // Get categories list

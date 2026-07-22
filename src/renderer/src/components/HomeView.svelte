@@ -19,8 +19,9 @@
     initProblemSet,
     isReviewQueueProblem
   } from '../stores/problems'
-  import { stats, loadStats } from '../stores/stats'
+  import { stats, loadStats, activity, loadActivity } from '../stores/stats'
   import CompanyIcon from './CompanyIcon.svelte'
+  import ActivityGraph from './ActivityGraph.svelte'
   import type { Problem, ProblemSet } from '../../../preload/index.d'
 
   interface Props {
@@ -75,6 +76,7 @@
       loadTodayReviews()
       loadStats(set)
       loadCategories()
+      loadActivity()
     })
   })
 
@@ -452,6 +454,10 @@
         {hasActiveFilters ? 'No problems match your filters' : 'Loading...'}
       </div>
     {/each}
+  </div>
+  <!-- Activity Graph -->
+  <div class="mx-3 mt-2 mb-2">
+    <ActivityGraph data={$activity} />
   </div>
 
   <!-- Footer -->

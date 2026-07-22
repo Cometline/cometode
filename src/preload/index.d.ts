@@ -58,6 +58,11 @@ export interface Stats {
   }>
 }
 
+export interface ActivityEntry {
+  date: string
+  count: number
+}
+
 export interface ReviewResult {
   success: boolean
   nextReviewDate: string
@@ -95,6 +100,7 @@ export interface API {
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
   getStats: (problemSet?: ProblemSet) => Promise<Stats>
+  getActivity: () => Promise<ActivityEntry[]>
   getCategories: () => Promise<string[]>
   savePreference: (data: { key: string; value: string }) => Promise<{ success: boolean }>
   getPreference: (key: string) => Promise<string | null>
