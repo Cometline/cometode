@@ -19,7 +19,15 @@
     initProblemSet,
     isReviewQueueProblem
   } from '../stores/problems'
-  import { stats, loadStats, activity, loadActivity } from '../stores/stats'
+  import {
+    stats,
+    loadStats,
+    activity,
+    loadActivity,
+    showActivityGraph,
+    initShowActivityGraph,
+    setShowActivityGraph
+  } from '../stores/stats'
   import CompanyIcon from './CompanyIcon.svelte'
   import ActivityGraph from './ActivityGraph.svelte'
   import type { Problem, ProblemSet } from '../../../preload/index.d'
@@ -77,6 +85,7 @@
       loadStats(set)
       loadCategories()
       loadActivity()
+      initShowActivityGraph()
     })
   })
 
@@ -456,8 +465,36 @@
     {/each}
   </div>
   <!-- Activity Graph -->
-  <div class="mx-3 mt-2 mb-2">
-    <ActivityGraph data={$activity} />
+  <div class="px-3 pt-2 pb-2 border-t border-gray-200 dark:border-gray-700">
+    <button
+      type="button"
+      onclick={() => setShowActivityGraph(!$showActivityGraph)}
+      class="flex w-full items-center justify-between py-1 text-xs text-gray-500 dark:text-gray-400
+             hover:text-gray-700 dark:hover:text-gray-300 transition-colors cursor-pointer"
+      aria-expanded={$showActivityGraph}
+      aria-controls="activity-graph"
+    >
+      <span class="font-medium">Activity</span>
+      <svg
+        class="w-3.5 h-3.5 transition-transform {$showActivityGraph ? 'rotate-180' : ''}"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+    {#if $showActivityGraph}
+      <div id="activity-graph" transition:slide={{ duration: 150 }}>
+        <ActivityGraph data={$activity} />
+      </div>
+    {/if}
   </div>
 
   <!-- Footer -->

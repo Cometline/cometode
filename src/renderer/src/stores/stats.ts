@@ -11,6 +11,9 @@ export const isLoadingStats = writable(false)
 // Activity data (daily review counts, for contribution-style heatmap)
 export const activity = writable<ActivityEntry[]>([])
 
+// Whether the activity heatmap is visible
+export const showActivityGraph = writable(true)
+
 // Derived: completion percentage
 export const completionPercentage = derived(stats, ($stats) => {
   if (!$stats || $stats.total === 0) return 0
@@ -37,5 +40,25 @@ export async function loadActivity(): Promise<void> {
     activity.set(await window.api.getActivity())
   } catch (error) {
     console.error('Failed to load activity:', error)
+  }
+}
+
+export async function initShowActivityGraph(): Promise<void> {
+  try {
+    const saved = await window.api.getPreference('showActivityGraph')
+    if (saved !== null) {
+      showActivityGraph.set(saved === 'true')
+    }
+  } catch (error) {
+    console.error('Failed to load activity graph preference:', error)
+  }
+}
+
+export async function setShowActivityGraph(show: boolean): Promise<void> {
+  showActivityGraph.set(show)
+  try {
+    await window.api.savePreference({ key: 'showActivityGraph', value: String(show) })
+  } catch (error) {
+    console.error('Failed to save activity graph preference:', error)
   }
 }
