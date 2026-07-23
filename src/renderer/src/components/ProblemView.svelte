@@ -21,9 +21,9 @@
 
   const categories = $derived(JSON.parse(problem.categories || '[]') as string[])
 
-  const isDue = $derived(() => {
+  // Use local date (not UTC) to match backend's DATE('now', 'localtime')
+  const isDue = $derived.by(() => {
     if (!problem.next_review_date) return false
-    // Use local date (not UTC) to match backend's DATE('now', 'localtime')
     const today = new Date()
     const localToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
     return problem.next_review_date <= localToday
@@ -118,7 +118,7 @@
   </div>
 
   <!-- Content -->
-  <div class="flex-1 overflow-y-auto p-3">
+  <div class="flex-1 overflow-y-auto p-3 flex flex-col min-h-0">
     {#if showSuccess}
       <!-- Success State -->
       <div class="flex flex-col items-center justify-center h-full text-center">
@@ -209,62 +209,81 @@
             </a>
           {/if}
         </div>
+      </div>
 
-        <!-- Progress Info -->
-        {#if problem.total_reviews > 0}
-          <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-            <div class="grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <div class="text-gray-500 dark:text-gray-400 text-xs">Reviews</div>
-                <div class="font-medium text-gray-900 dark:text-gray-100">
-                  {problem.total_reviews}
-                </div>
-              </div>
-              <div>
-                <div class="text-gray-500 dark:text-gray-400 text-xs">Interval</div>
-                <div class="font-medium text-gray-900 dark:text-gray-100">
-                  {problem.interval} days
-                </div>
-              </div>
-              <div>
-                <div class="text-gray-500 dark:text-gray-400 text-xs">Ease</div>
-                <div class="font-medium text-gray-900 dark:text-gray-100">
-                  {problem.ease_factor.toFixed(2)}
-                </div>
-              </div>
-              <div>
-                <div class="text-gray-500 dark:text-gray-400 text-xs">Next Review</div>
-                <div
-                  class="font-medium text-gray-900 dark:text-gray-100 {isDue
-                    ? 'text-amber-500'
-                    : ''}"
-                >
-                  {formatDate(problem.next_review_date)}
-                </div>
+      <!-- Rating Section -->
+      <div class="pt-1">
+        <div class="text-center mb-3">
+          <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Rate your recall</div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          {#each qualityOptions as option (option.value)}
+            <button
+              onclick={() => handleReview(option.value)}
+              disabled={isSubmitting}
+              class="py-2 {option.color} text-white rounded-md text-sm font-medium disabled:opacity-50 border-gray-300 hover:scale-105 transition-all cursor-pointer"
+            >
+              <div>{option.label}</div>
+              <div class="text-xs opacity-75">{option.description}</div>
+            </button>
+          {/each}
+        </div>
+        <div class="text-center mt-2 text-xs text-gray-500 dark:text-gray-400">
+          Press 1-4 to quick rate
+        </div>
+      </div>
+
+      <!-- Review history — fills remaining space below rating -->
+      <div class="mt-4 flex-1 min-h-0 flex flex-col">
+        <div class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+          Review history
+        </div>
+        <div
+          class="flex-1 rounded-lg bg-gray-50 dark:bg-gray-800/50 p-3 border border-gray-100 dark:border-gray-700/50"
+        >
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Reviews</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">{problem.total_reviews}</div>
+            </div>
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Ease factor</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">
+                {problem.total_reviews > 0 ? problem.ease_factor.toFixed(2) : '—'}
               </div>
             </div>
-          </div>
-        {/if}
-
-        <!-- Rating Section -->
-        <div class="pt-2">
-          <div class="text-center mb-3">
-            <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Rate your recall</div>
-          </div>
-          <div class="grid grid-cols-4 gap-2">
-            {#each qualityOptions as option (option.value)}
-              <button
-                onclick={() => handleReview(option.value)}
-                disabled={isSubmitting}
-                class="py-2 {option.color} text-white rounded-md text-sm font-medium disabled:opacity-50 border-gray-300 hover:scale-105 transition-all cursor-pointer"
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Last review</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">
+                {problem.last_reviewed_at ? formatDate(problem.last_reviewed_at) : 'Never'}
+              </div>
+            </div>
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Interval</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">
+                {problem.total_reviews > 0
+                  ? `${problem.interval} day${problem.interval !== 1 ? 's' : ''}`
+                  : '—'}
+              </div>
+            </div>
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Next review</div>
+              <div
+                class="font-medium {isDue
+                  ? 'text-amber-500'
+                  : 'text-gray-900 dark:text-gray-100'}"
               >
-                <div>{option.label}</div>
-                <div class="text-xs opacity-75">{option.description}</div>
-              </button>
-            {/each}
-          </div>
-          <div class="text-center mt-2 text-xs text-gray-500 dark:text-gray-400">
-            Press 1-4 to quick rate
+                {problem.next_review_date ? formatDate(problem.next_review_date) : 'Not scheduled'}
+              </div>
+            </div>
+            <div>
+              <div class="text-gray-500 dark:text-gray-400 text-xs">Success rate</div>
+              <div class="font-medium text-gray-900 dark:text-gray-100">
+                {problem.total_reviews > 0
+                  ? `${Math.round(problem.success_rate * 100)}%`
+                  : '—'}
+              </div>
+            </div>
           </div>
         </div>
       </div>
