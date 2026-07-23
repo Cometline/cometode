@@ -14,6 +14,7 @@ const api = {
     searchText?: string
     dueOnly?: boolean
     problemSet?: ProblemSet
+    reviewedOn?: string
   }) => ipcRenderer.invoke('get-problems', filters),
 
   getProblem: (problemId: number) => ipcRenderer.invoke('get-problem', problemId),
