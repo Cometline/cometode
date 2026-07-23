@@ -3,9 +3,11 @@
 
   interface Props {
     data: ActivityEntry[]
+    selectedDate?: string | null
+    onSelectDate?: (date: string | null) => void
   }
 
-  let { data }: Props = $props()
+  let { data, selectedDate = null, onSelectDate }: Props = $props()
 
   // Sized to fill the ~336px usable width of the 360px popup (13px per column: 10px cell + 3px gap)
   const WEEKS = 25
@@ -17,6 +19,25 @@
   interface Day {
     date: string
     count: number
+  }
+
+  let hovered: Day | null = $state(null)
+  let tipX = $state(0)
+  let tipY = $state(0)
+
+  function portal(node: HTMLElement): { destroy: () => void } {
+    document.body.appendChild(node)
+    return {
+      destroy() {
+        node.remove()
+      }
+    }
+  }
+
+  function updateTipPosition(e: MouseEvent): void {
+    const pad = 96
+    tipX = Math.min(Math.max(e.clientX, pad), window.innerWidth - pad)
+    tipY = e.clientY
   }
 
   // Build a grid of WEEKS columns x 7 rows, ending on today, aligned so each
@@ -62,9 +83,60 @@
     return 'bg-emerald-500 dark:bg-emerald-400'
   }
 
-  function tooltip(day: Day): string {
-    if (day.count < 0) return ''
-    return `${day.date}: ${day.count} review${day.count === 1 ? '' : 's'}`
+  function formatReadableDate(dateStr: string): string {
+    const [year, month, day] = dateStr.split('-').map(Number)
+    const date = new Date(year, month - 1, day)
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    })
+  }
+
+  function tooltipLabel(day: Day): string {
+    const readable = formatReadableDate(day.date)
+    if (day.count === 0) return `No submissions on ${readable}`
+    if (day.count === 1) return `1 submission on ${readable}`
+    return `${day.count} submissions on ${readable}`
+  }
+
+  function onCellEnter(day: Day, e: MouseEvent): void {
+    if (day.count < 0) {
+      hovered = null
+      return
+    }
+    hovered = day
+    updateTipPosition(e)
+  }
+
+  function onCellMove(e: MouseEvent): void {
+    if (!hovered) return
+    updateTipPosition(e)
+  }
+
+  function onCellLeave(): void {
+    hovered = null
+  }
+
+  function isClickable(day: Day): boolean {
+    return day.count > 0
+  }
+
+  function onCellClick(day: Day): void {
+    if (!isClickable(day)) return
+    if (day.date === selectedDate) {
+      onSelectDate?.(null)
+    } else {
+      onSelectDate?.(day.date)
+    }
+  }
+
+  function onCellKeydown(day: Day, e: KeyboardEvent): void {
+    if (!isClickable(day)) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      onCellClick(day)
+    }
   }
 
   const MONTH_NAMES = [
@@ -94,26 +166,62 @@
   })
 </script>
 
-<div class="overflow-x-auto">
-  <div class="w-fit">
-    <div class="flex gap-[3px] mb-1">
-      {#each monthLabels as label, i (i)}
-        <div class="w-[10px] text-[9px] leading-none text-gray-400 dark:text-gray-500">
-          {label ?? ''}
-        </div>
-      {/each}
-    </div>
-    <div class="flex gap-[3px]">
-      {#each weeks as column, i (i)}
-        <div class="flex flex-col gap-[3px]">
-          {#each column as day (day.date)}
-            <div
-              class="w-[10px] h-[10px] rounded-xs {levelClass(day.count)}"
-              title={tooltip(day)}
-            ></div>
-          {/each}
-        </div>
-      {/each}
+<div class="relative">
+  <div class="overflow-x-auto">
+    <div class="w-fit">
+      <div class="flex gap-[3px] mb-1">
+        {#each monthLabels as label, i (i)}
+          <div class="w-[10px] text-[9px] leading-none text-gray-400 dark:text-gray-500">
+            {label ?? ''}
+          </div>
+        {/each}
+      </div>
+      <div class="flex gap-[3px]">
+        {#each weeks as column, i (i)}
+          <div class="flex flex-col gap-[3px]">
+            {#each column as day (day.date)}
+              {@const clickable = isClickable(day)}
+              {#if clickable}
+                <div
+                  class={[
+                    'w-[10px] h-[10px] rounded-xs cursor-pointer',
+                    levelClass(day.count),
+                    selectedDate === day.date && 'ring-2 ring-inset ring-orange-500'
+                  ]}
+                  role="button"
+                  tabindex="0"
+                  aria-label={tooltipLabel(day)}
+                  aria-pressed={selectedDate === day.date}
+                  onclick={() => onCellClick(day)}
+                  onkeydown={(e) => onCellKeydown(day, e)}
+                  onmouseenter={(e) => onCellEnter(day, e)}
+                  onmousemove={onCellMove}
+                  onmouseleave={onCellLeave}
+                ></div>
+              {:else}
+                <div
+                  class="w-[10px] h-[10px] rounded-xs {levelClass(day.count)}"
+                  role="img"
+                  aria-label={day.count >= 0 ? tooltipLabel(day) : undefined}
+                  onmouseenter={(e) => onCellEnter(day, e)}
+                  onmousemove={onCellMove}
+                  onmouseleave={onCellLeave}
+                ></div>
+              {/if}
+            {/each}
+          </div>
+        {/each}
+      </div>
     </div>
   </div>
+  {#if hovered}
+    <div
+      use:portal
+      class="fixed z-50 whitespace-nowrap px-2 py-1 rounded text-[10px] font-medium shadow-md
+             pointer-events-none bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+      style="left: {tipX}px; top: {tipY}px; transform: translate(-50%, calc(-100% - 8px));"
+    >
+      {tooltipLabel(hovered)}
+    </div>
+  {/if}
 </div>
