@@ -26,7 +26,8 @@
     loadActivity,
     showActivityGraph,
     initShowActivityGraph,
-    setShowActivityGraph
+    setShowActivityGraph,
+    activityStreak
   } from '../stores/stats'
   import CompanyIcon from './CompanyIcon.svelte'
   import ActivityGraph from './ActivityGraph.svelte'
@@ -56,6 +57,7 @@
   let selectedDifficulties = $state<string[]>([...$filterUIState.selectedDifficulties])
   let showDueOnly = $state($filterUIState.showDueOnly)
   let showFilterMenu = $state($filterUIState.showFilterMenu)
+  let reviewedOn = $state<string | null>(null)
   let filtersInitialized = $state(false)
 
   // Sync local state back to store when changed
@@ -96,7 +98,8 @@
       problemSet: set,
       difficulty: [...selectedDifficulties],
       searchText: searchText || undefined,
-      dueOnly: showDueOnly || undefined
+      dueOnly: showDueOnly || undefined,
+      reviewedOn: reviewedOn || undefined
     }
     filters.set(newFilters)
     await Promise.all([loadProblems(newFilters), loadStats(set), loadTodayReviews()])
@@ -112,7 +115,8 @@
       problemSet: $currentProblemSet,
       difficulty: difficulties,
       searchText: searchText || undefined,
-      dueOnly: showDueOnly || undefined
+      dueOnly: showDueOnly || undefined,
+      reviewedOn: reviewedOn || undefined
     }
     filters.set(newFilters)
     loadProblems(newFilters)
@@ -148,6 +152,16 @@
     searchText = ''
     selectedDifficulties = []
     showDueOnly = false
+    reviewedOn = null
+  }
+
+  function formatReviewedOnLabel(dateStr: string): string {
+    const [year, month, day] = dateStr.split('-').map(Number)
+    return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    })
   }
 
   function selectRandomProblem(): void {
@@ -167,7 +181,9 @@
     }
   }
 
-  const hasActiveFilters = $derived(!!searchText || selectedDifficulties.length > 0 || showDueOnly)
+  const hasActiveFilters = $derived(
+    !!searchText || selectedDifficulties.length > 0 || showDueOnly || !!reviewedOn
+  )
 
   const progressPercentage = $derived(
     $stats ? Math.round(($stats.practiced / $stats.total) * 100) : 0
@@ -414,6 +430,23 @@
     </div>
   </div>
 
+  {#if reviewedOn}
+    <div
+      class="px-3 py-1.5 flex items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-700 bg-orange-50 dark:bg-orange-900/20"
+    >
+      <span class="text-xs text-orange-700 dark:text-orange-300">
+        Submitted on {formatReviewedOnLabel(reviewedOn)}
+      </span>
+      <button
+        type="button"
+        onclick={() => (reviewedOn = null)}
+        class="text-xs text-orange-600 dark:text-orange-400 hover:underline cursor-pointer"
+      >
+        Clear
+      </button>
+    </div>
+  {/if}
+
   <!-- Problem List -->
   <div class="flex-1 overflow-y-auto">
     {#each $problems as problem, index (problem.id)}
@@ -469,40 +502,57 @@
     <button
       type="button"
       onclick={() => setShowActivityGraph(!$showActivityGraph)}
-      class="flex w-full items-center justify-between py-1 text-xs text-gray-500 dark:text-gray-400
+      class="flex w-full items-center justify-between gap-2 py-1 text-xs text-gray-500 dark:text-gray-400
              hover:text-gray-700 dark:hover:text-gray-300 transition-colors cursor-pointer"
       aria-expanded={$showActivityGraph}
       aria-controls="activity-graph"
     >
-      <span class="font-medium">Activity</span>
-      <svg
-        class="w-3.5 h-3.5 transition-transform {$showActivityGraph ? 'rotate-180' : ''}"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
+      <span class="flex items-center gap-1.5 shrink-0">
+        <span class="font-medium">Activity</span>
+        <span
+          class="inline-flex items-center gap-0.5 font-semibold tabular-nums
+                 {$activityStreak > 0
+                   ? 'text-orange-500 dark:text-orange-400'
+                   : 'text-gray-400 dark:text-gray-500'}"
+          title="{$activityStreak}-day streak"
+          aria-label="{$activityStreak}-day streak"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12.41 2.86c.19-.54.78-.8 1.3-.57.5.22.77.78.64 1.32-.3 1.2-.25 2.22.13 3.1.4.95 1.16 1.7 2.05 2.38 1.73 1.32 3.47 3.07 3.47 5.66 0 3.45-2.8 6.25-6.25 6.25S7.5 18.2 7.5 14.75c0-1.7.72-3.2 1.72-4.47.3-.38.9-.38 1.18.02.7 1.02 1.65 1.55 2.85 1.55.4-1.58.5-3.5.16-5.99z"
+            />
+          </svg>
+          <span>{$activityStreak}</span>
+        </span>
+      </span>
+      <span class="flex items-center gap-1.5 min-w-0">
+        <span class="truncate tabular-nums text-right">
+          {$problems.length} · {problemSetLabel($currentProblemSet)}
+        </span>
+        <svg
+          class="w-3.5 h-3.5 shrink-0 transition-transform {$showActivityGraph ? 'rotate-180' : ''}"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </span>
     </button>
     {#if $showActivityGraph}
       <div id="activity-graph" transition:slide={{ duration: 150 }}>
-        <ActivityGraph data={$activity} />
+        <ActivityGraph
+          data={$activity}
+          selectedDate={reviewedOn}
+          onSelectDate={(date) => (reviewedOn = date)}
+        />
       </div>
     {/if}
-  </div>
-
-  <!-- Footer -->
-  <div
-    class="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 text-center border-t border-gray-200 dark:border-gray-700"
-  >
-    {$problems.length} problem{$problems.length !== 1 ? 's' : ''} ({problemSetLabel(
-      $currentProblemSet
-    )})
   </div>
 </div>
