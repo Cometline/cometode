@@ -14,6 +14,42 @@ export const activity = writable<ActivityEntry[]>([])
 // Whether the activity heatmap is visible
 export const showActivityGraph = writable(true)
 
+function formatLocalDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+/** Consecutive days with ≥1 review, counting back from today (or yesterday if today is empty). */
+export function computeActivityStreak(entries: ActivityEntry[]): number {
+  const activeDates = new Set(entries.filter((entry) => entry.count > 0).map((entry) => entry.date))
+  if (activeDates.size === 0) return 0
+
+  const today = new Date()
+  const todayStr = formatLocalDate(today)
+  const yesterday = new Date(today)
+  yesterday.setDate(today.getDate() - 1)
+  const yesterdayStr = formatLocalDate(yesterday)
+
+  let cursor: Date
+  if (activeDates.has(todayStr)) {
+    cursor = today
+  } else if (activeDates.has(yesterdayStr)) {
+    cursor = yesterday
+  } else {
+    return 0
+  }
+
+  let streak = 0
+  while (activeDates.has(formatLocalDate(cursor))) {
+    streak++
+    cursor = new Date(cursor)
+    cursor.setDate(cursor.getDate() - 1)
+  }
+  return streak
+}
+
+// Current review streak derived from daily activity
+export const activityStreak = derived(activity, ($activity) => computeActivityStreak($activity))
+
 // Derived: completion percentage
 export const completionPercentage = derived(stats, ($stats) => {
   if (!$stats || $stats.total === 0) return 0
