@@ -34,6 +34,8 @@ export interface ProblemFilters {
   searchText?: string
   dueOnly?: boolean
   problemSet?: ProblemSet
+  /** YYYY-MM-DD — problems with a review on this local date */
+  reviewedOn?: string
 }
 
 export interface Stats {

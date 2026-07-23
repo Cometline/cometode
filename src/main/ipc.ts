@@ -35,6 +35,7 @@ interface ProblemFilters {
   searchText?: string
   dueOnly?: boolean
   problemSet?: ProblemSet
+  reviewedOn?: string
 }
 
 interface ReviewSubmission {
@@ -137,6 +138,14 @@ export function setupIPC(db: Database.Database): void {
     if (filters?.dueOnly) {
       query +=
         " AND pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime')"
+    }
+
+    if (filters?.reviewedOn) {
+      query += ` AND p.id IN (
+        SELECT DISTINCT problem_id FROM review_history
+        WHERE DATE(review_date, 'localtime') = ?
+      )`
+      params.push(filters.reviewedOn)
     }
 
     // Sort order:

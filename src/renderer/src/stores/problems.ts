@@ -53,7 +53,8 @@ export const filters = writable<ProblemFilters>({
   status: '',
   searchText: '',
   dueOnly: false,
-  problemSet: 'neetcode150'
+  problemSet: 'neetcode150',
+  reviewedOn: undefined
 })
 
 // UI filter state (persists across view changes)
