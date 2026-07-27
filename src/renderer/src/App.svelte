@@ -15,7 +15,7 @@
     MIN_DAILY_REVIEW_COUNT,
     MAX_DAILY_REVIEW_COUNT
   } from './stores/problems'
-  import { loadStats } from './stores/stats'
+  import { loadActivity, loadStats } from './stores/stats'
   import { theme } from './stores/theme'
   import type { Problem } from '../../preload/index.d'
   import cometlineLogo from './assets/Cometline.png'
@@ -73,7 +73,7 @@
     const handleVisibilityChange = async (): Promise<void> => {
       if (document.visibilityState === 'visible') {
         const set = $currentProblemSet
-        await Promise.all([loadTodayReviews(), loadProblems(), loadStats(set)])
+        await Promise.all([loadTodayReviews(), loadProblems(), loadStats(set), loadActivity()])
       }
     }
     document.addEventListener('visibilitychange', handleVisibilityChange)
