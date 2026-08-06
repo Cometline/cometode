@@ -371,7 +371,7 @@ app.whenReady().then(() => {
   const db = initDatabase()
 
   // Setup IPC handlers
-  setupIPC(db)
+  setupIPC(db, performAutoExport)
   setupPopupIPC()
 
   // Create popup window and tray
@@ -509,7 +509,11 @@ function getAutoSyncPreferences(): { enabled: boolean; folderPath: string | null
   }
 }
 
-function performAutoExport(folderPath: string): boolean {
+function performAutoExport(folderPath: string): {
+  success: boolean
+  exportedCount?: number
+  error?: string
+} {
   try {
     // Pull in whatever another device may have already pushed to the shared
     // file before we snapshot our own state - otherwise our export would
@@ -535,10 +539,10 @@ function performAutoExport(folderPath: string): boolean {
     console.log(
       `Auto-export completed: ${exportData.progress.length} problems, ${exportData.reviewHistory?.length ?? 0} reviews exported to ${filePath}`
     )
-    return true
+    return { success: true, exportedCount: exportData.progress.length }
   } catch (error) {
     console.error('Auto-export failed:', error)
-    return false
+    return { success: false, error: String(error) }
   }
 }
 
@@ -562,7 +566,7 @@ function checkAndPerformAutoExport(): void {
     return
   }
 
-  if (performAutoExport(folderPath)) {
+  if (performAutoExport(folderPath).success) {
     lastAutoExportDate = today
   }
 }

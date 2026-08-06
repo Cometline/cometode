@@ -193,9 +193,9 @@ export function importProgressData(
 
   const transaction = db.transaction(() => {
     for (const entry of data.progress) {
-      const problem = db
-        .prepare('SELECT id FROM problems WHERE neet_id = ?')
-        .get(entry.neet_id) as { id: number } | undefined
+      const problem = db.prepare('SELECT id FROM problems WHERE neet_id = ?').get(entry.neet_id) as
+        | { id: number }
+        | undefined
 
       if (!problem) continue
 

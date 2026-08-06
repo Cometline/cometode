@@ -49,7 +49,14 @@ interface PreferenceData {
   value: string
 }
 
-export function setupIPC(db: Database.Database): void {
+export function setupIPC(
+  db: Database.Database,
+  autoExport: (folderPath: string) => {
+    success: boolean
+    exportedCount?: number
+    error?: string
+  }
+): void {
   // Get all problems with progress
   ipcMain.handle('get-problems', (_event, filters?: ProblemFilters) => {
     let query = `
@@ -641,26 +648,7 @@ export function setupIPC(db: Database.Database): void {
 
   // Perform auto-export to specified folder (v1.2 includes review history)
   ipcMain.handle('perform-auto-export', (_event, folderPath: string) => {
-    try {
-      const exportData = buildExportData(db, app.getVersion())
-
-      const filePath = path.join(folderPath, 'cometode-progress.json')
-      writeFileSync(filePath, JSON.stringify(exportData, null, 2), 'utf-8')
-
-      // Update last export date
-      db.prepare(
-        `
-        INSERT INTO preferences (key, value, updated_at)
-        VALUES ('last_export_date', ?, datetime('now'))
-        ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
-      `
-      ).run(new Date().toISOString())
-
-      return { success: true, exportedCount: exportData.progress.length }
-    } catch (error) {
-      console.error('Auto-export failed:', error)
-      return { success: false, error: String(error) }
-    }
+    return autoExport(folderPath)
   })
 
   // Check if auto-import is needed (compare dates)

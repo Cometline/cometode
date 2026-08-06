@@ -204,14 +204,14 @@
       if (filePath) {
         const result = await window.api.writeFile(filePath, JSON.stringify(data, null, 2))
         if (result.success) {
-            const historyCount = data.reviewHistory?.length ?? 0
-            importExportMessage = {
-              type: 'success',
-              text:
-                historyCount > 0
-                  ? `Exported ${data.progress.length} problems, ${historyCount} reviews`
-                  : `Exported ${data.progress.length} problems`
-            }
+          const historyCount = data.reviewHistory?.length ?? 0
+          importExportMessage = {
+            type: 'success',
+            text:
+              historyCount > 0
+                ? `Exported ${data.progress.length} problems, ${historyCount} reviews`
+                : `Exported ${data.progress.length} problems`
+          }
         } else {
           importExportMessage = { type: 'error', text: 'Failed to save file' }
         }
