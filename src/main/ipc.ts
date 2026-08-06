@@ -9,6 +9,7 @@ import {
   INITIAL_SUCCESS_RATE,
   type Difficulty
 } from './lib/cir'
+import { buildExportData, importProgressData, type ExportData } from './lib/sync-data'
 import { app } from 'electron'
 
 // Types
@@ -46,28 +47,6 @@ interface ReviewSubmission {
 interface PreferenceData {
   key: string
   value: string
-}
-
-interface ExportProgressEntry {
-  neet_id: number
-  status: string
-  repetitions: number
-  interval: number
-  ease_factor: number
-  next_review_date: string | null
-  first_learned_at: string | null
-  last_reviewed_at: string | null
-  total_reviews: number
-  // CIR algorithm fields (v1.1+)
-  success_rate?: number
-  consecutive_successes?: number
-}
-
-interface ExportData {
-  version: string
-  exportDate: string
-  appVersion: string
-  progress: ExportProgressEntry[]
 }
 
 export function setupIPC(db: Database.Database): void {
@@ -539,102 +518,14 @@ export function setupIPC(db: Database.Database): void {
     return { success: true }
   })
 
-  // Export progress data (v1.1 includes CIR algorithm fields)
+  // Export progress data (v1.2 includes review history for streak sync)
   ipcMain.handle('export-progress', () => {
-    const progress = db
-      .prepare(
-        `
-      SELECT
-        p.neet_id,
-        pp.status,
-        pp.repetitions,
-        pp.interval,
-        pp.ease_factor,
-        pp.next_review_date,
-        pp.first_learned_at,
-        pp.last_reviewed_at,
-        pp.total_reviews,
-        pp.success_rate,
-        pp.consecutive_successes
-      FROM problem_progress pp
-      JOIN problems p ON pp.problem_id = p.id
-      WHERE pp.total_reviews > 0
-      ORDER BY p.neet_id
-    `
-      )
-      .all() as ExportProgressEntry[]
-
-    const exportData: ExportData = {
-      version: '1.1',
-      exportDate: new Date().toISOString(),
-      appVersion: app.getVersion(),
-      progress
-    }
-
-    return exportData
+    return buildExportData(db, app.getVersion())
   })
 
-  // Import progress data (supports v1.0 and v1.1 formats)
+  // Import progress data (supports v1.0–v1.2; reviewHistory optional)
   ipcMain.handle('import-progress', (_event, data: ExportData) => {
-    if (!data || !data.progress || !Array.isArray(data.progress)) {
-      return { success: false, error: 'Invalid data format', imported: 0 }
-    }
-
-    let importedCount = 0
-
-    const transaction = db.transaction(() => {
-      // Import progress entries
-      for (const entry of data.progress) {
-        // Find problem by neet_id
-        const problem = db
-          .prepare('SELECT id FROM problems WHERE neet_id = ?')
-          .get(entry.neet_id) as { id: number } | undefined
-
-        if (!problem) continue
-
-        // For v1.0 imports, estimate CIR fields from existing data
-        const successRate = entry.success_rate ?? (entry.status === 'reviewing' ? 0.8 : 0.6)
-        const consecutiveSuccesses = entry.consecutive_successes ?? Math.min(entry.repetitions, 5)
-
-        // Upsert progress with CIR fields
-        db.prepare(
-          `
-          INSERT INTO problem_progress
-          (problem_id, status, repetitions, interval, ease_factor, success_rate, consecutive_successes, next_review_date, first_learned_at, last_reviewed_at, total_reviews)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          ON CONFLICT(problem_id) DO UPDATE SET
-            status = excluded.status,
-            repetitions = excluded.repetitions,
-            interval = excluded.interval,
-            ease_factor = excluded.ease_factor,
-            success_rate = excluded.success_rate,
-            consecutive_successes = excluded.consecutive_successes,
-            next_review_date = excluded.next_review_date,
-            first_learned_at = excluded.first_learned_at,
-            last_reviewed_at = excluded.last_reviewed_at,
-            total_reviews = excluded.total_reviews
-        `
-        ).run(
-          problem.id,
-          entry.status,
-          entry.repetitions,
-          entry.interval,
-          entry.ease_factor,
-          successRate,
-          consecutiveSuccesses,
-          entry.next_review_date,
-          entry.first_learned_at,
-          entry.last_reviewed_at,
-          entry.total_reviews
-        )
-
-        importedCount++
-      }
-    })
-
-    transaction()
-
-    return { success: true, imported: importedCount }
+    return importProgressData(db, data)
   })
 
   // Show save dialog for export
@@ -748,39 +639,10 @@ export function setupIPC(db: Database.Database): void {
     return result.filePaths[0] || null
   })
 
-  // Perform auto-export to specified folder (v1.1 format with CIR fields)
+  // Perform auto-export to specified folder (v1.2 includes review history)
   ipcMain.handle('perform-auto-export', (_event, folderPath: string) => {
     try {
-      // Get export data (same logic as export-progress, v1.1 with CIR fields)
-      const progress = db
-        .prepare(
-          `
-        SELECT
-          p.neet_id,
-          pp.status,
-          pp.repetitions,
-          pp.interval,
-          pp.ease_factor,
-          pp.next_review_date,
-          pp.first_learned_at,
-          pp.last_reviewed_at,
-          pp.total_reviews,
-          pp.success_rate,
-          pp.consecutive_successes
-        FROM problem_progress pp
-        JOIN problems p ON pp.problem_id = p.id
-        WHERE pp.total_reviews > 0
-        ORDER BY p.neet_id
-      `
-        )
-        .all() as ExportProgressEntry[]
-
-      const exportData: ExportData = {
-        version: '1.1',
-        exportDate: new Date().toISOString(),
-        appVersion: app.getVersion(),
-        progress
-      }
+      const exportData = buildExportData(db, app.getVersion())
 
       const filePath = path.join(folderPath, 'cometode-progress.json')
       writeFileSync(filePath, JSON.stringify(exportData, null, 2), 'utf-8')
@@ -794,7 +656,7 @@ export function setupIPC(db: Database.Database): void {
       `
       ).run(new Date().toISOString())
 
-      return { success: true, exportedCount: progress.length }
+      return { success: true, exportedCount: exportData.progress.length }
     } catch (error) {
       console.error('Auto-export failed:', error)
       return { success: false, error: String(error) }

@@ -86,11 +86,23 @@ export interface ExportProgressEntry {
   consecutive_successes?: number
 }
 
+export interface ExportReviewHistoryEntry {
+  neet_id: number
+  review_date: string
+  quality: number
+  interval_before: number | null
+  interval_after: number | null
+  ease_factor_before: number | null
+  ease_factor_after: number | null
+}
+
 export interface ExportData {
   version: string
   exportDate: string
   appVersion: string
   progress: ExportProgressEntry[]
+  // Present in v1.2+; used for activity heatmap / streak sync
+  reviewHistory?: ExportReviewHistoryEntry[]
 }
 
 export interface API {
@@ -122,7 +134,7 @@ export interface API {
   exportProgress: () => Promise<ExportData>
   importProgress: (
     data: ExportData
-  ) => Promise<{ success: boolean; imported: number; error?: string }>
+  ) => Promise<{ success: boolean; imported: number; historyImported?: number; error?: string }>
   showSaveDialog: (defaultFileName: string) => Promise<string | null>
   showOpenDialog: () => Promise<string | null>
   writeFile: (filePath: string, content: string) => Promise<{ success: boolean; error?: string }>

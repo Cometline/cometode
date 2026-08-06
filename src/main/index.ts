@@ -18,6 +18,12 @@ import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase, getDatabase } from './db'
 import { setupIPC } from './ipc'
 import { INITIAL_SUCCESS_RATE } from './lib/cir'
+import {
+  buildExportData,
+  mergeReviewHistory,
+  type ExportData,
+  type ExportProgressEntry
+} from './lib/sync-data'
 
 let popupWindow: BrowserWindow | null = null
 let tray: Tray | null = null
@@ -483,27 +489,6 @@ function setupAutoUpdater(): void {
 
 // ===== Auto-Sync Functions =====
 
-interface ExportProgressEntry {
-  neet_id: number
-  status: string
-  repetitions: number
-  interval: number
-  ease_factor: number
-  success_rate?: number
-  consecutive_successes?: number
-  next_review_date: string | null
-  first_learned_at: string | null
-  last_reviewed_at: string | null
-  total_reviews: number
-}
-
-interface ExportData {
-  version: string
-  exportDate: string
-  appVersion: string
-  progress: unknown[]
-}
-
 function getAutoSyncPreferences(): { enabled: boolean; folderPath: string | null } {
   try {
     const db = getDatabase()
@@ -533,37 +518,7 @@ function performAutoExport(folderPath: string): boolean {
     performAutoImport()
 
     const db = getDatabase()
-
-    // Get export data
-    const progress = db
-      .prepare(
-        `
-      SELECT
-        p.neet_id,
-        pp.status,
-        pp.repetitions,
-        pp.interval,
-        pp.ease_factor,
-        pp.success_rate,
-        pp.consecutive_successes,
-        pp.next_review_date,
-        pp.first_learned_at,
-        pp.last_reviewed_at,
-        pp.total_reviews
-      FROM problem_progress pp
-      JOIN problems p ON pp.problem_id = p.id
-      WHERE pp.total_reviews > 0
-      ORDER BY p.neet_id
-    `
-      )
-      .all()
-
-    const exportData: ExportData = {
-      version: '1.0',
-      exportDate: new Date().toISOString(),
-      appVersion: app.getVersion(),
-      progress
-    }
+    const exportData = buildExportData(db, app.getVersion())
 
     const filePath = path.join(folderPath, 'cometode-progress.json')
     writeFileSync(filePath, JSON.stringify(exportData, null, 2), 'utf-8')
@@ -577,7 +532,9 @@ function performAutoExport(folderPath: string): boolean {
     `
     ).run(new Date().toISOString())
 
-    console.log(`Auto-export completed: ${progress.length} problems exported to ${filePath}`)
+    console.log(
+      `Auto-export completed: ${exportData.progress.length} problems, ${exportData.reviewHistory?.length ?? 0} reviews exported to ${filePath}`
+    )
     return true
   } catch (error) {
     console.error('Auto-export failed:', error)
@@ -652,6 +609,7 @@ function performAutoImport(): number {
 
     const db = getDatabase()
     let importedCount = 0
+    let historyImported = 0
 
     const transaction = db.transaction(() => {
       for (const entry of exportData.progress as ExportProgressEntry[]) {
@@ -706,7 +664,10 @@ function performAutoImport(): number {
         importedCount++
       }
 
-      if (importedCount > 0) {
+      // Always merge missing review history (independent of progress freshness)
+      historyImported = mergeReviewHistory(db, exportData.reviewHistory)
+
+      if (importedCount > 0 || historyImported > 0) {
         db.prepare(
           `
           INSERT INTO preferences (key, value, updated_at)
@@ -720,11 +681,13 @@ function performAutoImport(): number {
     transaction()
     lastImportedExportDate = exportData.exportDate
 
-    if (importedCount > 0) {
-      console.log(`Auto-import: merged ${importedCount} problem(s) from ${exportData.exportDate}`)
+    if (importedCount > 0 || historyImported > 0) {
+      console.log(
+        `Auto-import: merged ${importedCount} problem(s), ${historyImported} review(s) from ${exportData.exportDate}`
+      )
     }
 
-    return importedCount
+    return importedCount + historyImported
   } catch (error) {
     console.error('Auto-import failed:', error)
     return 0
@@ -741,7 +704,7 @@ function performAutoImportWithNotification(): void {
   if (importedCount > 0) {
     const notification = new Notification({
       title: 'Cometode Sync',
-      body: `Imported ${importedCount} problem${importedCount > 1 ? 's' : ''} from sync folder`,
+      body: `Synced ${importedCount} item${importedCount > 1 ? 's' : ''} from sync folder`,
       icon: icon
     })
     notification.show()
