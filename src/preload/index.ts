@@ -27,6 +27,9 @@ const api = {
 
   startProblem: (problemId: number) => ipcRenderer.invoke('start-problem', problemId),
 
+  setProblemBlocked: (problemId: number, blocked: boolean) =>
+    ipcRenderer.invoke('set-problem-blocked', { problemId, blocked }),
+
   // Reviews
   submitReview: (data: { problemId: number; quality: number }) =>
     ipcRenderer.invoke('submit-review', data),

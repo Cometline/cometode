@@ -287,3 +287,12 @@ export async function startProblem(problemId: number): Promise<void> {
     console.error('Failed to start problem:', error)
   }
 }
+
+export async function setProblemBlocked(problemId: number, blocked: boolean): Promise<void> {
+  try {
+    await window.api.setProblemBlocked(problemId, blocked)
+    await Promise.all([loadProblems(), loadTodayReviews()])
+  } catch (error) {
+    console.error('Failed to set problem blocked:', error)
+  }
+}

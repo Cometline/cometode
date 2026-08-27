@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS problems (
   in_amazon INTEGER NOT NULL DEFAULT 0,
   in_meta INTEGER NOT NULL DEFAULT 0,
   in_microsoft INTEGER NOT NULL DEFAULT 0,
+  blocked INTEGER NOT NULL DEFAULT 0,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -149,6 +150,12 @@ function runMigrations(database: Database.Database): void {
     `)
 
     console.log('CIR migration completed')
+  }
+
+  if (!problemColumnNames.includes('blocked')) {
+    console.log('Running migration: adding blocked column...')
+    database.exec(`ALTER TABLE problems ADD COLUMN blocked INTEGER NOT NULL DEFAULT 0;`)
+    console.log('Blocked column migration completed')
   }
 }
 

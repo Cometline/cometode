@@ -4,6 +4,7 @@
     submitReview,
     loadProblems,
     markReviewCompleted,
+    setProblemBlocked,
     currentProblemSet
   } from '../stores/problems'
   import { loadStats } from '../stores/stats'
@@ -16,6 +17,8 @@
   let { problem, onBack }: Props = $props()
 
   let isSubmitting = $state(false)
+  let isTogglingBlock = $state(false)
+  let isBlocked = $state(problem.blocked === 1)
   let showSuccess = $state(false)
   let successInfo = $state<{ nextDate: string; interval: number } | null>(null)
 
@@ -28,6 +31,18 @@
     const localToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
     return problem.next_review_date <= localToday
   })
+
+  async function handleToggleBlocked(): Promise<void> {
+    if (isTogglingBlock) return
+    isTogglingBlock = true
+    const next = !isBlocked
+    try {
+      await setProblemBlocked(problem.id, next)
+      isBlocked = next
+    } finally {
+      isTogglingBlock = false
+    }
+  }
 
   async function handleReview(quality: number): Promise<void> {
     if (isSubmitting) return
@@ -115,6 +130,16 @@
     <div class="flex-1 font-medium text-sm truncate text-gray-900 dark:text-gray-100">
       {problem.neet_id}. {problem.title}
     </div>
+    <button
+      type="button"
+      onclick={handleToggleBlocked}
+      disabled={isTogglingBlock}
+      class="shrink-0 px-1.5 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer disabled:opacity-50 {isBlocked
+        ? 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+        : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300'}"
+    >
+      {isBlocked ? 'Unblock' : 'Block'}
+    </button>
   </div>
 
   <!-- Content -->

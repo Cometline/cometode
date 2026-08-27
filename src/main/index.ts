@@ -254,9 +254,11 @@ function checkAndShowNotification(): void {
       .prepare(
         `
       SELECT COUNT(*) as count
-      FROM problem_progress
-      WHERE DATE(next_review_date) <= DATE('now')
-        AND status != 'new'
+      FROM problem_progress pp
+      JOIN problems p ON pp.problem_id = p.id
+      WHERE DATE(pp.next_review_date) <= DATE('now')
+        AND pp.status != 'new'
+        AND COALESCE(p.blocked, 0) = 0
     `
       )
       .get() as { count: number }

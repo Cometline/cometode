@@ -11,6 +11,7 @@
     loadTodayReviews,
     loadMoreReviews,
     loadCategories,
+    setProblemBlocked,
     filterUIState,
     initFilterUIState,
     setFilterUIState,
@@ -122,9 +123,10 @@
     loadProblems(newFilters)
   })
 
-  type ProblemStatus = 'new' | 'practiced' | 'due'
+  type ProblemStatus = 'new' | 'practiced' | 'due' | 'blocked'
 
   function getProblemStatus(problem: Problem): ProblemStatus {
+    if (problem.blocked) return 'blocked'
     if (problem.total_reviews === 0) return 'new'
     if (problem.next_review_date) {
       // Use local date (not UTC) to match backend's DATE('now', 'localtime')
@@ -165,19 +167,17 @@
   }
 
   function selectRandomProblem(): void {
-    if ($problems.length === 0) return
+    const available = $problems.filter((p) => !p.blocked)
+    if (available.length === 0) return
 
-    // First, try to find unsolved problems
-    const unsolvedProblems = $problems.filter((p) => p.total_reviews === 0)
+    const unsolvedProblems = available.filter((p) => p.total_reviews === 0)
 
     if (unsolvedProblems.length > 0) {
-      // Select random from unsolved problems
       const randomIndex = Math.floor(Math.random() * unsolvedProblems.length)
       onSelectProblem(unsolvedProblems[randomIndex])
     } else {
-      // All problems are solved, select truly random
-      const randomIndex = Math.floor(Math.random() * $problems.length)
-      onSelectProblem($problems[randomIndex])
+      const randomIndex = Math.floor(Math.random() * available.length)
+      onSelectProblem(available[randomIndex])
     }
   }
 
@@ -330,7 +330,7 @@
 
       <button
         onclick={selectRandomProblem}
-        disabled={$problems.length === 0}
+        disabled={$problems.filter((p) => !p.blocked).length === 0}
         title="Select a random problem"
         class="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
       >
@@ -451,46 +451,86 @@
   <div class="flex-1 overflow-y-auto">
     {#each $problems as problem, index (problem.id)}
       {@const status = getProblemStatus(problem)}
-      <button
+      {@const isBlocked = problem.blocked === 1}
+      <div
         transition:slide={{ duration: 300, delay: (index * 20) % 100 }}
-        onclick={() => onSelectProblem(problem)}
-        class="w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 text-left transition-colors cursor-pointer"
+        class="group w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 transition-colors {isBlocked
+          ? 'opacity-50'
+          : ''}"
       >
-        <!-- Status Icon -->
-        <div class="w-5 shrink-0">
-          {#if status === 'new'}
-            <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
-          {:else if status === 'due'}
-            <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          {:else}
-            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          {/if}
-        </div>
+        <button
+          type="button"
+          onclick={() => onSelectProblem(problem)}
+          class="flex-1 min-w-0 flex items-center gap-2 text-left cursor-pointer"
+        >
+          <div class="w-5 shrink-0">
+            {#if status === 'blocked'}
+              <svg
+                class="w-4 h-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                />
+              </svg>
+            {:else if status === 'new'}
+              <div class="w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+            {:else if status === 'due'}
+              <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            {:else}
+              <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            {/if}
+          </div>
 
-        <!-- Problem Info -->
-        <div class="flex-1 min-w-0">
-          <div class="text-sm font-medium truncate text-gray-900 dark:text-gray-100">
+          <div class="flex-1 min-w-0 text-sm font-medium truncate text-gray-900 dark:text-gray-100">
             {problem.neet_id}. {problem.title}
           </div>
-        </div>
-
-        <!-- Difficulty -->
-        <div class="text-xs font-medium {getDifficultyColor(problem.difficulty)}">
+        </button>
+        <button
+          type="button"
+          onclick={() => setProblemBlocked(problem.id, !isBlocked)}
+          title={isBlocked ? 'Unblock problem' : 'Block from review'}
+          aria-label={isBlocked ? 'Unblock problem' : 'Block from review'}
+          class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
+                 hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:opacity-100
+                 {isBlocked
+            ? 'opacity-100 text-gray-400'
+            : 'opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+            />
+          </svg>
+        </button>
+        <div
+          class="w-12 shrink-0 text-right text-xs font-medium {getDifficultyColor(
+            problem.difficulty
+          )}"
+        >
           {problem.difficulty}
         </div>
-      </button>
+      </div>
     {:else}
       <div class="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
         {hasActiveFilters ? 'No problems match your filters' : 'Loading...'}

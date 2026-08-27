@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A macOS menu bar app for tracking NeetCode 150 with spaced repetition",
   "main": "./out/main/index.js",
+  "engines": {
+    "node": ">=22.13"
+  },
   "author": "Tomlord1122",
   "homepage": "https://github.com/Tomlord1122/cometode",
   "repository": {
@@ -53,12 +56,5 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "electron",
-      "esbuild",
-      "better-sqlite3"
-    ]
   }
 }

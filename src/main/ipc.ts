@@ -74,6 +74,7 @@ export function setupIPC(
         p.in_amazon,
         p.in_meta,
         p.in_microsoft,
+        COALESCE(p.blocked, 0) as blocked,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -123,7 +124,7 @@ export function setupIPC(
 
     if (filters?.dueOnly) {
       query +=
-        " AND pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime')"
+        " AND pp.next_review_date IS NOT NULL AND DATE(pp.next_review_date) <= DATE('now', 'localtime') AND COALESCE(p.blocked, 0) = 0"
     }
 
     if (filters?.reviewedOn) {
@@ -140,6 +141,7 @@ export function setupIPC(
     // 3. Reviewing problems at the bottom
     // 4. Then by problem number
     query += ` ORDER BY
+      COALESCE(p.blocked, 0) ASC,
       CASE
         WHEN COALESCE(pp.total_reviews, 0) = 0 THEN 0
         WHEN COALESCE(pp.status, 'new') = 'reviewing' THEN 2
@@ -163,6 +165,7 @@ export function setupIPC(
         p.tags,
         p.leetcode_url,
         p.neetcode_url,
+        COALESCE(p.blocked, 0) as blocked,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -197,6 +200,7 @@ export function setupIPC(
         p.in_amazon,
         p.in_meta,
         p.in_microsoft,
+        COALESCE(p.blocked, 0) as blocked,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -211,6 +215,7 @@ export function setupIPC(
       WHERE pp.next_review_date IS NOT NULL
         AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
+        AND COALESCE(p.blocked, 0) = 0
       ORDER BY pp.ease_factor ASC, p.neet_id ASC LIMIT 1
     `
 
@@ -226,6 +231,7 @@ export function setupIPC(
       WHERE pp.next_review_date IS NOT NULL
         AND DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
+        AND COALESCE(p.blocked, 0) = 0
     `
 
     const result = db.prepare(query).get() as { count: number }
@@ -403,6 +409,7 @@ export function setupIPC(
       JOIN problems p ON pp.problem_id = p.id
       WHERE DATE(pp.next_review_date) <= DATE('now', 'localtime')
         AND pp.status != 'new'
+        AND COALESCE(p.blocked, 0) = 0
     `
     if (psColumn) {
       todayDueQuery += ` AND p.${psColumn} = 1`
@@ -511,6 +518,24 @@ export function setupIPC(
     }
 
     return { success: true }
+  })
+
+  ipcMain.handle('set-problem-blocked', (_event, data: { problemId: number; blocked: boolean }) => {
+    const problemId = data?.problemId
+    const blocked = data?.blocked
+
+    if (typeof problemId !== 'number' || !Number.isInteger(problemId) || problemId <= 0) {
+      return { success: false }
+    }
+    if (typeof blocked !== 'boolean') {
+      return { success: false }
+    }
+
+    const result = db
+      .prepare('UPDATE problems SET blocked = ? WHERE id = ?')
+      .run(blocked ? 1 : 0, problemId)
+
+    return { success: result.changes > 0 }
   })
 
   // Reset all progress

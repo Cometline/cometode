@@ -16,6 +16,7 @@ export interface Problem {
   in_amazon: number
   in_meta: number
   in_microsoft: number
+  blocked: number
   status: 'new' | 'learning' | 'reviewing'
   repetitions: number
   interval: number
@@ -112,6 +113,7 @@ export interface API {
   getTodayReviewsCount: () => Promise<number>
   getTomorrowReviews: () => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
+  setProblemBlocked: (problemId: number, blocked: boolean) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
   getStats: (problemSet?: ProblemSet) => Promise<Stats>
   getActivity: () => Promise<ActivityEntry[]>
