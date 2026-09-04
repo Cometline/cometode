@@ -515,7 +515,7 @@
                  hover:bg-gray-100 dark:hover:bg-gray-700
                  {isStarred
             ? 'text-amber-500'
-            : 'text-gray-400 hover:text-amber-500'}"
+            : 'text-gray-400/45 hover:text-amber-500 dark:text-gray-500/45 dark:hover:text-amber-500'}"
         >
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
             <path
@@ -535,7 +535,7 @@
                  hover:bg-gray-100 dark:hover:bg-gray-700
                  {isBlocked
             ? 'text-gray-500 dark:text-gray-400'
-            : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
+            : 'text-gray-400/45 hover:text-gray-600 dark:text-gray-500/45 dark:hover:text-gray-300'}"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
