@@ -13,7 +13,7 @@ import { buildExportData, importProgressData, type ExportData } from './lib/sync
 import { app } from 'electron'
 
 // Types
-type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
+type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'starred' | 'all'
 
 // Maps a problem set to its corresponding `problems` table column ('all' has no column - no filter)
 const PROBLEM_SET_COLUMN: Record<ProblemSet, string | null> = {
@@ -22,6 +22,7 @@ const PROBLEM_SET_COLUMN: Record<ProblemSet, string | null> = {
   amazon: 'in_amazon',
   meta: 'in_meta',
   microsoft: 'in_microsoft',
+  starred: 'starred',
   all: null
 }
 
@@ -75,6 +76,7 @@ export function setupIPC(
         p.in_meta,
         p.in_microsoft,
         COALESCE(p.blocked, 0) as blocked,
+        COALESCE(p.starred, 0) as starred,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -166,6 +168,7 @@ export function setupIPC(
         p.leetcode_url,
         p.neetcode_url,
         COALESCE(p.blocked, 0) as blocked,
+        COALESCE(p.starred, 0) as starred,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -201,6 +204,7 @@ export function setupIPC(
         p.in_meta,
         p.in_microsoft,
         COALESCE(p.blocked, 0) as blocked,
+        COALESCE(p.starred, 0) as starred,
         COALESCE(pp.status, 'new') as status,
         COALESCE(pp.repetitions, 0) as repetitions,
         COALESCE(pp.interval, 0) as interval,
@@ -534,6 +538,24 @@ export function setupIPC(
     const result = db
       .prepare('UPDATE problems SET blocked = ? WHERE id = ?')
       .run(blocked ? 1 : 0, problemId)
+
+    return { success: result.changes > 0 }
+  })
+
+  ipcMain.handle('set-problem-starred', (_event, data: { problemId: number; starred: boolean }) => {
+    const problemId = data?.problemId
+    const starred = data?.starred
+
+    if (typeof problemId !== 'number' || !Number.isInteger(problemId) || problemId <= 0) {
+      return { success: false }
+    }
+    if (typeof starred !== 'boolean') {
+      return { success: false }
+    }
+
+    const result = db
+      .prepare('UPDATE problems SET starred = ? WHERE id = ?')
+      .run(starred ? 1 : 0, problemId)
 
     return { success: result.changes > 0 }
   })
