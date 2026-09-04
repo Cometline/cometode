@@ -5,6 +5,7 @@
     loadProblems,
     markReviewCompleted,
     setProblemBlocked,
+    setProblemStarred,
     currentProblemSet
   } from '../stores/problems'
   import { loadStats } from '../stores/stats'
@@ -18,7 +19,9 @@
 
   let isSubmitting = $state(false)
   let isTogglingBlock = $state(false)
+  let isTogglingStar = $state(false)
   let isBlocked = $state(problem.blocked === 1)
+  let isStarred = $state(problem.starred === 1)
   let showSuccess = $state(false)
   let successInfo = $state<{ nextDate: string; interval: number } | null>(null)
 
@@ -41,6 +44,18 @@
       isBlocked = next
     } finally {
       isTogglingBlock = false
+    }
+  }
+
+  async function handleToggleStarred(): Promise<void> {
+    if (isTogglingStar) return
+    isTogglingStar = true
+    const next = !isStarred
+    try {
+      await setProblemStarred(problem.id, next)
+      isStarred = next
+    } finally {
+      isTogglingStar = false
     }
   }
 
@@ -130,6 +145,25 @@
     <div class="flex-1 font-medium text-sm truncate text-gray-900 dark:text-gray-100">
       {problem.neet_id}. {problem.title}
     </div>
+    <button
+      type="button"
+      onclick={handleToggleStarred}
+      disabled={isTogglingStar}
+      title={isStarred ? 'Unstar problem' : 'Star problem'}
+      aria-label={isStarred ? 'Unstar problem' : 'Star problem'}
+      class="shrink-0 p-1 rounded transition-colors cursor-pointer disabled:opacity-50 {isStarred
+        ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+        : 'text-gray-400 hover:bg-gray-100 hover:text-amber-500 dark:hover:bg-gray-800'}"
+    >
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3.5l2.72 5.52 6.09.89-4.4 4.29 1.04 6.07L12 17.4l-5.45 2.87 1.04-6.07-4.4-4.29 6.09-.89L12 3.5z"
+        />
+      </svg>
+    </button>
     <button
       type="button"
       onclick={handleToggleBlocked}

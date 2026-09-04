@@ -1,6 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
-export type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
+export type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'starred' | 'all'
 
 export interface Problem {
   id: number
@@ -17,6 +17,7 @@ export interface Problem {
   in_meta: number
   in_microsoft: number
   blocked: number
+  starred: number
   status: 'new' | 'learning' | 'reviewing'
   repetitions: number
   interval: number
@@ -114,6 +115,7 @@ export interface API {
   getTomorrowReviews: () => Promise<Problem[]>
   startProblem: (problemId: number) => Promise<{ success: boolean }>
   setProblemBlocked: (problemId: number, blocked: boolean) => Promise<{ success: boolean }>
+  setProblemStarred: (problemId: number, starred: boolean) => Promise<{ success: boolean }>
   submitReview: (data: { problemId: number; quality: number }) => Promise<ReviewResult>
   getStats: (problemSet?: ProblemSet) => Promise<Stats>
   getActivity: () => Promise<ActivityEntry[]>

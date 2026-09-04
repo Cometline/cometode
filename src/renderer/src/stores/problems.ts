@@ -15,6 +15,7 @@ const VALID_PROBLEM_SETS: ProblemSet[] = [
   'amazon',
   'meta',
   'microsoft',
+  'starred',
   'all'
 ]
 
@@ -294,5 +295,14 @@ export async function setProblemBlocked(problemId: number, blocked: boolean): Pr
     await Promise.all([loadProblems(), loadTodayReviews()])
   } catch (error) {
     console.error('Failed to set problem blocked:', error)
+  }
+}
+
+export async function setProblemStarred(problemId: number, starred: boolean): Promise<void> {
+  try {
+    await window.api.setProblemStarred(problemId, starred)
+    await loadProblems()
+  } catch (error) {
+    console.error('Failed to set problem starred:', error)
   }
 }

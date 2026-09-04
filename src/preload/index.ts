@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Problem set type
-type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'all'
+type ProblemSet = 'neetcode150' | 'google' | 'amazon' | 'meta' | 'microsoft' | 'starred' | 'all'
 
 // Custom APIs for renderer
 const api = {
@@ -29,6 +29,9 @@ const api = {
 
   setProblemBlocked: (problemId: number, blocked: boolean) =>
     ipcRenderer.invoke('set-problem-blocked', { problemId, blocked }),
+
+  setProblemStarred: (problemId: number, starred: boolean) =>
+    ipcRenderer.invoke('set-problem-starred', { problemId, starred }),
 
   // Reviews
   submitReview: (data: { problemId: number; quality: number }) =>

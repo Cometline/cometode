@@ -69,4 +69,11 @@
     <rect x="2" y="12.8" width="9.2" height="9.2" fill="#00A4EF" />
     <rect x="12.8" y="12.8" width="9.2" height="9.2" fill="#FFB900" />
   </svg>
+{:else if set === 'starred'}
+  <svg viewBox="0 0 24 24" class={className} aria-hidden="true">
+    <path
+      fill="#F59E0B"
+      d="M12 2.5l2.72 5.52 6.09.89-4.4 4.29 1.04 6.07L12 16.4l-5.45 2.87 1.04-6.07-4.4-4.29 6.09-.89L12 2.5z"
+    />
+  </svg>
 {/if}

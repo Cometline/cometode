@@ -12,6 +12,7 @@
     loadMoreReviews,
     loadCategories,
     setProblemBlocked,
+    setProblemStarred,
     filterUIState,
     initFilterUIState,
     setFilterUIState,
@@ -46,6 +47,7 @@
     { set: 'amazon', label: 'Amazon' },
     { set: 'meta', label: 'Meta' },
     { set: 'microsoft', label: 'Microsoft' },
+    { set: 'starred', label: 'Starred' },
     { set: 'all', label: 'All Questions' }
   ]
 
@@ -217,7 +219,7 @@
 <div class="flex flex-col h-full">
   <!-- Problem Set Toggle -->
   <div class="mx-3 mt-3">
-    <div class="grid grid-cols-6 gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+    <div class="grid grid-cols-7 gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
       {#each PROBLEM_SET_TABS as tab (tab.set)}
         <button
           onclick={() => handleProblemSetChange(tab.set)}
@@ -452,6 +454,7 @@
     {#each $problems as problem, index (problem.id)}
       {@const status = getProblemStatus(problem)}
       {@const isBlocked = problem.blocked === 1}
+      {@const isStarred = problem.starred === 1}
       <div
         transition:slide={{ duration: 300, delay: (index * 20) % 100 }}
         class="group w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 transition-colors {isBlocked
@@ -505,14 +508,34 @@
         </button>
         <button
           type="button"
+          onclick={() => setProblemStarred(problem.id, !isStarred)}
+          title={isStarred ? 'Unstar problem' : 'Star problem'}
+          aria-label={isStarred ? 'Unstar problem' : 'Star problem'}
+          class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
+                 hover:bg-gray-100 dark:hover:bg-gray-700
+                 {isStarred
+            ? 'text-amber-500'
+            : 'text-gray-400 hover:text-amber-500'}"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3.5l2.72 5.52 6.09.89-4.4 4.29 1.04 6.07L12 17.4l-5.45 2.87 1.04-6.07-4.4-4.29 6.09-.89L12 3.5z"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
           onclick={() => setProblemBlocked(problem.id, !isBlocked)}
           title={isBlocked ? 'Unblock problem' : 'Block from review'}
           aria-label={isBlocked ? 'Unblock problem' : 'Block from review'}
           class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
-                 hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:opacity-100
+                 hover:bg-gray-100 dark:hover:bg-gray-700
                  {isBlocked
-            ? 'opacity-100 text-gray-400'
-            : 'opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
+            ? 'text-gray-500 dark:text-gray-400'
+            : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
