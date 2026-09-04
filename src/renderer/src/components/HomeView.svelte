@@ -142,13 +142,13 @@
   function getDifficultyColor(difficulty: string): string {
     switch (difficulty) {
       case 'Easy':
-        return 'text-green-500'
+        return 'text-green-500 border-green-500/40'
       case 'Medium':
-        return 'text-amber-500'
+        return 'text-amber-500 border-amber-500/40'
       case 'Hard':
-        return 'text-red-500'
+        return 'text-red-500 border-red-500/40'
       default:
-        return 'text-gray-500'
+        return 'text-gray-500 border-gray-400/40'
     }
   }
 
@@ -518,48 +518,50 @@
             {problem.neet_id}. {problem.title}
           </div>
         </button>
-        <button
-          type="button"
-          onclick={() => setProblemStarred(problem.id, !isStarred)}
-          title={isStarred ? 'Unstar problem' : 'Star problem'}
-          aria-label={isStarred ? 'Unstar problem' : 'Star problem'}
-          class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
-                 hover:bg-gray-100 dark:hover:bg-gray-700
-                 {isStarred
-            ? 'text-amber-500'
-            : 'text-gray-400/45 hover:text-amber-500 dark:text-gray-500/45 dark:hover:text-amber-500'}"
-        >
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3.5l2.72 5.52 6.09.89-4.4 4.29 1.04 6.07L12 17.4l-5.45 2.87 1.04-6.07-4.4-4.29 6.09-.89L12 3.5z"
-            />
-          </svg>
-        </button>
-        <button
-          type="button"
-          onclick={() => setProblemBlocked(problem.id, !isBlocked)}
-          title={isBlocked ? 'Unblock problem' : 'Block from review'}
-          aria-label={isBlocked ? 'Unblock problem' : 'Block from review'}
-          class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
-                 hover:bg-gray-100 dark:hover:bg-gray-700
-                 {isBlocked
-            ? 'text-gray-500 dark:text-gray-400'
-            : 'text-gray-400/45 hover:text-gray-600 dark:text-gray-500/45 dark:hover:text-gray-300'}"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-            />
-          </svg>
-        </button>
+        <div class="flex items-center gap-0 shrink-0">
+          <button
+            type="button"
+            onclick={() => setProblemStarred(problem.id, !isStarred)}
+            title={isStarred ? 'Unstar problem' : 'Star problem'}
+            aria-label={isStarred ? 'Unstar problem' : 'Star problem'}
+            class="w-5 h-5 flex items-center justify-center rounded cursor-pointer
+                   hover:bg-gray-100 dark:hover:bg-gray-700
+                   {isStarred
+              ? 'text-amber-500'
+              : 'text-gray-400/45 hover:text-amber-500 dark:text-gray-500/45 dark:hover:text-amber-500'}"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3.5l2.72 5.52 6.09.89-4.4 4.29 1.04 6.07L12 17.4l-5.45 2.87 1.04-6.07-4.4-4.29 6.09-.89L12 3.5z"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onclick={() => setProblemBlocked(problem.id, !isBlocked)}
+            title={isBlocked ? 'Unblock problem' : 'Block from review'}
+            aria-label={isBlocked ? 'Unblock problem' : 'Block from review'}
+            class="w-5 h-5 flex items-center justify-center rounded cursor-pointer
+                   hover:bg-gray-100 dark:hover:bg-gray-700
+                   {isBlocked
+              ? 'text-gray-500 dark:text-gray-400'
+              : 'text-gray-400/45 hover:text-gray-600 dark:text-gray-500/45 dark:hover:text-gray-300'}"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+              />
+            </svg>
+          </button>
+        </div>
         <div
-          class="w-4 shrink-0 text-right text-xs font-medium {getDifficultyColor(
+          class="w-5 h-5 shrink-0 inline-flex items-center justify-center rounded border text-[11px] font-semibold leading-none {getDifficultyColor(
             problem.difficulty
           )}"
           title={problem.difficulty}
