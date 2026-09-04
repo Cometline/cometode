@@ -98,6 +98,12 @@ export interface ExportReviewHistoryEntry {
   ease_factor_after: number | null
 }
 
+export interface ExportProblemFlagsEntry {
+  neet_id: number
+  starred: number
+  blocked: number
+}
+
 export interface ExportData {
   version: string
   exportDate: string
@@ -105,6 +111,8 @@ export interface ExportData {
   progress: ExportProgressEntry[]
   // Present in v1.2+; used for activity heatmap / streak sync
   reviewHistory?: ExportReviewHistoryEntry[]
+  // Present in v1.3+; starred / blocked flags
+  problemFlags?: ExportProblemFlagsEntry[]
 }
 
 export interface API {
