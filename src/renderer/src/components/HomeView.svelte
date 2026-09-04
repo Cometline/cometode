@@ -451,12 +451,11 @@
 
   <!-- Problem List -->
   <div class="flex-1 overflow-y-auto">
-    {#each $problems as problem, index (problem.id)}
+    {#each $problems as problem (problem.id)}
       {@const status = getProblemStatus(problem)}
       {@const isBlocked = problem.blocked === 1}
       {@const isStarred = problem.starred === 1}
       <div
-        transition:slide={{ duration: 300, delay: (index * 20) % 100 }}
         class="group w-full px-3 py-2 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 transition-colors {isBlocked
           ? 'opacity-50'
           : ''}"
