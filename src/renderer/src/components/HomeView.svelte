@@ -152,6 +152,19 @@
     }
   }
 
+  function getDifficultyShortLabel(difficulty: string): string {
+    switch (difficulty) {
+      case 'Easy':
+        return 'E'
+      case 'Medium':
+        return 'M'
+      case 'Hard':
+        return 'H'
+      default:
+        return difficulty
+    }
+  }
+
   function clearFilters(): void {
     searchText = ''
     selectedDifficulties = []
@@ -546,11 +559,13 @@
           </svg>
         </button>
         <div
-          class="w-12 shrink-0 text-right text-xs font-medium {getDifficultyColor(
+          class="w-4 shrink-0 text-right text-xs font-medium {getDifficultyColor(
             problem.difficulty
           )}"
+          title={problem.difficulty}
+          aria-label={problem.difficulty}
         >
-          {problem.difficulty}
+          {getDifficultyShortLabel(problem.difficulty)}
         </div>
       </div>
     {:else}
