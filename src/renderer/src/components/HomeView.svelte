@@ -13,6 +13,7 @@
     loadCategories,
     setProblemBlocked,
     setProblemStarred,
+    isLoading,
     filterUIState,
     initFilterUIState,
     setFilterUIState,
@@ -201,8 +202,15 @@
   )
 
   const progressPercentage = $derived(
-    $stats ? Math.round(($stats.practiced / $stats.total) * 100) : 0
+    $stats && $stats.total > 0 ? Math.round(($stats.practiced / $stats.total) * 100) : 0
   )
+
+  const emptyListMessage = $derived.by(() => {
+    if ($isLoading) return 'Loading...'
+    if (hasActiveFilters) return 'No problems match your filters'
+    if ($currentProblemSet === 'starred') return 'No problems starred'
+    return 'No problems found'
+  })
 
   // Current session quota = min(daily review preference, total due today)
   const sessionQuota = $derived(
@@ -570,7 +578,7 @@
       </div>
     {:else}
       <div class="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-        {hasActiveFilters ? 'No problems match your filters' : 'Loading...'}
+        {emptyListMessage}
       </div>
     {/each}
   </div>
