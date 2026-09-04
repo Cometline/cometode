@@ -514,8 +514,8 @@
           class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
                  hover:bg-gray-100 dark:hover:bg-gray-700
                  {isStarred
-            ? 'opacity-100 text-amber-500'
-            : 'opacity-0 group-hover:opacity-100 text-gray-400 hover:text-amber-500'}"
+            ? 'text-amber-500'
+            : 'text-gray-400 hover:text-amber-500'}"
         >
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill={isStarred ? 'currentColor' : 'none'} stroke="currentColor">
             <path
@@ -532,10 +532,10 @@
           title={isBlocked ? 'Unblock problem' : 'Block from review'}
           aria-label={isBlocked ? 'Unblock problem' : 'Block from review'}
           class="w-6 h-6 flex items-center justify-center rounded shrink-0 cursor-pointer
-                 hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:opacity-100
+                 hover:bg-gray-100 dark:hover:bg-gray-700
                  {isBlocked
-            ? 'opacity-100 text-gray-400'
-            : 'opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
+            ? 'text-gray-500 dark:text-gray-400'
+            : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
