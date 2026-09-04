@@ -252,6 +252,19 @@ export async function selectProblem(problem: Problem): Promise<void> {
   selectedProblem.set(problem)
 }
 
+
+async function maybeAutoExport(reason: string): Promise<void> {
+  try {
+    const syncPrefs = await window.api.getAutoSyncPreferences()
+    if (syncPrefs.enabled && syncPrefs.folderPath) {
+      await window.api.performAutoExport(syncPrefs.folderPath)
+    }
+  } catch (syncError) {
+    // Don't fail the user action if sync fails
+    console.error(`Auto-sync after ${reason} failed:`, syncError)
+  }
+}
+
 export async function submitReview(
   problemId: number,
   quality: number
@@ -259,17 +272,8 @@ export async function submitReview(
   try {
     const result = await window.api.submitReview({ problemId, quality })
 
-    // Trigger auto-export if enabled
     if (result.success) {
-      try {
-        const syncPrefs = await window.api.getAutoSyncPreferences()
-        if (syncPrefs.enabled && syncPrefs.folderPath) {
-          await window.api.performAutoExport(syncPrefs.folderPath)
-        }
-      } catch (syncError) {
-        // Don't fail the review if sync fails
-        console.error('Auto-sync after review failed:', syncError)
-      }
+      await maybeAutoExport('review')
     }
 
     return result
@@ -293,6 +297,7 @@ export async function setProblemBlocked(problemId: number, blocked: boolean): Pr
   try {
     await window.api.setProblemBlocked(problemId, blocked)
     await Promise.all([loadProblems(), loadTodayReviews()])
+    await maybeAutoExport('block')
   } catch (error) {
     console.error('Failed to set problem blocked:', error)
   }
@@ -302,6 +307,7 @@ export async function setProblemStarred(problemId: number, starred: boolean): Pr
   try {
     await window.api.setProblemStarred(problemId, starred)
     await loadProblems()
+    await maybeAutoExport('star')
   } catch (error) {
     console.error('Failed to set problem starred:', error)
   }

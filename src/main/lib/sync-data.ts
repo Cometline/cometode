@@ -24,15 +24,24 @@ export interface ExportReviewHistoryEntry {
   ease_factor_after: number | null
 }
 
+/** Star / block flags live on `problems`, not progress — synced separately. */
+export interface ExportProblemFlagsEntry {
+  neet_id: number
+  starred: number
+  blocked: number
+}
+
 export interface ExportData {
   version: string
   exportDate: string
   appVersion: string
   progress: ExportProgressEntry[]
   reviewHistory?: ExportReviewHistoryEntry[]
+  /** Present in v1.3+; starred/blocked problem flags */
+  problemFlags?: ExportProblemFlagsEntry[]
 }
 
-export const EXPORT_VERSION = '1.2'
+export const EXPORT_VERSION = '1.3'
 
 function reviewHistoryKey(entry: {
   neet_id: number
@@ -99,13 +108,30 @@ export function fetchReviewHistory(db: Database.Database): ExportReviewHistoryEn
     .all() as ExportReviewHistoryEntry[]
 }
 
+export function fetchProblemFlags(db: Database.Database): ExportProblemFlagsEntry[] {
+  return db
+    .prepare(
+      `
+      SELECT
+        neet_id,
+        COALESCE(starred, 0) as starred,
+        COALESCE(blocked, 0) as blocked
+      FROM problems
+      WHERE COALESCE(starred, 0) = 1 OR COALESCE(blocked, 0) = 1
+      ORDER BY neet_id
+    `
+    )
+    .all() as ExportProblemFlagsEntry[]
+}
+
 export function buildExportData(db: Database.Database, appVersion: string): ExportData {
   return {
     version: EXPORT_VERSION,
     exportDate: new Date().toISOString(),
     appVersion,
     progress: fetchProgress(db),
-    reviewHistory: fetchReviewHistory(db)
+    reviewHistory: fetchReviewHistory(db),
+    problemFlags: fetchProblemFlags(db)
   }
 }
 
@@ -237,6 +263,21 @@ export function importProgressData(
     }
 
     historyImported = mergeReviewHistory(db, data.reviewHistory)
+
+    // v1.3+: replace local star/block flags from the backup when the field is present.
+    // Older backups omit problemFlags — leave local flags untouched.
+    if (Array.isArray(data.problemFlags)) {
+      db.prepare('UPDATE problems SET starred = 0, blocked = 0').run()
+      const updateFlags = db.prepare(
+        'UPDATE problems SET starred = ?, blocked = ? WHERE neet_id = ?'
+      )
+      for (const entry of data.problemFlags) {
+        if (typeof entry?.neet_id !== 'number') continue
+        const starred = entry.starred ? 1 : 0
+        const blocked = entry.blocked ? 1 : 0
+        updateFlags.run(starred, blocked, entry.neet_id)
+      }
+    }
   })
 
   transaction()

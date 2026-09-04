@@ -572,12 +572,12 @@ export function setupIPC(
     return { success: true }
   })
 
-  // Export progress data (v1.2 includes review history for streak sync)
+  // Export progress data (v1.3 includes review history + star/block flags)
   ipcMain.handle('export-progress', () => {
     return buildExportData(db, app.getVersion())
   })
 
-  // Import progress data (supports v1.0–v1.2; reviewHistory optional)
+  // Import progress data (supports v1.0–v1.3; reviewHistory / problemFlags optional)
   ipcMain.handle('import-progress', (_event, data: ExportData) => {
     return importProgressData(db, data)
   })
@@ -693,7 +693,7 @@ export function setupIPC(
     return result.filePaths[0] || null
   })
 
-  // Perform auto-export to specified folder (v1.2 includes review history)
+  // Perform auto-export to specified folder (v1.3 includes review history + flags)
   ipcMain.handle('perform-auto-export', (_event, folderPath: string) => {
     return autoExport(folderPath)
   })
