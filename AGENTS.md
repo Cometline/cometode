@@ -2,103 +2,148 @@
 
 ## Project Overview
 
-Cometode is a macOS menu bar app for tracking coding problem practice using spaced repetition. Electron + Svelte 5 + TypeScript + Tailwind CSS 4 + better-sqlite3.
+Cometode is a macOS menu bar app for tracking coding-interview problem practice with spaced repetition. Electron + Svelte 5 + TypeScript + Tailwind CSS 4 + better-sqlite3. Lives in the tray (no dock icon); popup is a compact BrowserWindow.
 
-## Build/Lint/Test Commands
+Problem catalog is local JSON (`src/main/db/` seed data). Progress is local SQLite. Cross-machine sync is a shared JSON file (Dropbox / iCloud / any folder), not a server.
+
+## Build / Lint / Test
 
 ```bash
-pnpm dev                 # Start dev server with hot reload
+pnpm dev                 # Dev server with hot reload
 pnpm start               # Preview production build
 
-# Type Checking
 pnpm typecheck           # Full typecheck (TypeScript + Svelte)
-pnpm typecheck:node      # TypeScript check for main/preload only
+pnpm typecheck:node      # Main + preload only
 pnpm svelte-check        # Svelte-specific type checking
 
-# Linting & Formatting
-pnpm lint                # Run ESLint with cache
-pnpm format              # Run Prettier on all files
+pnpm lint                # ESLint with cache
+pnpm format              # Prettier
 
-# Building
 pnpm build               # Production build (runs typecheck first)
-pnpm build:mac           # Build macOS app (.dmg + .zip)
-pnpm build:win           # Build Windows app
-pnpm build:linux         # Build Linux app
+pnpm build:mac           # macOS .dmg + .zip (signed + notarized in CI)
 ```
 
-### Testing
+No test framework. Verify with `pnpm typecheck`. If adding tests: Vitest + Playwright E2E, `__tests__/` or `.test.ts`.
 
-No test framework is configured. Run `pnpm typecheck` to verify changes. If adding tests: use Vitest + Playwright for E2E, place in `__tests__/` or `.test.ts` suffix.
+`package.json` version stays `1.0.0` in git. CI sets the real version from the git tag.
 
 ## Project Structure
 
 ```
 src/
-├── main/           # Electron main process
-│   ├── index.ts    # Tray, popup, auto-updater
-│   ├── ipc.ts      # IPC handlers (30+)
-│   ├── db/         # SQLite schema, migrations, seed
-│   └── lib/        # CIR spaced repetition algorithm (cir.ts)
-├── preload/        # Electron preload bridge
-│   ├── index.ts    # API exposed to renderer
-│   └── index.d.ts  # Shared types + API interface
-└── renderer/src/   # Svelte frontend
-    ├── App.svelte  # Main app, manual routing (no SvelteKit)
-    ├── env.d.ts    # Svelte/Vite type references
-    ├── stores/     # Svelte stores (problems, stats, theme)
-    └── components/ # UI components
+├── main/                 # Electron main process
+│   ├── index.ts          # Tray, popup window, auto-updater, auto-sync loop
+│   ├── ipc.ts            # ipcMain.handle registry
+│   ├── db/
+│   │   ├── index.ts      # Schema, runMigrations(), initDatabase()
+│   │   └── seed.ts       # Load problems from JSON into SQLite
+│   └── lib/
+│       ├── cir.ts        # CIR spaced-repetition algorithm (active)
+│       ├── sm2.ts        # Legacy SM-2 (do not use for new reviews)
+│       └── sync-data.ts  # Export/import JSON shape + merge helpers
+├── preload/
+│   ├── index.ts          # contextBridge API
+│   └── index.d.ts        # Shared types + window.api (renderer imports these)
+└── renderer/src/
+    ├── App.svelte        # Shell, settings, manual routing (no SvelteKit)
+    ├── stores/           # Classic svelte/store writables (not runes)
+    └── components/       # HomeView, ProblemView, ActivityGraph, …
 ```
 
-Build tool: **electron-vite** (not plain Vite). Config in `electron.vite.config.ts`.
+Build tool: **electron-vite** (`electron.vite.config.ts`), not plain Vite.
+
+## Domain Model
+
+SQLite file: `{userData}/cometode.db`.
+
+| Table | Role |
+| ----- | ---- |
+| `problems` | Catalog + per-problem flags (`starred`, `blocked`, `in_*` set membership) |
+| `problem_progress` | CIR state (status, interval, ease, success_rate, dates) |
+| `review_history` | One row per review (activity heatmap / streak) |
+| `preferences` | Key/value (`sync_enabled`, `sync_folder_path`, shortcut, theme, …) |
+
+- Identify problems across devices by `neet_id`, never local `id`.
+- `starred` / `blocked` live on `problems`, **not** `problem_progress`.
+- Problem sets: `neetcode150` | `google` | `amazon` | `meta` | `microsoft` | `starred` | `all`. Membership is `in_*` columns; `starred` filters `starred = 1`.
+- Progress is shared across sets for the same `neet_id`.
+- Review quality: `0` Again, `1` Hard, `2` Good, `3` Easy (`src/main/lib/cir.ts`).
+
+## Sync / Import-Export
+
+Export format version is `1.3` (`EXPORT_VERSION` in `src/main/lib/sync-data.ts`). File: `cometode-progress.json`.
+
+```
+{
+  version, exportDate, appVersion,
+  progress:        [{ neet_id, status, CIR fields, last_reviewed_at, … }],
+  reviewHistory?:  [{ neet_id, review_date, quality, … }],   // v1.2+
+  problemFlags?:   [{ neet_id, starred, blocked }]           // v1.3+
+}
+```
+
+`buildExportData()` always writes all three. `fetchProblemFlags()` only includes rows where starred or blocked is 1.
+
+Two import paths — do not mix their semantics:
+
+| Path | Entry | Progress | History | Flags |
+| ---- | ----- | -------- | ------- | ----- |
+| Manual Import | `importProgressData()` via Settings | overwrite by `neet_id` | insert missing | **replace** all local flags when `problemFlags` is present |
+| Auto-sync | `performAutoImport()` in `src/main/index.ts` | per-problem if imported `last_reviewed_at` is newer | insert missing | **union** incoming 1s (`mergeProblemFlags`); does not unstar/unblock |
+
+Older backups omit `problemFlags` / `reviewHistory` — leave local flags/history untouched.
+
+Auto-export **pulls before push** (`performAutoImport()` then `buildExportData()`). Star/block/review all call `maybeAutoExport()` from the renderer.
+
+When changing sync: update export + **both** import paths, types in `src/preload/index.d.ts`, and `EXPORT_VERSION` if the shape changes.
+
+## Electron Architecture
+
+- Main owns tray, popup, SQLite, auto-updater, global shortcut, auto-sync timers.
+- Renderer is a Svelte 5 popup. No SvelteKit router — `App.svelte` switches `home` / `problem`.
+- Preload exposes `window.api`. Never use `ipcRenderer` from Svelte files.
+- `better-sqlite3` is native; listed in `asarUnpack` in `electron-builder.yml`.
+
+### IPC checklist (all four, always)
+
+1. `src/main/ipc.ts` — `ipcMain.handle('channel', …)`
+2. `src/preload/index.ts` — `api.method = (args) => ipcRenderer.invoke('channel', args)`
+3. `src/preload/index.d.ts` — types on `API`
+4. Renderer — `await window.api.method(args)`
+
+### Database migrations
+
+Add columns in `runMigrations()` in `src/main/db/index.ts` via `PRAGMA table_info()`. Do not edit `SCHEMA` only — existing installs never re-run `CREATE TABLE`.
 
 ## Toolchain Quirks
 
-- **Tailwind CSS 4** uses the `@tailwindcss/vite` plugin (no PostCSS config)
-- **better-sqlite3** is a native module listed in `asarUnpack` in `electron-builder.yml` — changes to the database layer may affect builds
-- **TypeScript in renderer**: `tsconfig.web.json` has `strict: false` and `verbatimModuleSyntax: true`. The latter means `import type` is required for type-only imports
-- **`src/preload/index.d.ts`** is included in `tsconfig.web.json` — renderer code can use its types directly
-- **Database migrations** live in `runMigrations()` inside `src/main/db/index.ts` — they run on every app start, checking for columns with `PRAGMA table_info()`
+- **Tailwind CSS 4** uses `@tailwindcss/vite` (no PostCSS config)
+- **Renderer TS**: `tsconfig.web.json` has `strict: false` and `verbatimModuleSyntax: true` → type-only imports need `import type`
+- **`src/preload/index.d.ts`** is in `tsconfig.web.json` — renderer can import those types directly
+- **Stores vs components**: `stores/*.ts` use classic `writable`/`derived`; `.svelte` files use Svelte 5 runes only (`$state`, `$derived`, `$props`, `$effect`)
+- **Node for local typecheck**: Electron/native modules expect Node 22 (CI). Node 26 cannot rebuild `better-sqlite3`
 
 ## Code Style
 
-### Formatting (Prettier)
+Prettier: no semicolons, single quotes, no trailing commas, 100-char line width (`.prettierrc.yaml`).
 
-- No semicolons, single quotes, no trailing commas, 100-char line width
-- Configured in `.prettierrc.yaml`
+Imports in three groups, blank line between: Electron/node → third-party → local.
 
-### Import Organization
+| Element | Convention | Example |
+| ------- | ---------- | ------- |
+| Files/directories | kebab-case | `src/main/lib/cir.ts` |
+| Svelte components | PascalCase | `HomeView.svelte` |
+| Variables/functions | camelCase | `loadProblems` |
+| Constants | SCREAMING_SNAKE_CASE | `POPUP_WIDTH` |
+| Types/interfaces | PascalCase | `Problem`, `ExportData` |
 
-Three groups, separated by blank lines:
-
-```typescript
-// 1. Electron/external dependencies
-import { app, shell, BrowserWindow } from 'electron'
-import { join } from 'path'
-
-// 2. Third-party libraries
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-
-// 3. Local modules
-import { initDatabase, getDatabase } from './db'
-```
-
-### Naming Conventions
-
-| Element             | Convention           | Example                          |
-| ------------------- | -------------------- | -------------------------------- |
-| Files/directories   | kebab-case           | `src/main/lib/cir.ts`            |
-| Svelte components   | PascalCase           | `HomeView.svelte`                |
-| Variables/functions | camelCase            | `loadProblems`, `popupWindow`    |
-| Constants           | SCREAMING_SNAKE_CASE | `MAX_INTERVAL_DAYS`, `POPUP_WIDTH` |
-| Types/interfaces    | PascalCase           | `Problem`, `ProblemFilters`      |
-
-### TypeScript
-
-- Explicit types for function parameters and return types
+- Explicit types on function params and return values
 - Prefer interfaces over type aliases for object shapes
-- Export shared types from `src/preload/index.d.ts`
+- Shared types go in `src/preload/index.d.ts`
+- No comments unless asked
+- try/catch with `console.error` and fallback return values
 
-### Svelte 5 (Runes Only)
+### Svelte 5 (runes only in components)
 
 ```svelte
 <script lang="ts">
@@ -111,25 +156,25 @@ import { initDatabase, getDatabase } from './db'
 </script>
 ```
 
-### IPC Pattern
+## Release
 
-1. **Main** (`src/main/ipc.ts`): `ipcMain.handle('channel', handler)`
-2. **Preload** (`src/preload/index.ts`): `api.method = (args) => ipcRenderer.invoke('channel', args)`
-3. **Renderer**: `await window.api.method(args)`
-4. **Types**: Always add new IPC methods and their types to `src/preload/index.d.ts`
-
-### Error Handling
-
-Use try-catch with `console.error` and return fallback values.
+- Default branch: `master`
+- CI (`.github/workflows/ci.yml`): typecheck + `electron-vite build` on push/PR
+- Release (`.github/workflows/release.yml`): push tag `v*` (e.g. `v2.0.7`)
+  - CI runs `npm version` from the tag, `pnpm build:mac`, GitHub Release with dmg/zip
+- Do not bump `package.json` version in git; the tag is the source of truth
+- electron-builder publishes to `Tomlord1122/cometode`; auto-updater reads GitHub releases
 
 ## Common Pitfalls
 
-1. **No semicolons** — Prettier will remove them
-2. **Use Svelte 5 runes** — not legacy `$:` or `let x = ...` reactivity
-3. **Type all IPC data** — add types to `src/preload/index.d.ts`
-4. **Database migrations** — add via `runMigrations()` in `src/main/db/index.ts`, not by editing the schema directly
-5. **No test files exist** — verify with `pnpm typecheck` instead
-6. **`verbatimModuleSyntax` in renderer** — use `import type` for type-only imports
+1. No semicolons — Prettier strips them
+2. Svelte 5 runes in components — not `$:` or implicit `let` reactivity
+3. New IPC without `src/preload/index.d.ts` will not typecheck in the renderer
+4. New DB columns belong in `runMigrations()`, not only `SCHEMA`
+5. Star/block are on `problems`; forgetting `problemFlags` in auto-import drops them on sync
+6. Manual import **replaces** flags; auto-import **unions** 1s (unstarring does not propagate via folder sync)
+7. `verbatimModuleSyntax` — `import type` for type-only imports
+8. Do not call CIR through `sm2.ts`
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
