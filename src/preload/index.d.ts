@@ -181,6 +181,7 @@ export interface API {
   // Interview Mode
   getInterviewMode: () => Promise<boolean>
   setInterviewMode: (enabled: boolean) => Promise<{ success: boolean; enabled: boolean }>
+  onPopupShown: (callback: () => void) => () => void
 }
 
 declare global {

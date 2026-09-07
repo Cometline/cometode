@@ -283,7 +283,7 @@
         </div>
       {:else if $completedInSession >= sessionQuota && $completedInSession > 0}
         <!-- Quota completed -->
-        <div class="flex flex-col items-center justify-center h-full">
+        <div class="flex flex-col items-center justify-center min-h-[76px]">
           <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">✨ Session completed</div>
           {#if $todayReviewsCount > 0}
             <div class="text-xs text-gray-400 dark:text-gray-500 mb-2">
@@ -301,7 +301,7 @@
         </div>
       {:else}
         <!-- No reviews due but some completed -->
-        <div class="flex flex-col items-center justify-center h-full">
+        <div class="flex flex-col items-center justify-center min-h-[76px]">
           <div class="text-sm text-gray-500 dark:text-gray-400">
             ✨ All caught up! ({$completedInSession} reviewed today)
           </div>

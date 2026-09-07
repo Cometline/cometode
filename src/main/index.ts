@@ -35,6 +35,9 @@ let updateInfo: { version: string; progress: number } | null = null
 let lastAutoExportDate: string | null = null
 let lastImportedExportDate: string | null = null
 
+/** Ignore blur-to-hide briefly after showing (shortcut keyup race). */
+let ignoreBlurUntil = 0
+
 const POPUP_WIDTH = 360
 const POPUP_HEIGHT = 680
 const DEFAULT_SHORTCUT = 'CommandOrControl+Shift+M'
@@ -98,8 +101,9 @@ function createPopupWindow(): void {
     }
   })
 
-  // Hide when clicking outside
+  // Hide when clicking outside (skip briefly after show — shortcut keyup can blur)
   popupWindow.on('blur', () => {
+    if (Date.now() < ignoreBlurUntil) return
     popupWindow?.hide()
   })
 
@@ -144,11 +148,17 @@ function togglePopup(): void {
     popupWindow.hide()
   } else {
     const { x, y } = getPopupPosition()
-    popupWindow.setPosition(x, y, false)
+    // Re-assert bounds every open — size/position can drift after Space/display changes.
+    popupWindow.setBounds({ x, y, width: POPUP_WIDTH, height: POPUP_HEIGHT }, false)
     popupWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true })
     popupWindow.setAlwaysOnTop(true, 'pop-up-menu')
+    // Shortcut keyup often blurs the newly focused window; ignore hide briefly.
+    ignoreBlurUntil = Date.now() + 400
     popupWindow.show()
     popupWindow.focus()
+    // Force a repaint after hide→show (transparent/vibrancy can leave a blank band).
+    popupWindow.webContents.invalidate()
+    popupWindow.webContents.send('popup-shown')
   }
 }
 
