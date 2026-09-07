@@ -49,6 +49,23 @@
   // Interview mode state
   let interviewModeEnabled = $state(false)
 
+  function resetPopupLayout(): void {
+    // Transparent/vibrancy popups can open with a blank band until layout is nudged.
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    const list = document.querySelector('.flex-1.overflow-y-auto')
+    if (list instanceof HTMLElement) list.scrollTop = 0
+    // Force a style recalc / paint on the root shell.
+    const root = document.getElementById('app')
+    if (root) {
+      root.style.transform = 'translateZ(0)'
+      requestAnimationFrame(() => {
+        root.style.transform = ''
+      })
+    }
+  }
+
   onMount(() => {
     // Initialize async operations
     const init = async (): Promise<void> => {
@@ -72,15 +89,22 @@
     // Refresh data when window becomes visible (e.g., popup shown after new day)
     const handleVisibilityChange = async (): Promise<void> => {
       if (document.visibilityState === 'visible') {
+        resetPopupLayout()
         const set = $currentProblemSet
         await Promise.all([loadTodayReviews(), loadProblems(), loadStats(set), loadActivity()])
       }
     }
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
+    // Main process notifies after shortcut/tray show — reset scroll/layout in case of a blank band.
+    const unsubscribePopupShown = window.api.onPopupShown(() => {
+      resetPopupLayout()
+    })
+
     return () => {
       if (updateCheckInterval) clearInterval(updateCheckInterval)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      unsubscribePopupShown()
     }
   })
 

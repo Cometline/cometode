@@ -86,7 +86,15 @@ const api = {
 
   // Interview Mode
   getInterviewMode: () => ipcRenderer.invoke('get-interview-mode'),
-  setInterviewMode: (enabled: boolean) => ipcRenderer.invoke('set-interview-mode', enabled)
+  setInterviewMode: (enabled: boolean) => ipcRenderer.invoke('set-interview-mode', enabled),
+
+  onPopupShown: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on('popup-shown', listener)
+    return () => {
+      ipcRenderer.removeListener('popup-shown', listener)
+    }
+  }
 }
 
 // Expose APIs
