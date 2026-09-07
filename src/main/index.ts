@@ -20,6 +20,7 @@ import { setupIPC } from './ipc'
 import { INITIAL_SUCCESS_RATE } from './lib/cir'
 import {
   buildExportData,
+  mergeProblemFlags,
   mergeReviewHistory,
   type ExportData,
   type ExportProgressEntry
@@ -626,6 +627,7 @@ function performAutoImport(): number {
     const db = getDatabase()
     let importedCount = 0
     let historyImported = 0
+    let flagsImported = 0
 
     const transaction = db.transaction(() => {
       for (const entry of exportData.progress as ExportProgressEntry[]) {
@@ -683,7 +685,10 @@ function performAutoImport(): number {
       // Always merge missing review history (independent of progress freshness)
       historyImported = mergeReviewHistory(db, exportData.reviewHistory)
 
-      if (importedCount > 0 || historyImported > 0) {
+      // Stars/blocks have no timestamp — union incoming 1s onto local flags
+      flagsImported = mergeProblemFlags(db, exportData.problemFlags)
+
+      if (importedCount > 0 || historyImported > 0 || flagsImported > 0) {
         db.prepare(
           `
           INSERT INTO preferences (key, value, updated_at)
@@ -697,13 +702,13 @@ function performAutoImport(): number {
     transaction()
     lastImportedExportDate = exportData.exportDate
 
-    if (importedCount > 0 || historyImported > 0) {
+    if (importedCount > 0 || historyImported > 0 || flagsImported > 0) {
       console.log(
-        `Auto-import: merged ${importedCount} problem(s), ${historyImported} review(s) from ${exportData.exportDate}`
+        `Auto-import: merged ${importedCount} problem(s), ${historyImported} review(s), ${flagsImported} flag(s) from ${exportData.exportDate}`
       )
     }
 
-    return importedCount + historyImported
+    return importedCount + historyImported + flagsImported
   } catch (error) {
     console.error('Auto-import failed:', error)
     return 0

@@ -205,6 +205,39 @@ export function mergeReviewHistory(
   return imported
 }
 
+/** Union incoming star/block flags onto local rows. Does not unstar/unblock. */
+export function mergeProblemFlags(
+  db: Database.Database,
+  entries: ExportProblemFlagsEntry[] | undefined
+): number {
+  if (!entries || !Array.isArray(entries) || entries.length === 0) return 0
+
+  const findProblem = db.prepare(
+    'SELECT id, COALESCE(starred, 0) as starred, COALESCE(blocked, 0) as blocked FROM problems WHERE neet_id = ?'
+  )
+  const update = db.prepare('UPDATE problems SET starred = ?, blocked = ? WHERE id = ?')
+
+  let imported = 0
+
+  for (const entry of entries) {
+    if (typeof entry?.neet_id !== 'number') continue
+
+    const problem = findProblem.get(entry.neet_id) as
+      | { id: number; starred: number; blocked: number }
+      | undefined
+    if (!problem) continue
+
+    const starred = problem.starred || (entry.starred ? 1 : 0)
+    const blocked = problem.blocked || (entry.blocked ? 1 : 0)
+    if (starred === problem.starred && blocked === problem.blocked) continue
+
+    update.run(starred, blocked, problem.id)
+    imported++
+  }
+
+  return imported
+}
+
 /** Full overwrite import for manual import (progress + history merge). */
 export function importProgressData(
   db: Database.Database,
