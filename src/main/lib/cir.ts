@@ -43,6 +43,7 @@ const SUCCESS_RATE_PENALTY = 0.8
 const INTERVIEW_MODE_MULTIPLIER = 0.5
 const EASY_BONUS_MULTIPLIER = 1.15
 const MIN_EASE_FACTOR = 1.3
+const MAX_INTERVAL_DAYS = 365
 
 // Initial ease factor for new cards
 export const INITIAL_EASE_FACTOR = 2.5
@@ -135,8 +136,7 @@ export function calculateNextReview(
     newInterval = Math.max(1, Math.round(newInterval * INTERVIEW_MODE_MULTIPLIER))
   }
 
-  // Ensure minimum interval of 1 day
-  newInterval = Math.max(1, newInterval)
+  newInterval = Math.max(1, Math.min(MAX_INTERVAL_DAYS, newInterval))
 
   return {
     newState: {
