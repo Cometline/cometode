@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store'
+import { writable, derived, get } from 'svelte/store'
 import type { Problem, ProblemFilters, ProblemSet } from '../../../preload/index.d'
 
 interface FilterUIState {
@@ -178,6 +178,88 @@ export const categories = writable<string[]>([])
 // Loading state
 export const isLoading = writable(false)
 
+const inFlightBlockToggles = new Set<number>()
+const inFlightStarToggles = new Set<number>()
+const localFlagOverrides = new Map<number, { blocked?: number; starred?: number }>()
+let flagEpoch = 0
+let loadGeneration = 0
+let toggleIdleWaiters: Array<() => void> = []
+
+function sortProblems(list: Problem[]): Problem[] {
+  return [...list].sort((a, b) => {
+    const blockedA = a.blocked ? 1 : 0
+    const blockedB = b.blocked ? 1 : 0
+    if (blockedA !== blockedB) return blockedA - blockedB
+
+    const reviewGroup = (p: Problem): number => {
+      if ((p.total_reviews ?? 0) === 0) return 0
+      if (p.status === 'reviewing') return 2
+      return 1
+    }
+    const groupA = reviewGroup(a)
+    const groupB = reviewGroup(b)
+    if (groupA !== groupB) return groupA - groupB
+    return a.neet_id - b.neet_id
+  })
+}
+
+function applyFlagOverrides(list: Problem[]): Problem[] {
+  if (localFlagOverrides.size === 0) return list
+  return list.map((problem) => {
+    const override = localFlagOverrides.get(problem.id)
+    return override ? { ...problem, ...override } : problem
+  })
+}
+
+function filterByActiveFlags(list: Problem[], currentFilters?: ProblemFilters): Problem[] {
+  const active = currentFilters ?? get(filters)
+  let next = list
+  if (active.problemSet === 'starred') {
+    next = next.filter((problem) => problem.starred === 1)
+  }
+  if (active.dueOnly) {
+    next = next.filter((problem) => !problem.blocked)
+  }
+  return next
+}
+
+function notifyToggleIdle(): void {
+  if (inFlightBlockToggles.size > 0 || inFlightStarToggles.size > 0) return
+  const waiters = toggleIdleWaiters
+  toggleIdleWaiters = []
+  for (const resolve of waiters) resolve()
+}
+
+function waitForToggleIdle(): Promise<void> {
+  if (inFlightBlockToggles.size === 0 && inFlightStarToggles.size === 0) {
+    return Promise.resolve()
+  }
+  return new Promise((resolve) => {
+    toggleIdleWaiters.push(resolve)
+  })
+}
+
+function patchProblemLocalFlags(
+  problemId: number,
+  patch: { blocked?: number; starred?: number }
+): void {
+  flagEpoch++
+  const prev = localFlagOverrides.get(problemId)
+  localFlagOverrides.set(problemId, { ...prev, ...patch })
+
+  const apply = (problem: Problem | null): Problem | null =>
+    problem && problem.id === problemId ? { ...problem, ...patch } : problem
+
+  problems.update((list) => {
+    const next = list.map((problem) =>
+      problem.id === problemId ? { ...problem, ...patch } : problem
+    )
+    return sortProblems(filterByActiveFlags(next))
+  })
+  selectedProblem.update(apply)
+  todayReview.update(apply)
+}
+
 // Derived: filtered problems count
 export const problemCounts = derived(problems, ($problems) => {
   const total = $problems.length
@@ -189,19 +271,27 @@ export const problemCounts = derived(problems, ($problems) => {
 
 // Actions
 export async function loadProblems(currentFilters?: ProblemFilters): Promise<void> {
+  const gen = ++loadGeneration
+  const epochAtStart = flagEpoch
   isLoading.set(true)
   try {
-    // If no filters passed, get from store
-    if (!currentFilters) {
-      filters.subscribe((f) => (currentFilters = f))()
-    }
+    const activeFilters = currentFilters ?? get(filters)
+    const data = await window.api.getProblems(activeFilters)
+    if (gen !== loadGeneration) return
 
-    const data = await window.api.getProblems(currentFilters)
-    problems.set(data)
+    problems.set(sortProblems(filterByActiveFlags(applyFlagOverrides(data), activeFilters)))
+
+    if (
+      inFlightBlockToggles.size === 0 &&
+      inFlightStarToggles.size === 0 &&
+      flagEpoch === epochAtStart
+    ) {
+      localFlagOverrides.clear()
+    }
   } catch (error) {
     console.error('Failed to load problems:', error)
   } finally {
-    isLoading.set(false)
+    if (gen === loadGeneration) isLoading.set(false)
   }
 }
 
@@ -252,42 +342,16 @@ export async function selectProblem(problem: Problem): Promise<void> {
   selectedProblem.set(problem)
 }
 
-
-const inFlightBlockToggles = new Set<number>()
-const inFlightStarToggles = new Set<number>()
-
-function patchProblemLocalFlags(
-  problemId: number,
-  patch: { blocked?: number; starred?: number }
-): void {
-  const apply = (problem: Problem | null): Problem | null =>
-    problem && problem.id === problemId ? { ...problem, ...patch } : problem
-
-  problems.update((list) =>
-    list.map((problem) => (problem.id === problemId ? { ...problem, ...patch } : problem))
-  )
-  selectedProblem.update(apply)
-  todayReview.update(apply)
-}
-
 let reloadTail: Promise<void> = Promise.resolve()
 let reloadQueued = false
-let reloadIncludeToday = false
 
-async function coalesceProblemsReload(includeTodayReviews: boolean): Promise<void> {
-  if (includeTodayReviews) reloadIncludeToday = true
+async function coalesceTodayReviewsReload(): Promise<void> {
   reloadQueued = true
 
   const run = async (): Promise<void> => {
     while (reloadQueued) {
       reloadQueued = false
-      const withToday = reloadIncludeToday
-      reloadIncludeToday = false
-      if (withToday) {
-        await Promise.all([loadProblems(), loadTodayReviews()])
-      } else {
-        await loadProblems()
-      }
+      await loadTodayReviews()
     }
   }
 
@@ -304,7 +368,9 @@ async function maybeAutoExport(reason: string): Promise<void> {
   exportQueued = true
 
   const run = async (): Promise<void> => {
-    while (exportQueued) {
+    while (exportQueued || inFlightBlockToggles.size > 0 || inFlightStarToggles.size > 0) {
+      await waitForToggleIdle()
+      if (!exportQueued) break
       exportQueued = false
       const currentReason = exportReason
       try {
@@ -364,9 +430,10 @@ export async function setProblemBlocked(problemId: number, blocked: boolean): Pr
     return
   } finally {
     inFlightBlockToggles.delete(problemId)
+    notifyToggleIdle()
   }
 
-  await coalesceProblemsReload(true)
+  await coalesceTodayReviewsReload()
   await maybeAutoExport('block')
 }
 
@@ -384,8 +451,8 @@ export async function setProblemStarred(problemId: number, starred: boolean): Pr
     return
   } finally {
     inFlightStarToggles.delete(problemId)
+    notifyToggleIdle()
   }
 
-  await coalesceProblemsReload(false)
   await maybeAutoExport('star')
 }
