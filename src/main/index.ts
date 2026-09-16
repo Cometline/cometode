@@ -532,7 +532,7 @@ function performAutoExport(folderPath: string): {
     // file before we snapshot our own state - otherwise our export would
     // blindly overwrite the shared file with a copy that doesn't know about
     // changes we haven't imported yet (a classic "pull before push" race).
-    performAutoImport()
+    performAutoImport({ mergeFlags: false })
 
     const db = getDatabase()
     const exportData = buildExportData(db, app.getVersion())
@@ -597,7 +597,7 @@ function checkAndPerformAutoExport(): void {
  *
  * Returns the number of rows actually updated (0 if nothing changed).
  */
-function performAutoImport(): number {
+function performAutoImport(options?: { mergeFlags?: boolean }): number {
   try {
     const { enabled, folderPath } = getAutoSyncPreferences()
 
@@ -685,8 +685,8 @@ function performAutoImport(): number {
       // Always merge missing review history (independent of progress freshness)
       historyImported = mergeReviewHistory(db, exportData.reviewHistory)
 
-      // Stars/blocks have no timestamp — union incoming 1s onto local flags
-      flagsImported = mergeProblemFlags(db, exportData.problemFlags)
+      const shouldMergeFlags = options?.mergeFlags !== false
+      flagsImported = shouldMergeFlags ? mergeProblemFlags(db, exportData.problemFlags) : 0
 
       if (importedCount > 0 || historyImported > 0 || flagsImported > 0) {
         db.prepare(
