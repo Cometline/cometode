@@ -253,16 +253,74 @@ export async function selectProblem(problem: Problem): Promise<void> {
 }
 
 
-async function maybeAutoExport(reason: string): Promise<void> {
-  try {
-    const syncPrefs = await window.api.getAutoSyncPreferences()
-    if (syncPrefs.enabled && syncPrefs.folderPath) {
-      await window.api.performAutoExport(syncPrefs.folderPath)
+const inFlightBlockToggles = new Set<number>()
+const inFlightStarToggles = new Set<number>()
+
+function patchProblemLocalFlags(
+  problemId: number,
+  patch: { blocked?: number; starred?: number }
+): void {
+  const apply = (problem: Problem | null): Problem | null =>
+    problem && problem.id === problemId ? { ...problem, ...patch } : problem
+
+  problems.update((list) =>
+    list.map((problem) => (problem.id === problemId ? { ...problem, ...patch } : problem))
+  )
+  selectedProblem.update(apply)
+  todayReview.update(apply)
+}
+
+let reloadTail: Promise<void> = Promise.resolve()
+let reloadQueued = false
+let reloadIncludeToday = false
+
+async function coalesceProblemsReload(includeTodayReviews: boolean): Promise<void> {
+  if (includeTodayReviews) reloadIncludeToday = true
+  reloadQueued = true
+
+  const run = async (): Promise<void> => {
+    while (reloadQueued) {
+      reloadQueued = false
+      const withToday = reloadIncludeToday
+      reloadIncludeToday = false
+      if (withToday) {
+        await Promise.all([loadProblems(), loadTodayReviews()])
+      } else {
+        await loadProblems()
+      }
     }
-  } catch (syncError) {
-    // Don't fail the user action if sync fails
-    console.error(`Auto-sync after ${reason} failed:`, syncError)
   }
+
+  reloadTail = reloadTail.then(run, run)
+  await reloadTail
+}
+
+let exportTail: Promise<void> = Promise.resolve()
+let exportQueued = false
+let exportReason = ''
+
+async function maybeAutoExport(reason: string): Promise<void> {
+  exportReason = reason
+  exportQueued = true
+
+  const run = async (): Promise<void> => {
+    while (exportQueued) {
+      exportQueued = false
+      const currentReason = exportReason
+      try {
+        const syncPrefs = await window.api.getAutoSyncPreferences()
+        if (syncPrefs.enabled && syncPrefs.folderPath) {
+          await window.api.performAutoExport(syncPrefs.folderPath)
+        }
+      } catch (syncError) {
+        // Don't fail the user action if sync fails
+        console.error(`Auto-sync after ${currentReason} failed:`, syncError)
+      }
+    }
+  }
+
+  exportTail = exportTail.then(run, run)
+  await exportTail
 }
 
 export async function submitReview(
@@ -294,21 +352,37 @@ export async function startProblem(problemId: number): Promise<void> {
 }
 
 export async function setProblemBlocked(problemId: number, blocked: boolean): Promise<void> {
+  if (inFlightBlockToggles.has(problemId)) return
+  inFlightBlockToggles.add(problemId)
+
   try {
-    await window.api.setProblemBlocked(problemId, blocked)
-    await Promise.all([loadProblems(), loadTodayReviews()])
+    const result = await window.api.setProblemBlocked(problemId, blocked)
+    if (!result.success) return
+
+    patchProblemLocalFlags(problemId, { blocked: blocked ? 1 : 0 })
+    await coalesceProblemsReload(true)
     await maybeAutoExport('block')
   } catch (error) {
     console.error('Failed to set problem blocked:', error)
+  } finally {
+    inFlightBlockToggles.delete(problemId)
   }
 }
 
 export async function setProblemStarred(problemId: number, starred: boolean): Promise<void> {
+  if (inFlightStarToggles.has(problemId)) return
+  inFlightStarToggles.add(problemId)
+
   try {
-    await window.api.setProblemStarred(problemId, starred)
-    await loadProblems()
+    const result = await window.api.setProblemStarred(problemId, starred)
+    if (!result.success) return
+
+    patchProblemLocalFlags(problemId, { starred: starred ? 1 : 0 })
+    await coalesceProblemsReload(false)
     await maybeAutoExport('star')
   } catch (error) {
     console.error('Failed to set problem starred:', error)
+  } finally {
+    inFlightStarToggles.delete(problemId)
   }
 }
