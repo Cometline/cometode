@@ -313,7 +313,6 @@ async function maybeAutoExport(reason: string): Promise<void> {
           await window.api.performAutoExport(syncPrefs.folderPath)
         }
       } catch (syncError) {
-        // Don't fail the user action if sync fails
         console.error(`Auto-sync after ${currentReason} failed:`, syncError)
       }
     }
@@ -360,13 +359,15 @@ export async function setProblemBlocked(problemId: number, blocked: boolean): Pr
     if (!result.success) return
 
     patchProblemLocalFlags(problemId, { blocked: blocked ? 1 : 0 })
-    await coalesceProblemsReload(true)
-    await maybeAutoExport('block')
   } catch (error) {
     console.error('Failed to set problem blocked:', error)
+    return
   } finally {
     inFlightBlockToggles.delete(problemId)
   }
+
+  await coalesceProblemsReload(true)
+  await maybeAutoExport('block')
 }
 
 export async function setProblemStarred(problemId: number, starred: boolean): Promise<void> {
@@ -378,11 +379,13 @@ export async function setProblemStarred(problemId: number, starred: boolean): Pr
     if (!result.success) return
 
     patchProblemLocalFlags(problemId, { starred: starred ? 1 : 0 })
-    await coalesceProblemsReload(false)
-    await maybeAutoExport('star')
   } catch (error) {
     console.error('Failed to set problem starred:', error)
+    return
   } finally {
     inFlightStarToggles.delete(problemId)
   }
+
+  await coalesceProblemsReload(false)
+  await maybeAutoExport('star')
 }
